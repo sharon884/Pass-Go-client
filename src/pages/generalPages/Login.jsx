@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import api from "../api/api"
+import api from "../../utils/api/api"
 
 function Login() {
   const location = useLocation()
@@ -68,8 +68,8 @@ function Login() {
 
     let endPoint = ""
     if (role === "user") {
-      endPoint = "/user/login"
-    }
+      endPoint = "/user/auth/login"
+    } 
     if (role === "host") {
       endPoint = "/host/login"
     }

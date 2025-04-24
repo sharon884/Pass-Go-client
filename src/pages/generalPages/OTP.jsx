@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import api from "../api/api";
+import api from "../../utils/api/api";
 import axios from "axios"
 
 const OtpPage = () => {
@@ -38,7 +38,7 @@ const OtpPage = () => {
 
     let endPoint = "" ;
     if ( role === "user") {
-      endPoint = "/user/verify-otp"
+      endPoint = "/user/auth/verify-otp"
     }
     if ( role === "host") {
       endPoint = "/host/verify-otp"

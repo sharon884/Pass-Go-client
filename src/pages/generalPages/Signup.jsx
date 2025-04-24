@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/api";
+import api from "../../utils/api/api";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
 import validateForm from "../../utils/signupValidation";
@@ -48,7 +48,7 @@ const Signup = () => {
 
     let endPoint = "";
     if (role === "user") {
-      endPoint = "/user/signup";
+      endPoint = "/user/auth/signup";
     }
     if (role === "host") {
       endPoint = "/host/signup";

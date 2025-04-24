@@ -1,4 +1,4 @@
-import api from "../pages/api/api";
+import api from "./api/api";
 import { setCredentials } from "../features/auth/authSlice";
 
 const checkAuthAndLoadUserProfile = async ( dispatch ) => {
