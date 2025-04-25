@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Navbar = ({ isAuthenticated = false, role = null }) => {
+const Navbar = ({ isAuthenticated , role  }) => {
   return (
     <nav className="bg-black text-white px-6 py-4 shadow-md">
       <div className="flex justify-between items-center">

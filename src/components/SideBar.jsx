@@ -84,7 +84,7 @@ const SideBar = () => {
       },
     },
   };
-
+          console.log("ivde user infoo vrndowwww++--sidbar",name, profile_img, role); // Debugging line to check user info
   return (
     <motion.div
       className="h-screen bg-white border-r border-blue-100 shadow-sm flex flex-col w-64 overflow-y-auto"

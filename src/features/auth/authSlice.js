@@ -16,6 +16,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials : ( state , action ) => {
+            console.log("ivde acion payload", action.payload); // Debugging line to check action payload
            state.user = {
                name : action.payload.name,
                email : action.payload.email,
