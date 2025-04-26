@@ -16,8 +16,9 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials : ( state , action ) => {
-            console.log("ivde acion payload", action.payload); // Debugging line to check action payload
+              state.isAuthenticated = true;
            state.user = {
+                id : action.payload.id,
                name : action.payload.name,
                email : action.payload.email,
                mobile : action.payload.mobile,
@@ -28,6 +29,7 @@ const authSlice = createSlice({
         },
 
         logOut : ( state ) => {
+            state.isAuthenticated = false;
             state.user  = {
                 name : "",
                 email : "",

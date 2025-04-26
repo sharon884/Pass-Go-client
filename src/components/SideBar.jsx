@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";  
+import { useNavigate } from "react-router-dom";
+import { logOut } from "../features/auth/authSlice";
+import  api  from "../utils/api/api" 
 import { motion } from "framer-motion";
 import defaultProfile from "../../public/profile image defult for passgo.jpeg";  
 
 const SideBar = () => {
-  const { name, profile_img, role } = useSelector((state) => state.auth.user); 
+  const { id ,name, profile_img, role } = useSelector((state) => state.auth.user); 
   const [activeItem, setActiveItem] = useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
 
   const menuItems = {
     host: [
@@ -24,6 +30,31 @@ const SideBar = () => {
 
   const sidebarItems = menuItems[role] || [];
 
+
+
+   const handleLogout =  async () => {
+     
+    let logoutEndpoint = "";
+    if (role === "user") {
+      logoutEndpoint = "/user/auth/logoutUser";
+    } else if (role === "host") {
+      logoutEndpoint = "/host/auth/logoutHost";
+    } else if (role === "admin") {
+      logoutEndpoint = "/admin/auth/logoutAdmin";
+    }
+  
+
+    try {
+        await api.post(logoutEndpoint, { id });
+    } catch (error) {
+        console.error("Logout error:", error);
+    }finally {  
+      dispatch(logOut()); 
+        localStorage.clear();
+        navigate("/login");
+   }
+
+  }
   // Framer Motion variants
   const sidebarVariants = {
     hidden: { x: -300, opacity: 0 },
@@ -134,6 +165,7 @@ const SideBar = () => {
       {/* Logout Button */}
       <div className="px-4 py-4">
         <motion.button
+        onClick={handleLogout}
           className="w-full text-center py-2 px-3 rounded-md text-red-500 hover:bg-red-50 transition-all duration-300"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

@@ -51,9 +51,9 @@ const Signup = () => {
       endPoint = "/user/auth/signup";
     }
     if (role === "host") {
-      endPoint = "/host/signup";
+      endPoint = "/host/auth/signup";
     } else if (role === "admin") {
-      endPoint = "/admin/signup";
+      endPoint = "/admin/auth/signup";
     }
 
     try {

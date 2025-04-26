@@ -1,25 +1,25 @@
 import api from "./api/api";
 import { setCredentials } from "../features/auth/authSlice";
 
+
 const checkAuthAndLoadUserProfile = async ( dispatch ) => {
-    console.log("checkAuthAndLoadUserProfile called---checkAuthAndLoadUserProfile.js");
+    
 
    const isAuth = localStorage.getItem("isAuthenticated");
    const role = localStorage.getItem("role");
          if ( isAuth && role ) {
-            let endPoint = "";
-
+            let  endPoint = "";
             if ( role === "user" ) {
                 endPoint = "/user/profile/getUserProfile"
             }else if ( role === "host" ) {
-                endPoint = "/host/profile"
+                endPoint = "/host/profile/getHostProfile"
             }else if ( role === "admin" ) {
-                endPoint = "/admin/profile"
+                endPoint = "/admin/profile/getAdminProfile"
             }
 
-            try {
-                const res = await api.get(endPoint);
-                const user = res.data.user;
+            try {                    
+                const res = await api.get( endPoint );
+                const user = role === "user" ? res.data.user : role === "host" ? res.data.host : res.data.admin;
                 console.log("user profile data", user);
                
                 dispatch(

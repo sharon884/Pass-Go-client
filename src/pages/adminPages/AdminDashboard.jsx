@@ -1,9 +1,10 @@
 import React from 'react'
+import SideBar from '../../components/SideBar'
 
 function AdminDashboard() {
   return (
     <div>
-      <h2>hai this is your admin dashbord page champ </h2>
+    <SideBar/>
     </div>
   )
 }

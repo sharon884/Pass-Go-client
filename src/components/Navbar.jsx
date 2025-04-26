@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Navbar = ({ isAuthenticated , role  }) => {
+const Navbar = () => {
+const { isAuthenticated, role } = useSelector((state) => state.auth);
   return (
     <nav className="bg-black text-white px-6 py-4 shadow-md">
       <div className="flex justify-between items-center">

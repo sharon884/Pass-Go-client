@@ -1,107 +1,133 @@
-"use client"
-import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import api from "../../utils/api/api"
-
+"use client";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import api from "../../utils/api/api";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
 function Login() {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const isAdmin = location.pathname === "/admin/login"
+  const isAdmin = location.pathname === "/admin/login";
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     role: isAdmin ? "admin" : "user",
-  })
+  });
 
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [validationErrors, setValidationErrors] = useState({})
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleRoleChange = (e) => {
     if (!isAdmin) {
-      setFormData((prev) => ({ ...prev, role: e.target.value }))
+      setFormData((prev) => ({ ...prev, role: e.target.value }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const errors = {}
+    const errors = {};
     if (!formData.email.trim()) {
-      errors.email = "Email is required"
+      errors.email = "Email is required";
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = "Invalid email format"
+      errors.email = "Invalid email format";
     }
 
     if (!formData.password.trim()) {
-      errors.password = "Password is required"
+      errors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      errors.password = "password must be at least 6 characters"
+      errors.password = "password must be at least 6 characters";
     } else if (!/[A-Z]/.test(formData.password)) {
-      errors.password = "Password must contain at least one uppercase letter"
+      errors.password = "Password must contain at least one uppercase letter";
     }
 
-    return errors
-  }
+    return errors;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
-    setSuccess("")
-    const errors = validateForm()
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    const errors = validateForm();
 
     if (Object.keys(errors).length > 0) {
-      setValidationErrors(errors)
-      return
+      setValidationErrors(errors);
+      return;
     }
 
-    setValidationErrors({})
+    setValidationErrors({});
 
-    const { email, password, role } = formData
-
-    let endPoint = ""
+    const { email, password, role } = formData;
+     console.log("Form data", formData);
+    let endPoint = "";
     if (role === "user") {
-      endPoint = "/user/auth/login"
-    } 
+      endPoint = "/user/auth/login";
+    }
     if (role === "host") {
-      endPoint = "/host/login"
+      endPoint = "/host/auth/login";
     }
     if (role === "admin") {
-      endPoint = "/admin/login"
+      endPoint = "/admin/auth/login";
     }
 
     try {
-      const response = await api.post(endPoint, { email, password, role })
+      const response = await api.post(endPoint, { email, password, role  });
+      
+      let dataToSet = null;
 
-      setSuccess(response.data.message)
       if (role === "user") {
-        navigate("/userHomePage")
-      }
-      else if (role === "host") {
-        navigate("/hostHomePage")
+        dataToSet = response.data.user;
+      } else if (role === "host") {
+        dataToSet = response.data.host;
       } else if (role === "admin") {
-        navigate("/adminDashboard")
+        dataToSet = response.data.admin;
+      }
+            console.log("++++++++++",dataToSet.name);
+      dispatch(
+        setCredentials({
+          name: dataToSet.name,
+          email: dataToSet.email,
+          mobile: dataToSet.mobile,
+          profile_img: dataToSet.profile_img,
+          role: dataToSet.role,
+        })
+      );
+      localStorage.setItem("isAuthenticated", true);
+      localStorage.setItem("role", role);
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@",role);
+           console.log("Login response", response.data);
+      setSuccess(response.data.message);
+      if (role === "user") {
+        navigate("/userHomePage");
+      } else if (role === "host") {
+        navigate("/hostHomePage");
+      } else if (role === "admin") {
+        navigate("/adminDashboard");
       }
     } catch (error) {
-      console.log(error)
-      setError(error.response?.data?.message || "Login failed. please try again!")
+      console.log(error);
+      setError(
+        error.response?.data?.message || "Login failed. please try again!"
+      );
     }
-  }
+  };
 
   const handleGoogleSignup = () => {
-    alert("Google signup will coming soon")
-  }
+    alert("Google signup will coming soon");
+  };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
@@ -176,7 +202,10 @@ function Login() {
 
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
+                <label
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="email"
+                >
                   Email Address
                 </label>
                 <input
@@ -187,14 +216,23 @@ function Login() {
                   required
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
-                    validationErrors.email ? "border-red-500" : "border-gray-300"
+                    validationErrors.email
+                      ? "border-red-500"
+                      : "border-gray-300"
                   } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
                 />
-                {validationErrors.email && <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>}
+                {validationErrors.email && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.email}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="password">
+                <label
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                  htmlFor="password"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -206,7 +244,9 @@ function Login() {
                     required
                     onChange={handleChange}
                     className={`w-full px-3 py-2 border ${
-                      validationErrors.password ? "border-red-500" : "border-gray-300"
+                      validationErrors.password
+                        ? "border-red-500"
+                        : "border-gray-300"
                     } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
                   />
                   <button
@@ -245,12 +285,19 @@ function Login() {
                     )}
                   </button>
                 </div>
-                {validationErrors.password && <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>}
+                {validationErrors.password && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.password}
+                  </p>
+                )}
               </div>
 
               {!isAdmin && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="role">
+                  <label
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                    htmlFor="role"
+                  >
                     Role
                   </label>
                   <select
@@ -274,13 +321,19 @@ function Login() {
                     type="checkbox"
                     className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     Remember me
                   </label>
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <a
+                    href="#"
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
                     Forgot your password?
                   </a>
                 </div>
@@ -309,7 +362,11 @@ function Login() {
                   onClick={handleGoogleSignup}
                   className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                 >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
                       fill="#4285F4"
@@ -338,7 +395,10 @@ function Login() {
 
                 <p className="mt-4 text-center text-sm text-gray-600">
                   Don't have an account?{" "}
-                  <a href="/signup" className="text-indigo-600 hover:text-indigo-500 font-medium">
+                  <a
+                    href="/signup"
+                    className="text-indigo-600 hover:text-indigo-500 font-medium"
+                  >
                     Sign up
                   </a>
                 </p>
@@ -347,9 +407,17 @@ function Login() {
 
             {/* Social Media Icons */}
             <div className="flex justify-center space-x-4 mt-8">
-              <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors duration-200">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-indigo-500 transition-colors duration-200"
+              >
                 <span className="sr-only">Instagram</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     fillRule="evenodd"
                     d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
@@ -358,16 +426,32 @@ function Login() {
                 </svg>
               </a>
 
-              <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors duration-200">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-indigo-500 transition-colors duration-200"
+              >
                 <span className="sr-only">Twitter</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                 </svg>
               </a>
 
-              <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors duration-200">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-indigo-500 transition-colors duration-200"
+              >
                 <span className="sr-only">Facebook</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     fillRule="evenodd"
                     d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
@@ -380,7 +464,7 @@ function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
