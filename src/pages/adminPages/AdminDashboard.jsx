@@ -1,10 +1,11 @@
 import React from 'react'
-import SideBar from '../../components/SideBar'
+// import SideBar from '../../components/SideBar'
 
 function AdminDashboard() {
   return (
     <div>
-    <SideBar/>
+      eeerrrr
+    {/* <SideBar/> */}
     </div>
   )
 }
