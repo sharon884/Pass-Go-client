@@ -11,6 +11,8 @@ import AdminDashboard from "./pages/adminPages/AdminDashboard";
 import checkAuthAndLoadUserProfile from "./utils/CheckAuthAndLoadProfil";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { fetchHostProfile } from "./features/auth/authThunk";
+import HostAddEventPage from "./pages/hostPages/HostAddEventPage";
 
 function App() {
   
@@ -18,6 +20,7 @@ function App() {
 
   useEffect(() => {
     checkAuthAndLoadUserProfile( dispatch );
+    dispatch(fetchHostProfile());
 
   },[dispatch]);
 
@@ -32,6 +35,7 @@ function App() {
    <Route path="/userHomePage" element={ <UserHomePage/>} />
    <Route path="/hostHomePage" element={ <HostHomePage/>} />
    <Route path="/adminDashboard" element={ <AdminDashboard/>} />
+   <Route path="/hostaddevent" element={<HostAddEventPage/>} />
    </Routes>
    </>
   )

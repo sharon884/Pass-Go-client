@@ -1,11 +1,16 @@
 import React from 'react'
-// import SideBar from '../../components/SideBar'
+import SideBar from '../../components/SideBar'
+import UserList from '../../components/AdminComponents/userList'
+import HostList from '../../components/AdminComponents/HostList'
 
 function AdminDashboard() {
   return (
     <div>
-      eeerrrr
-    {/* <SideBar/> */}
+      
+    <SideBar/>
+    <UserList/>
+    <HostList/>
+
     </div>
   )
 }
