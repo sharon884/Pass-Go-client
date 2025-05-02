@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";  
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../features/auth/authSlice";
-import  api  from "../utils/api/api" 
+import { logOut } from "../../features/auth/authSlice";
+import  api  from "../../utils/api/api" 
 import { motion } from "framer-motion";
 import defaultProfile from "../../public/profile image defult for passgo.jpeg";  
 

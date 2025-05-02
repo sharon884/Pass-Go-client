@@ -7,10 +7,18 @@ import { store } from './app/store.js';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+if (!clientId) {
+  throw new Error('VITE_GOOGLE_CLIENT_ID is not defined. Please check your .env file.');
+}
+
+
 
 createRoot(document.getElementById('root')).render(
+    
     <BrowserRouter>
-    <GoogleOAuthProvider clientId="http://76463556898-qpr1jihtq7em5g2lvdg3467otdtqj2h1.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={clientId}>
     <Provider store={store}>
     <App />
     </Provider>
