@@ -5,4 +5,31 @@ const api = axios.create({
     withCredentials : true,
 });
 
+api.interceptors.response.use(
+    (response) => response,
+    async ( error ) =>  {
+        const originalRequest = error.config;
+
+        if ( 
+            error.response &&
+            error.response.status === 498  &&
+            !originalRequest._retry
+            
+        ) {
+            originalRequest._retry =  true;
+            console.log('Attempting to refresh token...');
+
+            try {
+                await api.get("/auth/refresh-token");
+                return api(originalRequest);
+            } catch ( refreshError ) {
+                console.error("Token refresh failed", refreshError.message);
+                window.location.href= "/login";
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject( error );
+    }
+)
+
 export default api;

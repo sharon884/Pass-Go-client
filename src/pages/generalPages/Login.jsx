@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../../utils/api/api";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
+import GoogleAuthLogin from "../../components/generalComponents/GoogleAuthLogin";
 function Login() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -67,7 +68,7 @@ function Login() {
     setValidationErrors({});
 
     const { email, password, role } = formData;
-     console.log("Form data", formData);
+    console.log("Form data", formData);
     let endPoint = "";
     if (role === "user") {
       endPoint = "/user/auth/login";
@@ -80,8 +81,8 @@ function Login() {
     }
 
     try {
-      const response = await api.post(endPoint, { email, password, role  });
-      
+      const response = await api.post(endPoint, { email, password, role });
+
       let dataToSet = null;
 
       if (role === "user") {
@@ -91,7 +92,7 @@ function Login() {
       } else if (role === "admin") {
         dataToSet = response.data.admin;
       }
-            console.log("++++++++++",dataToSet.name);
+
       dispatch(
         setCredentials({
           name: dataToSet.name,
@@ -103,8 +104,6 @@ function Login() {
       );
       localStorage.setItem("isAuthenticated", true);
       localStorage.setItem("role", role);
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@",role);
-           console.log("Login response", response.data);
       setSuccess(response.data.message);
       if (role === "user") {
         navigate("/userHomePage");
@@ -330,13 +329,16 @@ function Login() {
                 </div>
 
                 <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
+                  {/* <a
+                    href="#" */}
+                    <Link to="/forgot-password"   className="font-medium text-indigo-600 hover:text-indigo-500" >                  
+                  {/* > */}
                     Forgot your password?
-                  </a>
+                  {/* </a> */}
+                  </Link>
+
                 </div>
+
               </div>
 
               <button
@@ -358,40 +360,7 @@ function Login() {
                   </div>
                 </div>
 
-                <button
-                  onClick={handleGoogleSignup}
-                  className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
-                      fill="#4285F4"
-                    />
-                    <path
-                      d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
-                      fill="#34A853"
-                      clipPath="url(#b)"
-                      transform="translate(0 6)"
-                    />
-                    <path
-                      d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
-                      fill="#FBBC05"
-                      clipPath="url(#c)"
-                      transform="translate(0 12)"
-                    />
-                    <path
-                      d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
-                      fill="#EA4335"
-                      clipPath="url(#d)"
-                      transform="translate(0 18)"
-                    />
-                  </svg>
-                  Sign in with Google
-                </button>
+                <GoogleAuthLogin/>
 
                 <p className="mt-4 text-center text-sm text-gray-600">
                   Don't have an account?{" "}

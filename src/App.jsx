@@ -13,6 +13,9 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchHostProfile } from "./features/auth/authThunk";
 import HostAddEventPage from "./pages/hostPages/HostAddEventPage";
+import ForgetPassword from "./pages/generalPages/ForgetPassword";
+import UserEvents from "./components/UserComponents/UserEvent";
+import UserEventDetailPage from "./pages/userPages/userEventDetailPage";
 
 function App() {
   
@@ -36,6 +39,9 @@ function App() {
    <Route path="/hostHomePage" element={ <HostHomePage/>} />
    <Route path="/adminDashboard" element={ <AdminDashboard/>} />
    <Route path="/hostaddevent" element={<HostAddEventPage/>} />
+   <Route path="/forgot-password" element={<ForgetPassword/>} />
+   <Route path="/userEvent" element={<UserEvents/>} />
+  <Route path="/yourEvent/:id" element={<UserEventDetailPage/>} />
    </Routes>
    </>
   )
