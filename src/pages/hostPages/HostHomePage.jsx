@@ -1,7 +1,7 @@
 import React from 'react'
-import Navbar from '../../components/Navbar'
-import Footer from '../../components/Footer'
-import SideBar from '../../components/SideBar'
+import Navbar from '../../components/generalComponents/Navbar'
+import Footer from '../../components/generalComponents/Footer'
+import SideBar from '../../components/generalComponents/SideBar'
 import HostProfile from '../../components/HostComponets/HostProfile'
 
 function HostHomePage() {

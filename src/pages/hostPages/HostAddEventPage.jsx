@@ -1,10 +1,10 @@
 import React from 'react'
-import AddEvent from '../../components/HostComponets/AddEvent'
+import EventModalWrapper from '../../components/HostComponets/AddEvent/EventModalWrapper'
 
 function HostAddEventPage() {
   return (
     <div>
-      <AddEvent/>
+   <EventModalWrapper/>
     </div>
   )
 }

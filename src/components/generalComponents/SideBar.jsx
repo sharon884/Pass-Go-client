@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { logOut } from "../../features/auth/authSlice";
 import  api  from "../../utils/api/api" 
 import { motion } from "framer-motion";
-import defaultProfile from "../../public/profile image defult for passgo.jpeg";  
+import defaultProfile from "../../../public/profile image defult for passgo.jpeg";  
 
 const SideBar = () => {
   const { id ,name, profile_img, role } = useSelector((state) => state.auth.user); 
@@ -115,7 +115,7 @@ const SideBar = () => {
       },
     },
   };
-          console.log("ivde user infoo vrndowwww++--sidbar",name, profile_img, role); // Debugging line to check user info
+         
   return (
     <motion.div
       className="h-screen bg-white border-r border-blue-100 shadow-sm flex flex-col w-64 overflow-y-auto"
@@ -132,7 +132,7 @@ const SideBar = () => {
           {/* Profile Image */}
           {/* If profile_img exists, use it; otherwise, fallback to the imported default image */}
           <img
-            src={profile_img ? `/images/${profile_img}` : defaultProfile}  // Use the default profile image
+            src={profile_img || defaultProfile}  // Use the default profile image
             alt="avatar"
             className="w-full h-full object-cover"
           />
