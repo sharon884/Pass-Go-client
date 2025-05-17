@@ -2,13 +2,15 @@
 
 import { useState } from "react"
 import api from "../../utils/api/api"
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function NewPasswordModal({ id, role, onClose }) {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const validatePassword = (password) => {
     return password.length >= 6
@@ -20,7 +22,7 @@ function NewPasswordModal({ id, role, onClose }) {
 
     // Validate password
     if (!validatePassword(password)) {
-      setError("Password must be at least 8 characters long")
+      setError("Password must be at least 6 characters long");
       return
     }
 
@@ -43,7 +45,8 @@ function NewPasswordModal({ id, role, onClose }) {
       const response = await api.post(endPoint, { id, password })
 
       if (response.data.success) {
-        toast.success(response.data.message || "Password reset successful. Log in now!")
+        toast.success(response.data.message || "Password reset successful. Log in now!");
+        navigate("/login")
         onClose()
       } else {
         setError("Something went wrong")

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { logOut } from "../../features/auth/authSlice";
 import  api  from "../../utils/api/api" 
 import { motion } from "framer-motion";
-import defaultProfile from "../../../public/profile image defult for passgo.jpeg";  
+import defaultProfile from "../../../public/default.jpeg";  
 
 const SideBar = () => {
   const { id ,name, profile_img, role } = useSelector((state) => state.auth.user); 
@@ -24,7 +24,7 @@ const SideBar = () => {
       "Wallet",
       "Terms & Conditions",
     ],
-    user: ["Profile", "My Bookings", "Notifications", "Wallet", "Help Center"],
+    user: ["Home", "Events", "Profile", "Wallet", "Help Center"],
     admin: ["Dashboard", "User Management", "Host Management", "Reports", "Settings"],
   };
 
