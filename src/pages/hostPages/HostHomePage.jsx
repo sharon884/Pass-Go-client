@@ -5,6 +5,7 @@ import SideBar from '../../components/generalComponents/SideBar'
 import HostProfile from '../../components/HostComponets/HostProfileComponet'
 
 function HostHomePage() {
+  
   return (
     <div className='min-h-screen flex flex-col'>
       <header className='bg-black text-white px-4 py-2'>
