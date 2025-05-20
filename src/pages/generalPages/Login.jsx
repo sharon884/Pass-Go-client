@@ -82,6 +82,7 @@ function Login() {
 
     try {
       const response = await api.post(endPoint, { email, password, role });
+      localStorage.setItem("accessToken", response.data.accessToken);
 
       let dataToSet = null;
 

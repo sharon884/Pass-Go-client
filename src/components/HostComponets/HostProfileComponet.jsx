@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useEffect } from "react";
+import VerifyRequestButton from "./Profile/VerifyRequestButton.jsx";
 
 const HostProfile = () => {
     const [ host , setHost ] = useState(null);
@@ -45,6 +46,9 @@ const HostProfile = () => {
             </div>
             <div>
                 <button onClick={()=>navigate("/profile/Change-Password-Host")}>Change Password</button>
+            </div>
+            <div>
+                <VerifyRequestButton/> 
             </div>
         </div>
     )    

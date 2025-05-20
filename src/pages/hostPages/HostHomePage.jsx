@@ -18,6 +18,7 @@ function HostHomePage() {
    <section className='ml-90'>
 
       <HostProfile/>
+      
    </section>
       </main>
       <Footer/>
