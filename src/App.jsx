@@ -28,6 +28,7 @@ import HostProfilePage from "./pages/hostPages/HostProfilePage";
 import EditHostProfilePage from "./pages/hostPages/EditHostProfilePage";
 import HostEventManagementPage from "./pages/hostPages/HostEventManagementPage";
 import EditEvent from "./components/HostComponets/EditEvent/EditEvent";
+import PingTest from "./components/SocketTest";
 
 function App() {
   const dispatch = useDispatch();
@@ -154,6 +155,8 @@ function App() {
         <Route path="/host/Edit-Profile-Host" element={<EditHostProfilePage/> } />
         <Route path="/Host-Events" element={<HostEventManagementPage/>} />  
         <Route path="/Host/Events/Edit/:eventId" element={<EditEvent/>} />
+        <Route path="/socket/testing" element={<PingTest/> } />
+    
       </Routes>
 
       <ToastContainer

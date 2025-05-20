@@ -21,3 +21,13 @@ export const updateHostProfile = async (data) => {
     throw new Error("Failed to update Host Profile");
   }
 };
+
+export const requestVerificationHost = async () => {
+  try {
+    const{ data } = await api.post("/host/profile/account/verify-request");
+    return data;   
+  } catch ( error ) {
+    console.log("Error while request verifictaion host", error);
+    throw new Error( error.response?.data?.message || "Failed to send verification request");
+  }
+}

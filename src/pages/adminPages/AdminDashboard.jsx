@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SideBar from '../../components/generalComponents/SideBar';
 import UserList from '../../components/AdminComponents/userList';
 import HostList from '../../components/AdminComponents/HostList';
+import AdminVerifyPage from "../../components/AdminComponents/Check"
 
 function AdminDashboard() {
   const [activeView, setActiveView] = useState('user');
@@ -36,6 +37,9 @@ function AdminDashboard() {
           {activeView === 'user' ? <UserList /> : <HostList />}
         </div>
       </div>
+        <div>
+     <AdminVerifyPage/>
+        </div>
     </div>
   );
 }
