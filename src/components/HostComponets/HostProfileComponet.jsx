@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useEffect } from "react";
 import VerifyRequestButton from "./Profile/VerifyRequestButton.jsx";
+import { socket } from "../../utils/socket/socket.js";
 
 const HostProfile = () => {
     const [ host , setHost ] = useState(null);
@@ -17,6 +18,15 @@ const HostProfile = () => {
                 const hostProfileData = await getHostProfile();
                 setHost(hostProfileData.host);
                 toast.success("Profile loaded successfully");
+                if ( hostProfileData?.host?.id ) {                
+                    socket.emit("verifying-host", hostProfileData.host.id);
+
+                    socket.on("host-verification-status", (data) => { 
+                        toast.info(data.message || "verification status changed!");
+                        setHost(Prev => ({ ...Prev,isVerified : data.verified}));
+                    });
+                }
+
             } catch ( error ) {
                 toast.error(error.message || "Failed to load profile");
             }finally {
@@ -24,6 +34,9 @@ const HostProfile = () => {
             }
         }
         fetchHostProfile();
+        return () => {
+            socket.off("host-verification-status");
+        }
     },[]);
 
     if ( loading ) return <div>Loading...</div>
