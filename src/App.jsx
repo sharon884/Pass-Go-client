@@ -35,10 +35,10 @@ import UserTicketSelectionPage from "./pages/userPages/UserTicketSelectionPage";
 function App() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    checkAuthAndLoadUserProfile(dispatch);
-    dispatch(fetchHostProfile());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   checkAuthAndLoadUserProfile(dispatch);
+  //   dispatch(fetchHostProfile());
+  // }, [dispatch]);
 
   return (
     <>

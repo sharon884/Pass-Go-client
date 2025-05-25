@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import {
   getAllSeatsForEvent,
   lockSeats,
+  unlockSeats,
 } from "../../services/user/userTickerServices";
 import { socket } from "../../utils/socket/socket";
 
@@ -34,7 +35,7 @@ function TicketSeatSelectionComponent() {
     };
     fetchSeats();
 
-    socket.on("connet", () => {
+    socket.on("connect", () => {
       console.log("socket connected in the seat slection component");
     });
 
@@ -96,6 +97,43 @@ function TicketSeatSelectionComponent() {
   }, [eventId]);
 
   useEffect(() => {
+    const handleSeatUnlocked = ({ seats: unlockedSeatIds }) => {
+      console.log("seat unlocked", unlockedSeatIds);
+
+      setSeats((prevSeats) =>
+        prevSeats.map((seat) =>
+          unlockedSeatIds.includes(seat._id) && seat.status === "locked"
+            ? { ...seat, status: "available", lockExpiresAt: null }
+            : seat
+        )
+      );
+
+      const unlockedSeatNumbers = seats
+        .filter((seat) => unlockedSeatIds.includes(seat._id))
+        .map((seat) => seat.seatNumber)
+        .join(", ");
+
+      toast.info(`Seats ${unlockedSeatNumbers} are now available again.`, {
+        icon: "-lock",
+      });
+
+      return prevSeats.map(( seat ) => 
+        unlockedSeatIds.includes(seat._id) && seat.status === "locked"
+          ? { ...seat, status: "available", lockExpiresAt: null }
+          : seat
+      );
+    };
+
+    socket.on("seat-unlocked", handleSeatUnlocked);
+
+    return () => {
+      socket.off("seat-unlocked", handleSeatUnlocked);
+    };
+
+
+  }, [seats]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       forceUpdate((n) => n + 1);
     }, 1000);
@@ -147,6 +185,31 @@ function TicketSeatSelectionComponent() {
       toast.error(error.message);
     }
   };
+   
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if ( selectedSeats.length >  0) {
+        socket.emit("unlock-seats", {
+          eventId,
+          seats : selectedSeats,
+        })
+      }
+    }
+         // unlock Tab close or refresh
+    window.addEventListener("beforeUnload", handleBeforeUnload);
+
+    // also unlock if navigating to a different route (unmount);
+    return () => {
+      handleBeforeUnload();
+      window.addEventListener("beforeUnload", handleBeforeUnload);
+    }
+  }, [ selectedSeats, eventId]);
+
+  useEffect(() => {
+    return () => {
+      unlockSeats(eventId, selectedSeats);
+    }
+  },[eventId, selectedSeats]);
 
   if (loading) return <div>Loading seat map...</div>;
   return (
