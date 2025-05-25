@@ -5,7 +5,7 @@ import api from "../../utils/api/api";
     "auth/fetchHostProfile",
     async (_, { rejectWithValue }) => {
         try {
-            const responst = await api.get( "/host/profile/getHostProfile" , {
+            const responst = await api.get( "/host/profile/get-Host-Profile" , {
                 withCredentials: true,
             });
 

@@ -10,9 +10,9 @@ const checkAuthAndLoadUserProfile = async ( dispatch ) => {
          if ( isAuth && role ) {
             let  endPoint = "";
             if ( role === "user" ) {
-                endPoint = "/user/profile/getUserProfile"
+                endPoint = "/user/profile/get-User-Profile"
             }else if ( role === "host" ) {
-                endPoint = "/host/profile/getHostProfile"
+                endPoint = "/host/profile/get-Host-Profile"
             }else if ( role === "admin" ) {
                 endPoint = "/admin/profile/getAdminProfile"
             }
