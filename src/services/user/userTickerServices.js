@@ -32,3 +32,17 @@ export const lockSeats = async ( eventId, seatIds ) => {
         throw new Error(error?.response?.data?.message || "Failed to lock selected seats");
     }
 };
+
+
+export const unlockSeats = async ( eventId, seatIds ) => {
+    try {
+        const response = await api.patch("/user/tickets/unlock-seat", {
+            eventId,
+            seatIds,
+        });
+
+        return response.data;
+    } catch ( error ) {
+        throw new Error(error?.response?.data?.message || "Failed to unlock selected seats");
+    }
+};
