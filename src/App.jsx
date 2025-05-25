@@ -19,7 +19,7 @@ import { fetchHostProfile } from "./features/auth/authThunk";
 import HostAddEventPage from "./pages/hostPages/HostAddEventPage";
 import ForgetPassword from "./pages/generalPages/ForgetPassword";
 import UserEvents from "./components/UserComponents/UserEvent";
-import UserEventDetailPage from "./pages/userPages/userEventDetailPage";
+import UserEventDetailPage from "./pages/userPages/UserEventDetailPage";
 import UserChangePasswordPage from "./pages/userPages/UserChangePasswordPage";
 import ChangePasswordHost from "./components/HostComponets/ChangePasswordHost";
 import UserProfilePage from "./pages/userPages/UserProfilePage";
@@ -28,6 +28,8 @@ import HostProfilePage from "./pages/hostPages/HostProfilePage";
 import EditHostProfilePage from "./pages/hostPages/EditHostProfilePage";
 import HostEventManagementPage from "./pages/hostPages/HostEventManagementPage";
 import EditEvent from "./components/HostComponets/EditEvent/EditEvent";
+import UserTicketSeatCountSelectionPage from "./pages/userPages/UserTicketSeatCountSelectionPage";
+import UserTicketSelectionPage from "./pages/userPages/UserTicketSelectionPage";
 
 
 function App() {
@@ -155,7 +157,8 @@ function App() {
         <Route path="/host/Edit-Profile-Host" element={<EditHostProfilePage/> } />
         <Route path="/Host-Events" element={<HostEventManagementPage/>} />  
         <Route path="/Host/Events/Edit/:eventId" element={<EditEvent/>} />
-      
+        <Route path="/Event/:eventId/Select-Seat-Counts" element={<UserTicketSeatCountSelectionPage/>} />
+        <Route path="/Event/:eventId/Select-Seats" element={<UserTicketSelectionPage/> } />
     
       </Routes>
 

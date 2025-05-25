@@ -8,6 +8,7 @@ const api = axios.create({
 api.interceptors.response.use(
     (response) => response,
     async ( error ) =>  {
+        console.log('Error response:', error.response);
         const originalRequest = error.config;
 
         if ( 

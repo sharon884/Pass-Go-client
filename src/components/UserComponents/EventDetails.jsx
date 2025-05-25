@@ -3,11 +3,18 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import api from "../../utils/api/api"
+import { useNavigate } from "react-router-dom"
+import { socket } from "../../utils/socket/socket"
 
 const EventDetails = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/Event/${id}/Select-Seat-Counts`)
+  };
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -16,11 +23,21 @@ const EventDetails = () => {
         console.log(response.data.event)
 
         setEvent(response.data.event)
+        if ( id ) {
+          socket.emit("join-event-room", id);
+          console.log("joined event room",id);
+        }
       } catch (error) {
         console.log("Failed to fetch event", error)
       }
     }
     fetchEvent()
+    return () => {
+      if ( id ) {
+        socket.emit("leave-event-room", id);
+        console.log("Left event room",id);
+      }
+    }
   }, [id])
 
   // Auto-slide functionality for images
@@ -149,7 +166,7 @@ const EventDetails = () => {
               <div className="text-sm text-gray-500">Available: {event?.tickets?.general?.quantity ?? "N/A"}</div>
             </div>
 
-            <button className="w-full bg-[#5B3DF5] hover:bg-[#4930c4] text-white font-medium py-3 rounded-lg transition-colors duration-300 mt-2">
+            <button onClick={handleNavigate} className="w-full bg-[#5B3DF5] hover:bg-[#4930c4] text-white font-medium py-3 rounded-lg transition-colors duration-300 mt-2">
               Get Tickets
             </button>
           </div>
