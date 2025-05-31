@@ -1,10 +1,10 @@
 import React from 'react'
-import TicketSeatSelectionComponent from '../../components/UserComponents/TicketSeatSelectionComponent'
+import SeatSelectionComponent from '../../components/UserComponents/Ticket/SeatSelectionComponent'
 
 function UserTicketSelectionPage() {
   return (
     <div>
-      <TicketSeatSelectionComponent/>
+      <SeatSelectionComponent/>
     </div>
   )
 }

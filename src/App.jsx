@@ -30,6 +30,9 @@ import HostEventManagementPage from "./pages/hostPages/HostEventManagementPage";
 import EditEvent from "./components/HostComponets/EditEvent/EditEvent";
 import UserTicketSeatCountSelectionPage from "./pages/userPages/UserTicketSeatCountSelectionPage";
 import UserTicketSelectionPage from "./pages/userPages/UserTicketSelectionPage";
+import Checkout from "./components/UserComponents/Payment/checkout";
+import PaymentSuccess from "./components/UserComponents/Payment/PaymentSuccess";
+import UserBookingsPage from "./pages/userPages/userBookingsPage";
 
 
 function App() {
@@ -159,7 +162,9 @@ function App() {
         <Route path="/Host/Events/Edit/:eventId" element={<EditEvent/>} />
         <Route path="/Event/:eventId/Select-Seat-Counts" element={<UserTicketSeatCountSelectionPage/>} />
         <Route path="/Event/:eventId/Select-Seats" element={<UserTicketSelectionPage/> } />
-    
+        <Route path="/Event/:eventId/Checkout" element={<Checkout/> } />
+         <Route path="/Event/:eventId/PaymentSuccess" element={<PaymentSuccess/>} />
+          <Route path="/user/bookings" element={<UserBookingsPage/>} />
       </Routes>
 
       <ToastContainer
