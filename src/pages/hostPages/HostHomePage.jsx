@@ -1,30 +1,37 @@
-import React from 'react'
-import Navbar from '../../components/generalComponents/Navbar'
-import Footer from '../../components/generalComponents/Footer'
-import SideBar from '../../components/generalComponents/SideBar'
-import HostProfile from '../../components/HostComponets/HostProfileComponet'
+import Footer from "../../components/generalComponents/Footer"
+import HostProfile from "../../components/HostComponets/HostProfileComponet"
+import HostSidebar from "../../components/generalComponents/SideBars/HostSideBar"
+import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar"
 
 function HostHomePage() {
-  
   return (
-    <div className='min-h-screen flex flex-col'>
-      <header className='bg-black text-white px-4 py-2'>
-      <Navbar/>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Top Navbar - Fixed at top */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-200">
+        <HostNavbar />
       </header>
-      <main className='flex flex-1 bg-white'>
-        <aside >
-     <SideBar/>
 
+      <div className="flex flex-1">
+        {/* Left Sidebar - Fixed on left */}
+        <aside className="fixed left-0 top-16 bottom-0 w-64 bg-white shadow-sm border-r border-gray-200 overflow-y-auto z-40">
+          <HostSidebar />
         </aside>
-   <section className='ml-90'>
 
-      <HostProfile/>
-      
-   </section>
-      </main>
-      <Footer/>
+        {/* Main Content Area with proper spacing */}
+        <main className="flex-1 ml-64 pt-16 flex flex-col min-h-screen">
+          {/* Host Profile Content with proper padding */}
+          <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50">
+            <HostProfile />
+          </div>
+
+          {/* Footer - Properly aligned at bottom */}
+          <footer className="w-full bg-white border-t border-gray-200">
+            <Footer />
+          </footer>
+        </main>
+      </div>
     </div>
   )
 }
 
-export default HostHomePage
+export default HostHomePage;

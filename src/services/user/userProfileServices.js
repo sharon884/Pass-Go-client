@@ -21,3 +21,15 @@ export const updateUserProfile = async (data) => {
     throw new Error("Failed to update user profile");
   }
 };
+
+
+//Get user profile image and name 
+export const getDetailsForSidebar = async () => {
+  try {
+    const response = await api.get("/user/profile/get-details");
+    return response.data;
+  } catch ( error ) {
+    console.log("Error fetching Profile details of user ", error);
+    throw new Error("Failed to fetch user profile details");
+  }
+} 

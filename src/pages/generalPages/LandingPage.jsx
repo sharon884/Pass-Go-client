@@ -5,7 +5,7 @@ import LandingComponent from '../../components/generalComponents/landing';
 function LandingPage() {
   return (
     <div>
-      <Navbar/>
+       <Navbar/>
       <div>
      < LandingComponent />
       </div>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import api from "../../utils/api/api"
+import { fetchAllHost } from "../../services/admin/hostMangementServices"
 
 const HostList = () => {
   const [hosts, setHosts] = useState([])
@@ -21,15 +22,21 @@ const HostList = () => {
 
   const fetchHosts = async () => {
     try {
-      const response = await api.get("/admin/hostManagement/hostList", {
-        params: { search, page },
-      })
 
-      setHosts(response.data.hosts)
-      setTotalPages(response.data.totalPages)
+      const response = await fetchAllHost( search, page );
+      setHosts(response.hosts);
+      setTotalPages(response.totalPages);
+      // const response = await api.get("/admin/hostManagement/hostList", {
+      //   params: { search, page },
+      // })
+
+      // setHosts(response.data.hosts)
+      // setTotalPages(response.data.totalPages)
     } catch (error) {
-      console.error("Error fetching users", error)
-      toast.error("Failed to fetch hosts")
+      console.log("error fetching hosts", error);
+      toast.error("Failed to fetch hosts");
+      // console.error("Error fetching users", error)
+      // toast.error("Failed to fetch hosts")
     }
   }
 
@@ -39,29 +46,47 @@ const HostList = () => {
 
   const toggleBlock = async (hostId) => {
     try {
-      const response = await api.put(`/admin/hostManagement/host/block/${hostId}`)
+      const response = await toggleBlockHost(hostId);
       if (response.data.success) {
         fetchHosts()
         const host = hosts.find((h) => h._id === hostId)
-        toast.success(`Host ${host.is_active ? "blocked" : "unblocked"} successfully`)
+        toast.success(`Host ${host.is_active ? "blocked" : "unblocked"} successfully`);
+
+      // const response = await api.put(`/admin/hostManagement/host/block/${hostId}`)
+      // if (response.data.success) {
+      //   fetchHosts()
+      //   const host = hosts.find((h) => h._id === hostId)
+      //   toast.success(`Host ${host.is_active ? "blocked" : "unblocked"} successfully`)
       }
     } catch (error) {
-      console.log("error toggling host block status", error)
-      toast.error("Failed to update host status")
+      console.log("error toggling host block status", error);
+      toast.error("Failed to update host status");
+
+      // console.log("error toggling host block status", error)
+      // toast.error("Failed to update host status")
     }
   }
 
   const toggleVerify = async (hostId) => {
     try {
-      const response = await api.put(`/admin/hostManagement/host/verify/${hostId}`)
-      if (response.data.success) {
-        fetchHosts()
-        const host = hosts.find((h) => h._id === hostId)
-        toast.success(`Host ${host.isVerified ? "unverified" : "verified"} successfully`)
+      const response = await toggleVerify(hostId);
+      if ( response.data.success ) {
+        fetchHosts();
+        const host = hosts.find((h) => h._id === hostId);
+        toast.success(`Host ${host.isVerified ? "unverified" : "verified"} successfully`);
+      
       }
+      // const response = await api.put(`/admin/hostManagement/host/verify/${hostId}`)
+      // if (response.data.success) {
+      //   fetchHosts()
+      //   const host = hosts.find((h) => h._id === hostId)
+      //   toast.success(`Host ${host.isVerified ? "unverified" : "verified"} successfully`)
+      
     } catch (error) {
-      console.error("error toggling host verify status", error)
-      toast.error("Failed to update host verification status")
+      console.log("error toggling host verify status", error);
+      toast.error("Failed to update host verification status");
+      // console.error("error toggling host verify status", error)
+      // toast.error("Failed to update host verification status")
     }
   }
 
@@ -75,19 +100,20 @@ const HostList = () => {
 
   const editHost = async () => {
     try {
-      const response = await api.put("/admin/hostManagement/host/edit", {
-        id: editId,
-        email: editEmail,
-        mobile: editMobile,
-        name: editName,
-      })
+      const response = await editHost
+      // const response = await api.put("/admin/hostManagement/host/edit", {
+      //   id: editId,
+      //   email: editEmail,
+      //   mobile: editMobile,
+      //   name: editName,
+      // })
 
-      if (response.data.success) {
-        fetchHosts()
-        resetFields()
-        setShowEditModal(false)
-        toast.success("Host updated successfully")
-      }
+      // if (response.data.success) {
+      //   fetchHosts()
+      //   resetFields()
+      //   setShowEditModal(false)
+      //   toast.success("Host updated successfully")
+      // }
     } catch (error) {
       console.log("error editing host", error)
       toast.error("Failed to update host")

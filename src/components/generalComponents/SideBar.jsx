@@ -1,17 +1,19 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";  
-import { useNavigate } from "react-router-dom";
-import { logOut } from "../../features/auth/authSlice";
-import  api  from "../../utils/api/api" 
-import { motion } from "framer-motion";
-import defaultProfile from "../../../public/default.jpeg";  
+"use client"
+
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { logOut } from "../../features/auth/authSlice"
+import api from "../../utils/api/api"
+import { motion } from "framer-motion"
+import defaultProfile from "../../../public/default.jpeg"
 
 const SideBar = () => {
-  const { id ,name, profile_img, role } = useSelector((state) => state.auth.user); 
-  const [activeItem, setActiveItem] = useState(0);
-  const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const { id, name, profile_img, role } = useSelector((state) => state.auth.user)
+  const [activeItem, setActiveItem] = useState(0)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const menuItems = {
     host: [
@@ -25,35 +27,110 @@ const SideBar = () => {
       "Terms & Conditions",
     ],
     user: ["Home", "Events", "Profile", "Wallet", "Help Center"],
-    admin: ["Dashboard", "User Management", "Host Management", "Reports", "Settings"],
-  };
+    admin: ["Dashboard", "User Management", "Host Management", "Approve Events", "Reports", "Settings"],
+  }
 
-  const sidebarItems = menuItems[role] || [];
+  const sidebarItems = menuItems[role] || []
 
+  // Handle menu item clicks with navigation
+  const handleMenuClick = (item, index) => {
+    setActiveItem(index)
 
-
-   const handleLogout =  async () => {
-     
-    let logoutEndpoint = "";
-    if (role === "user") {
-      logoutEndpoint = "/user/auth/logoutUser";
+    // Navigation logic based on role and menu item
+    if (role === "admin") {
+      switch (item) {
+        case "Dashboard":
+          navigate("/admin/dashboard")
+          break
+        case "User Management":
+          navigate("/admin/users")
+          break
+        case "Host Management":
+          navigate("/admin/hosts")
+          break
+        case "Approve Events":
+          navigate("/admin/events/approval")
+          break
+        case "Reports":
+          navigate("/admin/reports")
+          break
+        case "Settings":
+          navigate("/admin/settings")
+          break
+        default:
+          break
+      }
     } else if (role === "host") {
-      logoutEndpoint = "/host/auth/logoutHost";
-    } else if (role === "admin") {
-      logoutEndpoint = "/admin/auth/logoutAdmin";
+      switch (item) {
+        case "Profile":
+          navigate("/host/profile")
+          break
+        case "Business Info":
+          navigate("/host/business")
+          break
+        case "Add event":
+          navigate("/host/events/add")
+          break
+        case "Manage Events":
+          navigate("/host/events/manage")
+          break
+        case "Earnings & payout page":
+          navigate("/host/earnings")
+          break
+        case "Notifications":
+          navigate("/host/notifications")
+          break
+        case "Wallet":
+          navigate("/host/wallet")
+          break
+        case "Terms & Conditions":
+          navigate("/host/terms")
+          break
+        default:
+          break
+      }
+    } else if (role === "user") {
+      switch (item) {
+        case "Home":
+          navigate("/user/home")
+          break
+        case "Events":
+          navigate("/user/events")
+          break
+        case "Profile":
+          navigate("/user/profile")
+          break
+        case "Wallet":
+          navigate("/user/wallet")
+          break
+        case "Help Center":
+          navigate("/user/help")
+          break
+        default:
+          break
+      }
     }
-  
+  }
+
+  const handleLogout = async () => {
+    let logoutEndpoint = ""
+    if (role === "user") {
+      logoutEndpoint = "/user/auth/logoutUser"
+    } else if (role === "host") {
+      logoutEndpoint = "/host/auth/logoutHost"
+    } else if (role === "admin") {
+      logoutEndpoint = "/admin/auth/logoutAdmin"
+    }
 
     try {
-        await api.post(logoutEndpoint, { id });
+      await api.post(logoutEndpoint, { id })
     } catch (error) {
-        console.error("Logout error:", error);
-    }finally {  
-      dispatch(logOut()); 
-        localStorage.clear();
-        navigate("/login");
-   }
-
+      console.error("Logout error:", error)
+    } finally {
+      dispatch(logOut())
+      localStorage.clear()
+      navigate("/login")
+    }
   }
   // Framer Motion variants
   const sidebarVariants = {
@@ -67,7 +144,7 @@ const SideBar = () => {
         damping: 20,
       },
     },
-  };
+  }
 
   const avatarVariants = {
     hidden: { scale: 0.8, opacity: 0 },
@@ -79,7 +156,7 @@ const SideBar = () => {
         duration: 0.5,
       },
     },
-  };
+  }
 
   const nameVariants = {
     hidden: { opacity: 0, y: 10 },
@@ -91,7 +168,7 @@ const SideBar = () => {
         duration: 0.5,
       },
     },
-  };
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -102,7 +179,7 @@ const SideBar = () => {
         delayChildren: 0.6,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { x: -20, opacity: 0 },
@@ -114,8 +191,8 @@ const SideBar = () => {
         stiffness: 100,
       },
     },
-  };
-         
+  }
+
   return (
     <motion.div
       className="h-screen bg-white border-r border-blue-100 shadow-sm flex flex-col w-64 overflow-y-auto"
@@ -132,7 +209,7 @@ const SideBar = () => {
           {/* Profile Image */}
           {/* If profile_img exists, use it; otherwise, fallback to the imported default image */}
           <img
-            src={profile_img || defaultProfile}  // Use the default profile image
+            src={profile_img || defaultProfile} // Use the default profile image
             alt="avatar"
             className="w-full h-full object-cover"
           />
@@ -152,7 +229,7 @@ const SideBar = () => {
                 ? "bg-purple-600 text-white font-medium"
                 : "bg-gray-100 text-gray-700 hover:bg-purple-100"
             }`}
-            onClick={() => setActiveItem(index)}
+            onClick={() => handleMenuClick(item, index)}
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -165,7 +242,7 @@ const SideBar = () => {
       {/* Logout Button */}
       <div className="px-4 py-4">
         <motion.button
-        onClick={handleLogout}
+          onClick={handleLogout}
           className="w-full text-center py-2 px-3 rounded-md text-red-500 hover:bg-red-50 transition-all duration-300"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -174,7 +251,7 @@ const SideBar = () => {
         </motion.button>
       </div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default SideBar;
+export default SideBar

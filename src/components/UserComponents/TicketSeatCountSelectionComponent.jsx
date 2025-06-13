@@ -37,7 +37,7 @@ const TicketSeatCountSelectionComponent = () => {
       return
     }
 
-    navigate(`/event/${eventId}/select-seats`, {
+    navigate(`/user/event/${eventId}/select-seats`, {
       state: { seatCount },
     })
   }
