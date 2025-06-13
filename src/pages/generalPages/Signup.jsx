@@ -75,8 +75,8 @@ const Signup = () => {
       setSuccess(response.data.message)
 
       const userId = response.data.id
-      localStorage.setItem("isAuthenticated", "true")
-      localStorage.setItem("role", role)
+      // localStorage.setItem("isAuthenticated", "true")
+      // localStorage.setItem("role", role)
 
       dispatch(
         setCredentials({

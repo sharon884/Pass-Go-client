@@ -10,7 +10,7 @@ function Login() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAdmin = location.pathname === "/admin/login";
+  const isAdmin = location.pathname === "/admin-login";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -107,11 +107,11 @@ function Login() {
       localStorage.setItem("role", role);
       setSuccess(response.data.message);
       if (role === "user") {
-        navigate("/userHomePage");
+        navigate("/user-home-page");
       } else if (role === "host") {
-        navigate("/hostHomePage");
+        navigate("/host-home-page");
       } else if (role === "admin") {
-        navigate("/adminDashboard");
+        navigate("/admin-dashboard");
       }
     } catch (error) {
       console.log(error);

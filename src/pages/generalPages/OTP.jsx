@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../utils/api/api";
-import axios from "axios"
+import { toast } from "sonner";
 
 const OtpPage = () => {
   const location = useLocation()
@@ -56,19 +56,23 @@ const OtpPage = () => {
       })
 
       console.log("OTP verified successfully!", response.data)
-      setSuccess("Email verified successfully! Redirecting...")
+      setSuccess("Email verified successfully! Redirecting...");
+      toast.success("Email verified successfyly! Redirecting...");
+        localStorage.setItem("isAuthenticated", true);
+      localStorage.setItem("role", role);
         
       if ( role === "user") {
-        navigate("/userHomePage");
+        navigate("/user-home-page");
       }else if ( role === "host") {
-        navigate("/hostHomePage");
+        navigate("/host-home-page");
       }else if ( role === "admin") {
-        navigate("/adminHomePage");
+        navigate("/admin-home-page");
       }
 
     } catch (err) {
       console.error("OTP verification failed", err.response?.data || err.message)
-      setError(err.response?.data?.message || "OTP verification failed. Try again!")
+      setError(err.response?.data?.message || "OTP verification failed. Try again!");
+      toast.error("OTP verification failed.Try again!")
     }
   }
 

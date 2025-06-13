@@ -1,9 +1,10 @@
 "use client"
 
 import { getHostProfile, updateHostProfile } from "../../services/host/hostProfile.Services.js"
-import { toast } from "sonner"
-import { useState } from "react"
-import { useEffect } from "react"
+import { toast } from "sonner";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary/uploadCloudinary"
 
 const EditHostProfile = () => {
@@ -11,7 +12,8 @@ const EditHostProfile = () => {
     name: "",
     mobile: "",
     profile_image: "",
-  })
+  });
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [updating, setUpdating] = useState(false)
@@ -56,6 +58,7 @@ const EditHostProfile = () => {
       const imageUrl = await uploadImageToCloudinary(file)
       if (imageUrl) {
         setFormData((prev) => ({ ...prev, profile_image: imageUrl }))
+       console.log(profile_image)
         toast.success("Image upload successfully!")
       } else {
         toast.error("Image upload failed")
@@ -72,7 +75,8 @@ const EditHostProfile = () => {
     setUpdating(true)
     try {
       await updateHostProfile(formData)
-      toast.success("Profile updated successfully")
+      toast.success("Profile updated successfully");
+      navigate('/host-home-page')
     } catch (error) {
       toast.error(error.message || "Profile updation failed")
     } finally {

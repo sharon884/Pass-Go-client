@@ -79,7 +79,7 @@ const Checkout = () => {
         image: "https://passgo.in/logo.png",
         order_id: razorpayOrderId,
         handler: (response) => {
-          navigate(`/Event/${eventId}/PaymentSuccess`, {
+          navigate(`/user/event/${eventId}/payment-success`, {
             state: {
               orderId,
               razorpayPaymentId: response.razorpay_payment_id,

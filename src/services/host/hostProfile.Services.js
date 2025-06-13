@@ -30,4 +30,16 @@ export const requestVerificationHost = async () => {
     console.log("Error while request verifictaion host", error);
     throw new Error( error.response?.data?.message || "Failed to send verification request");
   }
+};
+
+
+export const getDetailsForSidebar = async () => {
+  try {
+    const response = await api.get("/host/profile/get-details");
+    console.log(response.data);
+    return response.data;
+  } catch ( error ) {
+    console.log("Error fetching profile details of user:", error);
+    throw new Error("Failed to fetch user profile details");
+  }
 }

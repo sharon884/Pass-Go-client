@@ -3,42 +3,42 @@ import "./App.css";
 import { Toaster } from 'sonner';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Routes, Route } from "react-router-dom";
-import Signup from "./pages/generalPages/Signup";
-import OtpPage from "./pages/generalPages/OTP";
-import LandingPage from "./pages/generalPages/LandingPage";
-import UserHomePage from "./pages/userPages/UserHomePage";
-import HostHomePage from "./pages/hostPages/HostHomePage";
-import Login from "./pages/generalPages/Login";
-import AdminDashboard from "./pages/adminPages/AdminDashboard";
-import checkAuthAndLoadUserProfile from "./utils/CheckAuthAndLoadProfil";
-import ProtectedRoute from "./routes/ProtectedRoutes";
+// import { Routes, Route } from "react-router-dom";
+// import Signup from "./pages/generalPages/Signup";
+// import OtpPage from "./pages/generalPages/OTP";
+// import LandingPage from "./pages/generalPages/LandingPage";
+// import UserHomePage from "./pages/userPages/UserHomePage";
+// import HostHomePage from "./pages/hostPages/HostHomePage";
+// import Login from "./pages/generalPages/Login";
+// import AdminDashboard from "./pages/adminPages/AdminDashboard";
+// import checkAuthAndLoadUserProfile from "./utils/CheckAuthAndLoadProfil";
+// import ProtectedRoute from "./routes/ProtectedRoutes";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchHostProfile } from "./features/auth/authThunk";
-import HostAddEventPage from "./pages/hostPages/HostAddEventPage";
-import ForgetPassword from "./pages/generalPages/ForgetPassword";
-import UserEvents from "./components/UserComponents/UserEvent";
-import UserEventDetailPage from "./pages/userPages/UserEventDetailPage";
-import UserChangePasswordPage from "./pages/userPages/UserChangePasswordPage";
-import ChangePasswordHost from "./components/HostComponets/ChangePasswordHost";
-import UserProfilePage from "./pages/userPages/UserProfilePage";
-import EditUserProfilePage from "./pages/userPages/EditUserProfilePage";
-import HostProfilePage from "./pages/hostPages/HostProfilePage";
-import EditHostProfilePage from "./pages/hostPages/EditHostProfilePage";
-import HostEventManagementPage from "./pages/hostPages/HostEventManagementPage";
-import EditEvent from "./components/HostComponets/EditEvent/EditEvent";
-import UserTicketSeatCountSelectionPage from "./pages/userPages/UserTicketSeatCountSelectionPage";
-import UserTicketSelectionPage from "./pages/userPages/UserTicketSelectionPage";
-import Checkout from "./components/UserComponents/Payment/checkout";
-import PaymentSuccess from "./components/UserComponents/Payment/PaymentSuccess";
-import UserBookingsPage from "./pages/userPages/userBookingsPage";
+// import { useEffect } from "react";
+// import { fetchHostProfile } from "./features/auth/authThunk";
+// import HostAddEventPage from "./pages/hostPages/HostAddEventPage";
+// import ForgetPassword from "./pages/generalPages/ForgetPassword";
+// import UserEvents from "./components/UserComponents/UserEvent";
+// import UserEventDetailPage from "./pages/userPages/UserEventDetailPage";
+// import UserChangePasswordPage from "./pages/userPages/UserChangePasswordPage";
+// import ChangePasswordHost from "./components/HostComponets/ChangePasswordHost";
+// import UserProfilePage from "./pages/userPages/UserProfilePage";
+// import EditUserProfilePage from "./pages/userPages/EditUserProfilePage";
+// import HostProfilePage from "./pages/hostPages/HostProfilePage";
+// import EditHostProfilePage from "./pages/hostPages/EditHostProfilePage";
+// import HostEventManagementPage from "./pages/hostPages/HostEventManagementPage";
+// import EditEvent from "./components/HostComponets/EditEvent/EditEvent";
+// import UserTicketSeatCountSelectionPage from "./pages/userPages/UserTicketSeatCountSelectionPage";
+// import UserTicketSelectionPage from "./pages/userPages/UserTicketSelectionPage";
+// import Checkout from "./components/UserComponents/Payment/checkout";
+// import PaymentSuccess from "./components/UserComponents/Payment/PaymentSuccess";
+// import UserBookingsPage from "./pages/userPages/userBookingsPage";
+import AppRoutes from "./AppRoutes";
 
 
 function App() {
   const dispatch = useDispatch();
-
-  // useEffect(() => {
+  console.log("haiahaoi lkajfl;a")
   //   checkAuthAndLoadUserProfile(dispatch);
   //   dispatch(fetchHostProfile());
   // }, [dispatch]);
@@ -46,7 +46,8 @@ function App() {
   return (
     <>
       <Toaster position="top-right" />
-      <Routes>
+      <AppRoutes/>
+      {/* <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
           path="/signup"
@@ -165,7 +166,7 @@ function App() {
         <Route path="/Event/:eventId/Checkout" element={<Checkout/> } />
          <Route path="/Event/:eventId/PaymentSuccess" element={<PaymentSuccess/>} />
           <Route path="/user/bookings" element={<UserBookingsPage/>} />
-      </Routes>
+      </Routes> */}
 
       <ToastContainer
         position="top-right"

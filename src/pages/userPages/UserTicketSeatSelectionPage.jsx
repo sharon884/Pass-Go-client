@@ -1,9 +1,9 @@
-import EventDetails from "../../components/UserComponents/EventDetails"
+import SeatSelectionComponent from "../../components/UserComponents/Ticket/SeatSelectionComponent"
 import Footer from "../../components/generalComponents/Footer"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 
-function UserEventDetailPage() {
+function UserTicketSeatSelectionPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       {/* Header - Navbar */}
@@ -18,10 +18,10 @@ function UserEventDetailPage() {
           <UserSidebar />
         </aside>
 
-        {/* Main Content - Event Details */}
+        {/* Main Content - Seat Selection */}
         <div className="flex-1 overflow-auto">
           <div className="p-6">
-            <EventDetails />
+            <SeatSelectionComponent />
           </div>
         </div>
       </main>
@@ -32,4 +32,4 @@ function UserEventDetailPage() {
   )
 }
 
-export default UserEventDetailPage
+export default UserTicketSeatSelectionPage

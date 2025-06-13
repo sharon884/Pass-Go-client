@@ -17,7 +17,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get("/admin/userManagement/userList", {
+      const response = await api.get("/admin/user-management/userList", {
         params: { search, page },
       });
 
@@ -31,7 +31,7 @@ const UserList = () => {
 
   const toggleBlock = async (userId) => {
     try {
-      const response = await api.put(`/admin/userManagement/users/block/${userId}`);
+      const response = await api.put(`/admin/user-management/users/block/${userId}`);
 
       if (response.data.success) {
         fetchUsers();
@@ -54,7 +54,7 @@ const UserList = () => {
 
   const editUser = async () => {
     try {
-      const response = await api.put("/admin/userManagement/users/edit", {
+      const response = await api.put("/admin/user-management/users/edit", {
         id: editId,
         email: editEmail,
         name: editName,

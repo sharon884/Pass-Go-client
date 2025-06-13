@@ -6,6 +6,7 @@ import EmailInputModal from "../../components/ForgetPassword/EmailInputModal"
 import api from "../../utils/api/api"
 import OtpVerificationModal from "../../components/ForgetPassword/OtpVerificationModal"
 import NewPasswordModal from "../../components/ForgetPassword/NewPasswordModal"
+import Footer from "../../components/generalComponents/Footer"
 
 function ForgetPassword() {
   const [showRoleModal, setShowRoleModal] = useState(true)
@@ -87,6 +88,7 @@ function ForgetPassword() {
           }}
         />
       )}
+      <Footer/>
     </div>
   )
 }

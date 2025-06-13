@@ -13,7 +13,7 @@ const EventDetails = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/Event/${id}/Select-Seat-Counts`)
+    navigate(`/user/event/${id}/select-seat-counts`)
   };
 
   useEffect(() => {
