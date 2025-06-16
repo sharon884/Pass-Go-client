@@ -28,9 +28,14 @@ import UserBookingsPage from "./pages/userPages/userBookingsPage";
 import UserSearchResultPage from "./pages/userPages/UserSearchResultPage";
 import EditEventPage from "./pages/hostPages/EditEventPage";
 import AdminEventApprovePage from "./pages/adminPages/AdminEventApprovePage";
+import WelcomPage from "./pages/generalPages/WelcomPage";
+
 
 function AppRoutes() {
   return (
+
+
+   
     <Routes>
       {/* GeneralRoutes */}
       <Route path="/" element={<LandingPage />} />
@@ -62,6 +67,7 @@ function AppRoutes() {
         }
       />
       <Route path="/forgot-password" element={<ForgetPassword />} />
+      <Route path="/welcome-page" element={<WelcomPage/>} />
 
       {/* Admin Related Routes */}
       <Route
@@ -168,6 +174,7 @@ function AppRoutes() {
       <Route path="/host/events-edit/:eventId" element={ <EditEventPage/> } /> 
       
     </Routes>
+   
   );
 };
 

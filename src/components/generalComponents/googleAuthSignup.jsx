@@ -1,107 +1,62 @@
-import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import api from "../../utils/api/api";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../features/auth/authSlice";
+import { toast } from "sonner";
+
+// import { useDispatch } froimport {toast} from "sonner"m "react-redux";
+// import { setCredentials } from "../../features/auth/authSlice";
 
 const GoogleAuthSignup = ({ onSignupSuccess }) => {
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [showRoleModal, setShowRoleModal] = useState(false);
-  const [triggerLogin, setTriggerLogin] = useState(false);
-
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleButtonClick = () => {
-    setShowRoleModal(true);
-  };
-
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role);
-    setShowRoleModal(false);
-    setTriggerLogin(true);
-  };
+  // const dispatch = useDispatch();
 
   const handleGoogleSuccess = async (credentialResponse) => {
     const token = credentialResponse.credential;
-    console.log("token gettttt", token);
-    let endPoint = "";
-    if (selectedRole == "user") {
-      endPoint = "/user/auth/google-signup";
-    } else if (selectedRole == "host") {
-      endPoint = "/host/auth/google-signup";
-    }
+    const endPoint = "/user/auth/google-signup"; // Unified endpoint
 
     try {
       const response = await api.post(endPoint, {
         token,
       });
 
-      if (response.data.success) {
-        console.log("signup success", response.data);
-        onSignupSuccess(response.data);
+      if (response.data.success && response.data.user) {
+        const user = response.data.user;
 
-        if (response.data.user && response.data.user.role === "user") {
-          localStorage.setItem("isAuthenticated", "true");
-          localStorage.setItem("role", "user");
-          dispatch(
-            setCredentials({
-              name: response.data.user.name,
-              email: response.data.user.email,
-              mobile: response.data.user.mobile,
-              profile_img: response.data.user.profile_image,
-              role: response.data.user.role,
-            })
-          );
+        onSignupSuccess(user); // Optional callback
 
-          navigate("/userHomepage");
-        } else if (response.data.host && response.data.host.role === "host") {
-          localStorage.setItem("isAuthenticated", "true");
-          localStorage.setItem("role", "host");
-          dispatch(
-            setCredentials({
-              name: response.data.host.name,
-              email: response.data.host.email,
-              mobile: response.data.host.mobile,
-              profile_img: response.data.host.profile_image,
-              role: response.data.host.role,
-            })
-          );
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("role", user.role);
 
+        // dispatch(
+        //   setCredentials({
+        //     name: user.name,
+        //     email: user.email,
+        //     mobile: user.mobile,
+        //     profile_img: user.profile_image,
+        //     role: user.role,
+        //   })
+        // );
 
-          navigate("/hostHomepage");
-        }
+        if (user.role === "user") {
+          navigate("/user-home-page");
+        } 
       } else {
-        console.log("Signup error", response.data.message);
+        console.log("Signup failed:", response.data.message);
       }
     } catch (error) {
-      console.log("signup error", error);
+      toast.error("Google signu failed.Try again or try with another email");
+      console.error("Signup error:", error);
     }
-    setSelectedRole(null);
-    setTriggerLogin(false);
   };
 
   return (
     <div>
-      <button onClick={handleButtonClick}>Signup with Google</button>
-      {showRoleModal && (
-        <div>
-          <h3>Choose your role</h3>
-          <button onClick={() => handleRoleSelect("user")}>I am User</button>
-          <button onClick={() => handleRoleSelect("host")}>I am Host</button>
-        </div>
-      )}
-
-      {triggerLogin && (
-        <GoogleLogin
-          onSuccess={handleGoogleSuccess}
-          onError={() => {
-            console.log("signup failed");
-            setTriggerLogin(false);
-          }}
-        />
-      )}
+      <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={() => {
+          console.log("Google signup failed");
+        }}
+      />
     </div>
   );
 };

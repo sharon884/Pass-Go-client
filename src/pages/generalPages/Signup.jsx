@@ -342,7 +342,7 @@ const Signup = () => {
                 />
                 {validationErrors.mobile && <p className="text-sm text-red-400 mt-1">{validationErrors.mobile}</p>}
               </div>
-
+     {/* 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="role">
                   Role
@@ -357,7 +357,7 @@ const Signup = () => {
                   <option value="user">User</option>
                   <option value="host">Host</option>
                 </select>
-              </div>
+              </div> */}
 
               <button
                 type="submit"

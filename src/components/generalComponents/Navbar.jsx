@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
+import ThemeToggle from "./ThemeToggle"
 
 
 const Navbar = () => {
@@ -170,6 +171,10 @@ const Navbar = () => {
                 Logout
               </button>
             )}
+          </div>
+          <div className="flex items-center space-x-4">
+
+          <ThemeToggle/>
           </div>
         </div>
 
