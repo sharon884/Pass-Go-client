@@ -1,4 +1,4 @@
-import api from "../../utils/api/api/";
+import api from "../../utils/api/api"
 import uploadImageToCloudinary from "../../utils/uploadCloudinary/uploadCloudinary";
 import { toast } from "sonner";
 
