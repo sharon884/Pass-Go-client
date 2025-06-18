@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { requestedOtp, verifyHostOtp } from "../../../services/host/becomeHostServices";
-
+import { toast } from "sonner";
+ 
 const BecomeHostForm = () => {
     const [ formData , setFormData ] = useState({
         name : "",
@@ -51,8 +52,8 @@ return (
         <form onSubmit={handleRequestOtp}>
             <input type="text" name="name" placeholder="Name as per Pancard" value={formData.name} onChange={handleChange} required/>
             <input type="text" name="mobile" placeholder="Enter Moblile Number connected with Pancard" value={formData.mobile} onChange={handleChange} required/>
-            <input type="text" name="PanNumber" placeholder="Enter Moblile Number connected with Pancard" value={formData.panNumber} onChange={handleChange} required/>
-            <input type="file" name="PanImage" accept="image/*" onChange={handleChange} required/>
+            <input type="text" name="panNumber" placeholder="Enter Your Pancard number" value={formData.panNumber} onChange={handleChange} required/>
+            <input type="file" name="panImage" accept="image/*" onChange={handleChange} required/>
             <button type="submit"> Send OTP </button>
             
         </form>

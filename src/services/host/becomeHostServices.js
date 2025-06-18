@@ -5,17 +5,18 @@ import { toast } from "sonner";
 export const requestedOtp = async (formData ) => {
     try {
         const panImageUrl = await uploadImageToCloudinary(formData.panImage);
+        console.log(formData);
         if ( !panImageUrl ){
             toast.error("PAN image upload failed.Try again");
             return { success : false, message : "PAN image upload failed"};
         }
         toast.success("Pan Image uploaded");
 
-        const response = await api.post("/api/host/auth/send-otp", {
+        const response = await api.post("/host/auth/send-otp", {
             name : formData.name,
             mobile : formData.mobile,
-            panNumber : formData.PanNumber,
-            PanImage : panImageUrl,
+            panNumber : formData.panNumber,
+            panImage : panImageUrl,
         });
          if ( response.data.success) {
             toast.success("An OTP send to your mobile.Please enter the OTP for verification");

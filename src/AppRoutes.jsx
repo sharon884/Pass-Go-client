@@ -29,6 +29,7 @@ import UserSearchResultPage from "./pages/userPages/UserSearchResultPage";
 import EditEventPage from "./pages/hostPages/EditEventPage";
 import AdminEventApprovePage from "./pages/adminPages/AdminEventApprovePage";
 import WelcomPage from "./pages/generalPages/WelcomPage";
+import BecomeHostPage from "./pages/hostPages/BecomeHostPage";
 
 
 function AppRoutes() {
@@ -172,6 +173,7 @@ function AppRoutes() {
       <Route path="/host/edit-profile" element={ <EditHostProfilePage/> } /> 
       <Route path="/host/events" element={ <HostEventManagementPage/> } /> 
       <Route path="/host/events-edit/:eventId" element={ <EditEventPage/> } /> 
+      <Route path="become-host" element={<BecomeHostPage/>} />
       
     </Routes>
    
