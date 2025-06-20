@@ -1,12 +1,13 @@
 import React from 'react'
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+import Navbar from '../../components/generalComponents/Navbar';
+import Footer from '../../components/generalComponents/Footer';
+import LandingComponent from '../../components/generalComponents/landing';
 function LandingPage() {
   return (
     <div>
-      <Navbar/>
+       <Navbar/>
       <div>
-        <h1>this is your landingpage sharon you want to build that</h1>
+     < LandingComponent />
       </div>
       <div>
 

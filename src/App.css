@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+
+/* Dark mode styles */
+:root {
+  --background-light: #ffffff;
+  --text-light: #0f172a;
+  --background-dark: #0f172a;
+  --text-dark: #f8fafc;
+}
+
+/* Base styles that will be overridden by dark mode */
+body {
+  background-color: var(--background-light);
+  color: var(--text-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode overrides */
+.dark body {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+/* Apply dark mode to specific elements */
+.dark .bg-white {
+  background-color: var(--background-dark) !important;
+}
+
+.dark .text-slate-900 {
+  color: var(--text-dark) !important;
+}
+
+/* Ensure transitions are smooth */
+html, body, * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Debug styles */
+.debug-theme {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  padding: 1rem;
+  background-color: rgba(239, 68, 68, 0.9);
+  color: white;
+  border-radius: 0.5rem;
+}
+

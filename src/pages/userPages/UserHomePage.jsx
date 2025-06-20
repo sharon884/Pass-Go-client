@@ -1,28 +1,33 @@
-import React from 'react'
-import Navbar from '../../components/Navbar'
-import Footer from '../../components/Footer'
-import SideBar from '../../components/SideBar'
+import Footer from "../../components/generalComponents/Footer"
+import UserEvents from "../../components/UserComponents/UserEvent"
+import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
+import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 
 function UserHomePage() {
   return (
-    <div>
-      <Navbar/>
-     <h1>
-        hai <br />
-        sharon <br />
-        this your <br />
-        user home page <br />
-        here is nothing <br />
-        you want to do that <br />
-        tueday is your review are you remember that <br />
-        if you go with like this <br />
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Header - Navbar */}
+      <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <UserEventPageNavbar />
+      </header>
 
-        the reviewer wil tell to you go and fuck ! <br />
-     </h1>
-     <div>
-      <SideBar/>
-     </div>
-     <Footer/>
+      {/* Main Content Area */}
+      <main className="flex flex-1">
+        {/* Sidebar */}
+        <aside className="flex-shrink-0">
+          <UserSidebar />
+        </aside>
+
+        {/* Main Content - Events */}
+        <div className="flex-1 overflow-auto">
+          <div className="p-6">
+            <UserEvents />
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }

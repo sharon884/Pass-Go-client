@@ -1,41 +1,40 @@
-import React from "react";
-import './App.css';
-import { Routes , Route } from "react-router-dom";
-import Signup from './pages/generalPages/Signup'
-import OtpPage from "./pages/generalPages/OTP";
-import LandingPage from "./pages/generalPages/LandingPage";
-import UserHomePage from "./pages/userPages/UserHomePage";
-import HostHomePage from "./pages/hostPages/HostHomePage";
-import Login from "./pages/generalPages/Login";
-import AdminDashboard from "./pages/adminPages/AdminDashboard";
-import checkAuthAndLoadUserProfile from "./utils/CheckAuthAndLoadProfil";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import "./App.css";
+import { Toaster } from 'sonner';
+import AppRoutes from "./AppRoutes";
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import DebugTheme from "./components/generalComponents/DebugTheme";
+import useHostSocketAndUser from "./hooks/useHostSocketAndUser";
 
-function App() {
+// Wrapper component to apply theme classes
+function ThemedApp() {
+  const { theme } = useTheme();
+  const { user, statuChanged } = useHostSocketAndUser();
   
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    checkAuthAndLoadUserProfile( dispatch );
-
-  },[dispatch]);
-
-
+    console.log("App theme:", theme);
+    // This is a fallback to ensure the theme class is applied
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(theme);
+  }, [theme]);
+  
   return (
-   <>
-   <Routes>
-    <Route path="/" element={<LandingPage/>} />
-   <Route path="/signup" element={ <Signup/>} />
-   <Route path="/verify-otp" element={ <OtpPage/>} />
-   <Route path="/login" element={<Login/>} />
-   <Route path="/admin/login" element={<Login/>} />
-   <Route path="/userHomePage" element={ <UserHomePage/>} />
-   <Route path="/hostHomePage" element={ <HostHomePage/>} />
-   <Route path="/adminDashboard" element={ <AdminDashboard/>} />
-   </Routes>
-   </>
-  )
+    <div className={`min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors duration-300`}>
+      <AppRoutes />
+    
+      <Toaster position="top-right" richColors theme={theme} />
+
+      <DebugTheme />
+    </div>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <ThemeProvider>
+      <ThemedApp />
+    </ThemeProvider>
+  );
+}
+
+export default App;
