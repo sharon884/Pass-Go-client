@@ -107,9 +107,9 @@ function Login() {
       localStorage.setItem("role", role);
       setSuccess(response.data.message);
       if (role === "user") {
-        navigate("/user-home-page");
+        navigate("/welcome-page");
       } else if (role === "host") {
-        navigate("/host-home-page");
+        navigate("/welcome-page");
       } else if (role === "admin") {
         navigate("/admin-dashboard");
       }

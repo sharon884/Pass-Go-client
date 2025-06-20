@@ -30,6 +30,7 @@ import EditEventPage from "./pages/hostPages/EditEventPage";
 import AdminEventApprovePage from "./pages/adminPages/AdminEventApprovePage";
 import WelcomPage from "./pages/generalPages/WelcomPage";
 import BecomeHostPage from "./pages/hostPages/BecomeHostPage";
+import HostPendingRequstPage from "./pages/adminPages/HostPendingRequstPage";
 
 
 function AppRoutes() {
@@ -91,7 +92,8 @@ function AppRoutes() {
       />
 
       <Route path="/admin/events/approval" element={<AdminEventApprovePage/> } />
-
+      <Route path="/admin/verify-host-request" element={<HostPendingRequstPage/>} />
+ 
       {/* User Related Routes  */}
       <Route
         path="/user-home-page"

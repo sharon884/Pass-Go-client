@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { Toaster } from 'sonner';
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./AppRoutes";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import DebugTheme from "./components/generalComponents/DebugTheme";
+import useHostSocketAndUser from "./hooks/useHostSocketAndUser";
 
 // Wrapper component to apply theme classes
 function ThemedApp() {
   const { theme } = useTheme();
+  const { user, statuChanged } = useHostSocketAndUser();
   
   useEffect(() => {
     console.log("App theme:", theme);
@@ -21,20 +21,9 @@ function ThemedApp() {
   return (
     <div className={`min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors duration-300`}>
       <AppRoutes />
-      
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={theme === "dark" ? "dark" : "light"}
-        toastClassName={theme === "dark" ? "bg-slate-800 text-white" : ""}
-      />
-      
+    
+      <Toaster position="top-right" richColors theme={theme} />
+
       <DebugTheme />
     </div>
   );

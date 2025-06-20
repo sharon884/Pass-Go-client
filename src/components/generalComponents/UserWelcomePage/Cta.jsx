@@ -1,10 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom";
 
 function Cta() {
-  const [rotation, setRotation] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
+  const [rotation, setRotation] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -63,7 +66,7 @@ function Cta() {
                       <h3 className="text-2xl font-bold text-gray-800 mb-3">Get Tickets</h3>
                       <p className="text-gray-600 mb-6 leading-relaxed">Every Ticket unlock a new memory</p>
 
-                      <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:from-purple-700 hover:to-blue-700">
+                      <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:from-purple-700 hover:to-blue-700"onClick={()=> navigate("/user-home-page")}>
                         Browse Events
                       </button>
                     </div>
@@ -91,7 +94,7 @@ function Cta() {
                       <h3 className="text-2xl font-bold text-gray-800 mb-3">Become a Host</h3>
                       <p className="text-gray-600 mb-6 leading-relaxed">Turn your idea into a sold-out show.</p>
 
-                      <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:from-blue-700 hover:to-purple-700">
+                      <button className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:from-blue-700 hover:to-purple-700"onClick={()=> navigate("/become-host")}>
                         Start Hosting
                       </button>
                     </div>

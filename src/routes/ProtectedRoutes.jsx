@@ -7,9 +7,9 @@ const ProtectedRoute = ( { children, restrictTo, allowedRoles }) => {
 
     if ( restrictTo === "auth" && isAuthenticated ) {
         const redirectMap = {
-            user : "/userHomePage",
-            host : "/hostHomePage",
-            admin : "/adminDashboard",
+            user : "/user-home-page",
+            host : "/host-home-page",
+            admin : "/admin-dashboard",
         }
         return <Navigate to={redirectMap[role] || "/"} replace />;
     }

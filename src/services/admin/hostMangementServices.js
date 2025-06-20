@@ -56,3 +56,39 @@ export const editHost = async ( hostData ) => {
 
 };
 
+// Fetch pending request of host 
+
+export const fetchPendingHostRequests = async () => {
+    try {
+        const response = await api.get("/admin/host-management/pending-hosts");
+        return response.data;
+    } catch ( error ) {
+        console.error("Error Fetching pending verify request of host ", error.response.message);
+        throw new Error("Failed to fetch pending verify request of host");
+    }
+}
+
+// approve host request 
+export const approveHostRequest  = async ( userId ) => {
+    
+    try {
+        const response = await api.patch(`/admin/host-management/approve-host/${userId}`);
+        return response.data;
+    } catch ( error ) {
+        console.error("Error approving host verify request", response.error.message);
+        throw new Error("Failed to do the verify request approve of host");
+    }
+};
+
+
+// reject host verifyRequest 
+
+export const rejectHostVerifyRequest = async ( userId, reason ) => {
+    try {
+        const response = await api.patch(`/admin/host-management/reject-host/${userId}`, { reason });
+        return response.data;
+    } catch ( error ) {
+        console.error("failed to reject host verify request", response.error.message);
+        throw new Error("Failed to reject host verify request");
+    }
+}

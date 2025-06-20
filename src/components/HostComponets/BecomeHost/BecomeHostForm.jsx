@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { requestedOtp, verifyHostOtp } from "../../../services/host/becomeHostServices";
 import { toast } from "sonner";
+import { becomeHostSchema } from "../../../utils/becomeHostValidation";
+import { z } from "zod";
  
 const BecomeHostForm = () => {
     const [ formData , setFormData ] = useState({
@@ -23,13 +25,27 @@ const BecomeHostForm = () => {
     const handleRequestOtp = async (e) => {
         e.preventDefault();
 
-        const result = await requestedOtp(formData);
+        try {
+            if ( !formData.panImage ) {
+                toast.error("PAN Image is required");
+            }
 
-        if ( result.success ) {
-            toast.success("OTP sent to your mobile number");
-            setOtpSent(true);
-        } else {
-            toast.error("Failed to send OTP.Please try again!" || result.message );
+            becomeHostSchema.parse(formData);
+            
+                    const result = await requestedOtp(formData);
+                       
+                    if ( result.success ) {
+                        toast.success(`OTP sent to your mobile number.OTP is : ${result.otp}`);
+                        setOtpSent(true);
+                    } else {
+                        toast.error("Failed to send OTP.Please try again!" || result.message );
+                    }
+        } catch ( error ) {
+            if ( error.errors && Array.isArray(error.errors)) {
+                toast.error(error.errors[0].message);
+            } else {
+                toast.error(error.message);
+            }
         }
     };
 
