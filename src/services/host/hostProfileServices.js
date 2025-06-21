@@ -42,4 +42,15 @@ export const getDetailsForSidebar = async () => {
     console.log("Error fetching profile details of user:", error);
     throw new Error("Failed to fetch user profile details");
   }
+};
+
+//get host profile status 
+export const getHostRequestStatus = async () => {
+  try {
+    const response = await api.get("/user/profile/host-request-status");
+    return response.data;
+  } catch ( error ) {
+    console.Error("Error fetching profile status of user ", error);
+    throw new Error("Failed to fetch user profile details");
+  }
 }

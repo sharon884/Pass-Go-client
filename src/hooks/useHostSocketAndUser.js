@@ -13,7 +13,7 @@ const useHostSocketAndUser = () => {
             try {
                 const authenticated = localStorage.getItem("isAuthenticated");
                 const role = localStorage.getItem("role");
-                console.log(role);
+                console.log("ivde tanney ahhow", role);
                 if ( !authenticated || role != "user") {
                     return;
                 }

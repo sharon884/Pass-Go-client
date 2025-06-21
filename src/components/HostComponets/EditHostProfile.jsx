@@ -1,6 +1,6 @@
 "use client"
 
-import { getHostProfile, updateHostProfile } from "../../services/host/hostProfile.Services.js"
+import { getHostProfile, updateHostProfile } from "../../services/host/hostProfileServices"
 import { toast } from "sonner";
 import { useState } from "react";
 import { useEffect } from "react";

@@ -1,6 +1,6 @@
 import React from 'react';
 import { toast } from "sonner";
-import { requestVerificationHost } from "../../../services/host/hostProfile.Services";
+import { requestVerificationHost } from "../../../services/host/hostProfileServices";
 
 
 function VerifyRequestButton() {
