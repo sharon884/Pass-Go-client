@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
-import { getDetailsForSidebar } from "../../../services/host/hostProfile.Services"
+import { getDetailsForSidebar } from "../../../services/host/hostProfileServices"
 import { logoutHost } from "../../../services/host/hostAuthServices"
 import { Home, User, LogOut, Plus, Calendar, DollarSign, Bell, Wallet, FileText, UserCircle } from "lucide-react"
 

@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { getDetailsForSidebar } from "../../../services/host/hostProfile.Services"
+import { getDetailsForSidebar } from "../../../services/host/hostProfileServices"
 import { useNavigate } from "react-router-dom"
 import { Bell } from "lucide-react"
 

@@ -73,16 +73,16 @@ function Login() {
     if (role === "user") {
       endPoint = "/user/auth/login";
     }
-    if (role === "host") {
-      endPoint = "/host/auth/login";
-    }
+    // if (role === "host") {
+    //   endPoint = "/host/auth/login";
+    // }
     if (role === "admin") {
       endPoint = "/admin/auth/login";
     }
 
     try {
       const response = await api.post(endPoint, { email, password, role });
-      localStorage.setItem("accessToken", response.data.accessToken);
+      // localStorage.setItem("accessToken", response.data.accessToken);
 
       let dataToSet = null;
 
@@ -105,12 +105,14 @@ function Login() {
       );
       localStorage.setItem("isAuthenticated", true);
       localStorage.setItem("role", role);
+      console.log("login checkk", role)
       setSuccess(response.data.message);
       if (role === "user") {
         navigate("/welcome-page");
-      } else if (role === "host") {
-        navigate("/welcome-page");
-      } else if (role === "admin") {
+      // } else if (role === "host") {
+      //   navigate("/welcome-page");
+      // } 
+       }else if (role === "admin") {
         navigate("/admin-dashboard");
       }
     } catch (error) {
@@ -121,9 +123,9 @@ function Login() {
     }
   };
 
-  const handleGoogleSignup = () => {
-    alert("Google signup will coming soon");
-  };
+  // const handleGoogleSignup = () => {
+  //   alert("Google signup will coming soon");
+  // };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -292,7 +294,7 @@ function Login() {
                 )}
               </div>
 
-              {!isAdmin && (
+              {/* {!isAdmin && (
                 <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
@@ -311,7 +313,7 @@ function Login() {
                     <option value="host">Host</option>
                   </select>
                 </div>
-              )}
+              )} */}
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
