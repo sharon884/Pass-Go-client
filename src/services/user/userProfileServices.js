@@ -3,7 +3,7 @@ import api from "../../utils/api/api";
 //Fetch User Profile
 export const getUserProfile = async () => {
   try {
-    const response = await api.get("/user/profile/get-user-Profile");
+    const response = await api.get("/user/profile/get-user-profile");
     return response.data;
   } catch (error) {
     console.log("Error fetching user profile", error);

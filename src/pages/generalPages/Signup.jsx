@@ -77,15 +77,17 @@ const Signup = () => {
       const userId = response.data.id
       // localStorage.setItem("isAuthenticated", "true")
       // localStorage.setItem("role", role)
+dispatch(
+  setCredentials({
+    id: response.data.id,
+    name,
+    email,
+    mobile,
+    role,
+    profile_image: response.data.profile_image || "",
+  })
+);
 
-      dispatch(
-        setCredentials({
-          name,
-          email,
-          mobile,
-          role,
-        }),
-      )
 
       navigate("/verify-otp", {
         state: {

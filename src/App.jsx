@@ -5,11 +5,13 @@ import AppRoutes from "./AppRoutes";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import DebugTheme from "./components/generalComponents/DebugTheme";
 import useHostSocketAndUser from "./hooks/useHostSocketAndUser";
+import useAuthInitializer from "./hooks/useAuthInitializer";
 
 // Wrapper component to apply theme classes
 function ThemedApp() {
   const { theme } = useTheme();
-  const { user, statuChanged } = useHostSocketAndUser();
+useHostSocketAndUser();
+useAuthInitializer();
   
   useEffect(() => {
     console.log("App theme:", theme);
