@@ -1,12 +1,11 @@
 "use client"
-
-import { getHostProfile } from "../../services/host/hostProfileServices.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useState } from "react"
 import { useEffect } from "react"
 import VerifyRequestButton from "./Profile/VerifyRequestButton.jsx"
 import { socket } from "../../utils/socket/socket.js"
+import { getUserProfile } from "../../services/user/userProfileServices.js"
 
 const HostProfile = () => {
   const [host, setHost] = useState(null)
@@ -16,17 +15,17 @@ const HostProfile = () => {
   useEffect(() => {
     const fetchHostProfile = async () => {
       try {
-        const hostProfileData = await getHostProfile()
-        setHost(hostProfileData.host)
+        const hostProfileData = await getUserProfile()
+        setHost(hostProfileData.user)
         toast.success("Profile loaded successfully")
-        if (hostProfileData?.host?.id) {
-          socket.emit("verifying-host", hostProfileData.host.id)
+        // if (hostProfileData?.host?.id) {
+        //   socket.emit("verifying-host", hostProfileData.host.id)
 
-          socket.on("host-verification-status", (data) => {
-            toast.info(data.message || "verification status changed!")
-            setHost((Prev) => ({ ...Prev, isVerified: data.verified }))
-          })
-        }
+        //   socket.on("host-verification-status", (data) => {
+        //     toast.info(data.message || "verification status changed!")
+        //     setHost((Prev) => ({ ...Prev, isVerified: data.verified }))
+        //   })
+        // }
       } catch (error) {
         toast.error(error.message || "Failed to load profile")
       } finally {
@@ -34,9 +33,9 @@ const HostProfile = () => {
       }
     }
     fetchHostProfile()
-    return () => {
-      socket.off("host-verification-status")
-    }
+    // return () => {
+    //   socket.off("host-verification-status")
+    // }
   }, [])
 
   if (loading) {

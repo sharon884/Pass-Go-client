@@ -99,14 +99,16 @@ function Login() {
           name: dataToSet.name,
           email: dataToSet.email,
           mobile: dataToSet.mobile,
-          profile_img: dataToSet.profile_img,
+          profile_image: dataToSet.profile_image,
           role: dataToSet.role,
+          id : dataToSet.id,
         })
       );
       localStorage.setItem("isAuthenticated", true);
       localStorage.setItem("role", role);
       console.log("login checkk", role)
       setSuccess(response.data.message);
+      // navigate(role === 'admin' ? "/admin-dashboard" : "/welcome-page");
       if (role === "user") {
         navigate("/welcome-page");
       // } else if (role === "host") {

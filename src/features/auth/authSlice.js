@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchHostProfile } from "./authThunk";
+import { fetchUserProfile } from "./authThunk";
 
 const initialState = {
   isAuthenticated: false,
@@ -8,9 +8,9 @@ const initialState = {
     name: "",
     email: "",
     mobile: "",
-    profile_img: "",
+    profile_image: "",
     role: "",
-    isVerified: false,
+  
   },
   loading: false,
   error: null,
@@ -27,9 +27,9 @@ const authSlice = createSlice({
         name: action.payload.name,
         email: action.payload.email,
         mobile: action.payload.mobile,
-        profile_img: action.payload.profile_img,
+        profile_image: action.payload.profile_image,
         role: action.payload.role,
-        isVerified: action.payload.isVerified,
+     
       };
     },
 
@@ -40,21 +40,20 @@ const authSlice = createSlice({
         name: "",
         email: "",
         mobile: "",
-        profile_img: "",
+        profile_image: "",
         role: "",
-        isVerified: false,
       }),
-        (state.loading = false);
+        state.loading = false;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchHostProfile.pending, (state) => {
+      .addCase(fetchUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchHostProfile.fulfilled, (state, action) => {
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
         state.user = {
@@ -62,12 +61,11 @@ const authSlice = createSlice({
           name: action.payload.name,
           email: action.payload.email,
           mobile: action.payload.mobile,
-          profile_img: action.payload.profile_img,
+          profile_image: action.payload.profile_image,
           role: action.payload.role,
-          isVerified: action.payload.isVerified,
         };
       })
-      .addCase(fetchHostProfile.rejected, (state, action) => {
+      .addCase(fetchUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

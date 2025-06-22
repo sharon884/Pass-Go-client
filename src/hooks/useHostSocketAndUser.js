@@ -1,40 +1,46 @@
 import { useEffect, useState } from "react";
-import { getUserProfile } from "../services/user/userProfileServices";
+import { useSelector } from "react-redux";
 import { socket } from "../utils/socket/socket";
 import { toast } from "sonner";
 
 const useHostSocketAndUser = () => {
 
-    const [ user, setUser ] = useState(null);
+    const { user, isAuthenticated } = useSelector(( state ) => state.auth);
     const [ statusChanged, setStatusChanged ] = useState(null);
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const authenticated = localStorage.getItem("isAuthenticated");
-                const role = localStorage.getItem("role");
-                console.log("ivde tanney ahhow", role);
-                if ( !authenticated || role != "user") {
-                    return;
-                }
-                const response = await getUserProfile();
-                const userData = response.user;
-                setUser(userData);
-                if ( userData.id ) {
-                    socket.emit("verifying-host", userData.id);
-                }
-            } catch ( error ) {
-                console.error("Error fetching user:", error.message);
-            }
-        };
+    // const [ user, setUser ] = useState(null);
+    // const [ statusChanged, setStatusChanged ] = useState(null);
 
-        fetchUser();
-    }, []);
+    useEffect(() => {
+
+        if ( isAuthenticated && user?.role == "user" && user?.id ) {
+            socket.emit("verifying-host", user.id);
+        }
+        // const fetchUser = async () => {
+        //     try {
+        //         const authenticated = localStorage.getItem("isAuthenticated");
+        //         const role = localStorage.getItem("role");
+        //         if ( !authenticated || role != "user") {
+        //             return;
+        //         }
+        //         const response = await getUserProfile();
+        //         const userData = response.user;
+        //         setUser(userData);
+        //         if ( userData.id ) {
+        //             socket.emit("verifying-host", userData.id);
+        //         }
+        //     } catch ( error ) {
+        //         console.error("Error fetching user:", error.message);
+        //     }
+        // };
+
+        // fetchUser();
+    }, [isAuthenticated,user?.id, user?.role]);
 
     useEffect(() => {
         if ( !user?.id ) return;
         socket.on("host-verification-result", ({ status, message}) => {
-            console.log("✅ Received from socket:", status, message); // add this
+          
             toast.success(message);
             setStatusChanged(status);
         });
@@ -42,7 +48,7 @@ const useHostSocketAndUser = () => {
         return () => socket.off("host-verification-result");
     },[ user?.id]);
 
-    return { user, statusChanged };
+    return { statusChanged };
 };
 
 export default useHostSocketAndUser;

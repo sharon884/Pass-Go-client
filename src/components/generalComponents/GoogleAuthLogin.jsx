@@ -2,9 +2,13 @@ import { GoogleLogin } from "@react-oauth/google";
 import api from "../../utils/api/api";
 import { useNavigate } from "react-router-dom";
 import {toast} from "sonner";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
+
 
 const GoogleAuthLogin = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleGoogleSuccess = async (credentialResponse) => {
         const token = credentialResponse.credential;
@@ -15,7 +19,21 @@ const GoogleAuthLogin = () => {
             });
 
             if (response.data.success && response.data.user) {
+                const user = response.data.user;
                 const role = response.data.user.role;
+
+                 dispatch(
+        setCredentials({
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          mobile: user.mobile,
+          profile_image: user.profile_image,
+          role: user.role,
+          isVerified: user.isVerified || false,
+        })
+      );
+
 
                 localStorage.setItem("isAuthenticated", "true");
                 localStorage.setItem("role", role);
