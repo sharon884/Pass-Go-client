@@ -124,6 +124,8 @@ const SideBar = () => {
 
     try {
       await api.post(logoutEndpoint, { id })
+      localStorage.removeItem("isAuthenticated");
+     localStorage.removeItem("role");
     } catch (error) {
       console.error("Logout error:", error)
     } finally {

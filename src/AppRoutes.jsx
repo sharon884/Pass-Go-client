@@ -29,6 +29,8 @@ import AdminEventApprovePage from "./pages/adminPages/AdminEventApprovePage";
 import WelcomPage from "./pages/generalPages/WelcomPage";
 import BecomeHostPage from "./pages/hostPages/BecomeHostPage";
 import HostPendingRequstPage from "./pages/adminPages/HostPendingRequstPage";
+import HostAdvancePayment from "./components/HostComponets/HostAdvancePayment/HostAdvancePayment";
+import HostAdvancePaymentPage from "./pages/hostPages/HostAdvancePaymentPage";
 
 function AppRoutes() {
   return (
@@ -70,6 +72,7 @@ function AppRoutes() {
       <Route path="/host/events" element={<HostEventManagementPage />} />
       <Route path="/host/events-edit/:eventId" element={<EditEventPage />} />
       <Route path="/become-host" element={<BecomeHostPage />} />
+      <Route path="/host/event/:eventId/advance-payment" element={ <HostAdvancePaymentPage/>} /> 
     </Routes>
   );
 }

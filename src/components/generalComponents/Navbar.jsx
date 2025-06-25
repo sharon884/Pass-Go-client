@@ -7,7 +7,8 @@ import ThemeToggle from "./ThemeToggle"
 
 
 const Navbar = () => {
-  const { isAuthenticated, role } = useSelector((state) => state.auth)
+  const isAuthenticated =localStorage.getItem("isAuthenticated")
+  const role = localStorage.getItem("role");
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 

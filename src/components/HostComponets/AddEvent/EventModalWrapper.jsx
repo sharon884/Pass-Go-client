@@ -9,11 +9,13 @@ import EventDetailsForm from "./EventDetailsForm"
 import TicketDetailsForm from "./TicketDetailsForm"
 import BussinessInfoForm from "./BussinessInfoFrom"
 import ReviewSubmit from "./ReviewSubmit"
-import { toast } from "react-toastify"
-import { CheckCircle, ChevronLeft, ChevronRight, Send } from "lucide-react"
+import { toast } from "sonner";
+import { CheckCircle, ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const EventModalWrapper = () => {
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
   const methods = useForm({
     resolver: zodResolver(eventValidationSchema),
     mode: "onTouched",
@@ -57,9 +59,11 @@ const EventModalWrapper = () => {
     console.log("Final submit data", data)
 
     try {
-      const response = await api.post("/host/event/eventadd", data)
+      const response = await api.post("/host/event/draft", data)
       if (response.data.success) {
-        toast.success("Event added successfully!")
+        const eventId = response.data.eventId;
+        toast.success("Event saved. proceeding to advance payment...");
+        navigate(`/host/event/${eventId}/advance-payment`);
       } else {
         toast.error(response.data.message || "Something went wrong")
       }
