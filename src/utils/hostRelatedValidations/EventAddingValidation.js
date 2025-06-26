@@ -33,7 +33,18 @@ images : z.array(z.string().url()).min(3, { message :"At least 3 images are requ
       /^([01]\d|2[0-3]):([0-5]\d)$/,
       "Please provide a valid time in HH:MM format"
     ),
+    eventType: z.enum(["free", "paid_stage_with_seats", "paid_stage_without_seats"], {
+    required_error: "Event type is required"
+  }),
 
+  layoutId: z.string().optional().refine((val, ctx) => {
+    if (ctx?.parent?.eventType === "paid_stage_with_seats" && !val) {
+      return false;
+    }
+    return true;
+  }, {
+    message: "Stage layout is required for events with seats"
+  }),
   tickets: z.object({
     VIP: z.object({
       price: z

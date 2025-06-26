@@ -41,6 +41,13 @@ const EventDetailsForm = () => {
     toast.success(`${uploadedImageUrls.length} images uploaded successfully!`)
   }
 
+  
+const watchEventType = watch("eventType");
+const stageLayouts = [
+  { id: "layoutA", image: "/layouts/layoutA.png" },
+  { id: "layoutB", image: "/layouts/layoutB.png" },
+];
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -85,6 +92,43 @@ const EventDetailsForm = () => {
         </select>
         {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
       </div>
+
+      <div className="space-y-2">
+  <label className="flex items-center text-sm font-medium text-gray-700">
+    <Tag size={18} className="mr-2 text-[#5C3BFE]" /> Event Type
+  </label>
+  <select
+    {...register("eventType")}
+    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5C3BFE]/50 focus:border-[#5C3BFE] outline-none transition-all appearance-none bg-white"
+  >
+    <option value="">Select event type</option>
+    <option value="free">Free</option>
+    <option value="paid_stage_without_seats">Paid – Stage (No Seats)</option>
+    <option value="paid_stage_with_seats">Paid – Stage (With Seats)</option>
+  </select>
+  {errors.eventType && <p className="text-red-500 text-sm mt-1">{errors.eventType.message}</p>}
+</div>
+
+{watchEventType === "paid_stage_with_seats" && (
+  <div className="space-y-2">
+    <label className="text-sm font-medium text-gray-700">Select Stage Layout</label>
+    <div className="flex gap-4">
+      {stageLayouts.map((layout) => (
+        <img
+          key={layout.id}
+          src={layout.image}
+          alt={layout.id}
+          className={`w-32 h-20 border-2 rounded-lg cursor-pointer ${
+            watch("layoutId") === layout.id ? "border-[#5C3BFE]" : "border-gray-300"
+          }`}
+          onClick={() => setValue("layoutId", layout.id)}
+        />
+      ))}
+    </div>
+    {errors.layoutId && <p className="text-red-500 text-sm mt-1">{errors.layoutId.message}</p>}
+  </div>
+)}
+
 
       <div className="space-y-2">
         <label className="flex items-center text-sm font-medium text-gray-700">
