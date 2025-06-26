@@ -27,6 +27,8 @@ const EventModalWrapper = () => {
       location: "",
       date: "",
       time: "",
+      eventType: "",
+       layoutId: "",
       tickets: {
         VIP: {
           price: 0,
