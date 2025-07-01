@@ -76,24 +76,27 @@ const EventModalWrapper = () => {
   }
 
   const { trigger } = methods
-
   const handleNext = async () => {
+    const values = getValues()
     let fieldsToValidate = []
 
     if (currentStep === 0) {
-      fieldsToValidate = ["title", "description", "category", "location", "date", "time", "images"]
+      fieldsToValidate = ["title", "description", "category", "location", "date", "time", "images", "eventType"]
     } else if (currentStep === 1) {
-      fieldsToValidate = [
-        "tickets.VIP.price",
-        "tickets.VIP.quantity",
-        "tickets.general.price",
-        "tickets.general.quantity",
-      ]
+      if (values.eventType !== "free") {
+        fieldsToValidate = [
+          "tickets.VIP.price",
+          "tickets.VIP.quantity",
+          "tickets.general.price",
+          "tickets.general.quantity",
+        ]
+      } // If free, no validation required for ticket fields
     } else if (currentStep === 2) {
       fieldsToValidate = ["businessInfo.name", "businessInfo.email", "businessInfo.mobile"]
     }
 
     const isStepValid = await trigger(fieldsToValidate)
+
     if (isStepValid) {
       setCurrentStep((prev) => prev + 1)
       window.scrollTo(0, 0)

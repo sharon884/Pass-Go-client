@@ -6,6 +6,8 @@ import { Provider } from "react-redux";
 import { store } from './app/store.js';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import "./App.css";
+import 'leaflet/dist/leaflet.css';
+
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
