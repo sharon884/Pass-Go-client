@@ -1,19 +1,35 @@
+"use client"
+import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
 import { CreditCard, Hash, Ticket } from "lucide-react"
 
 const TicketDetailsForm = () => {
   const {
     register,
+    watch,
+    setValue,
     formState: { errors },
   } = useFormContext()
 
+  const eventType = watch("eventType")
+  const isFree = eventType === "free"
+
+  useEffect(() => {
+    if (isFree) {
+      setValue("tickets.VIP.price", 0)
+      setValue("tickets.general.price", 0)
+    }
+  }, [eventType, setValue])
+
   return (
     <div className="space-y-8">
+      {/* VIP Ticket */}
       <div className="bg-[#F9F7FF] p-6 rounded-xl border border-[#E6E0FF]">
         <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
           <Ticket size={20} className="mr-2 text-[#5C3BFE]" /> VIP Ticket
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Price */}
           <div className="space-y-2">
             <label className="flex items-center text-sm font-medium text-gray-700">
               <CreditCard size={18} className="mr-2 text-[#5C3BFE]" /> Price (₹)
@@ -23,8 +39,13 @@ const TicketDetailsForm = () => {
               <input
                 type="number"
                 step="0.01"
+                disabled={isFree}
                 {...register("tickets.VIP.price", { valueAsNumber: true })}
-                className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5C3BFE]/50 focus:border-[#5C3BFE] outline-none transition-all"
+                className={`w-full pl-8 pr-4 py-2 border rounded-lg outline-none transition-all ${
+                  isFree
+                    ? "bg-gray-100 cursor-not-allowed border-gray-300"
+                    : "border-gray-300 focus:ring-2 focus:ring-[#5C3BFE]/50 focus:border-[#5C3BFE]"
+                }`}
                 placeholder="0.00"
               />
             </div>
@@ -32,6 +53,8 @@ const TicketDetailsForm = () => {
               <p className="text-red-500 text-sm mt-1">{errors.tickets.VIP.price.message}</p>
             )}
           </div>
+
+          {/* Quantity - always show */}
           <div className="space-y-2">
             <label className="flex items-center text-sm font-medium text-gray-700">
               <Hash size={18} className="mr-2 text-[#5C3BFE]" /> Quantity
@@ -49,11 +72,13 @@ const TicketDetailsForm = () => {
         </div>
       </div>
 
+      {/* General Ticket */}
       <div className="bg-[#F9F7FF] p-6 rounded-xl border border-[#E6E0FF]">
         <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
           <Ticket size={20} className="mr-2 text-[#5C3BFE]" /> General Tickets
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Price */}
           <div className="space-y-2">
             <label className="flex items-center text-sm font-medium text-gray-700">
               <CreditCard size={18} className="mr-2 text-[#5C3BFE]" /> Price (₹)
@@ -63,8 +88,13 @@ const TicketDetailsForm = () => {
               <input
                 type="number"
                 step="0.01"
+                disabled={isFree}
                 {...register("tickets.general.price", { valueAsNumber: true })}
-                className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5C3BFE]/50 focus:border-[#5C3BFE] outline-none transition-all"
+                className={`w-full pl-8 pr-4 py-2 border rounded-lg outline-none transition-all ${
+                  isFree
+                    ? "bg-gray-100 cursor-not-allowed border-gray-300"
+                    : "border-gray-300 focus:ring-2 focus:ring-[#5C3BFE]/50 focus:border-[#5C3BFE]"
+                }`}
                 placeholder="0.00"
               />
             </div>
@@ -72,6 +102,8 @@ const TicketDetailsForm = () => {
               <p className="text-red-500 text-sm mt-1">{errors.tickets.general.price.message}</p>
             )}
           </div>
+
+          {/* Quantity - always show */}
           <div className="space-y-2">
             <label className="flex items-center text-sm font-medium text-gray-700">
               <Hash size={18} className="mr-2 text-[#5C3BFE]" /> Quantity
