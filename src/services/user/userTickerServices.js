@@ -46,3 +46,54 @@ export const unlockSeats = async ( eventId, seatIds ) => {
         throw new Error(error?.response?.data?.message || "Failed to unlock selected seats");
     }
 };
+
+
+export const  getEventTicketInfo = async (eventId) => {
+    try {
+        const res = await api.get(`/user/tickets/${eventId}/ticket-info`);
+        console.log(res.data);
+        return res.data;
+    }  catch ( error ) {
+        console.error("while fetching the ticketinfo from backend error:", error );
+        throw new Error("while fetching the ticket info from bakcend error:", error);
+    }
+};
+
+export const bookFreeTicket = async (eventId, category) => {
+    try {
+        const res = await api.post(`/user/tickets/book-free/${eventId}`, { category });
+        return res.data;
+    } catch ( error ) {
+        console.error("while free event ticket booking error:", error );
+        throw new Error("while free event ticket booking error:", error);
+    }
+};
+
+// Lock tickets
+export const lockPaidTickets = async (eventId, category, quantity) => {
+    try {
+
+        const res = await api.post(`/user/tickets/${eventId}/paid-event/without-seat/lock`, {
+            category,
+            quantity
+        })
+        return res.data;
+  } catch ( error ) {
+    console.errror("locking paid tickets without seat error:",error);
+    throw new Error("locking paid tickets without seat error:",error);
+  }
+};
+
+// Unlock tickets
+export const unlockPaidTickets = async (eventId, category) => {
+   try {
+    const res = await api.post(`/api/user/tickets/${eventId}/paid-event/without-seat/unlock`, {
+    category
+  });
+  return res.data;
+
+} catch ( error ) {
+    console.errror("unlocking paid tickets without seat error:",error);
+    throw new Error("unlocking paid tickets without seat error:",error);
+}
+};
