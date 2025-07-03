@@ -31,6 +31,8 @@ import BecomeHostPage from "./pages/hostPages/BecomeHostPage";
 import HostPendingRequstPage from "./pages/adminPages/HostPendingRequstPage";
 import HostAdvancePayment from "./components/HostComponets/HostAdvancePayment/HostAdvancePayment";
 import HostAdvancePaymentPage from "./pages/hostPages/HostAdvancePaymentPage";
+import TicketInfo from "./components/UserComponents/FreeTicket/TicketInfo";
+import CheckoutWithoutSeat from "./components/UserComponents/FreeTicket/CheckoutWithoutSeat";
 
 function AppRoutes() {
   return (
@@ -46,22 +48,51 @@ function AppRoutes() {
       {/* Admin Routes */}
       <Route path="/admin-login" element={<Login />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
-      <Route path="/admin/events/approval" element={<AdminEventApprovePage />} />
-      <Route path="/admin/verify-host-request" element={<HostPendingRequstPage />} />
+      <Route
+        path="/admin/events/approval"
+        element={<AdminEventApprovePage />}
+      />
+      <Route
+        path="/admin/verify-host-request"
+        element={<HostPendingRequstPage />}
+      />
 
       {/* User Routes */}
       <Route path="/user-home-page" element={<UserHomePage />} />
       <Route path="/user/events" element={<UserEvents />} />
       <Route path="/your-event/:id" element={<UserEventDetailPage />} />
-      <Route path="/user/change-password" element={<UserChangePasswordPage />} />
+      <Route
+        path="/user/change-password"
+        element={<UserChangePasswordPage />}
+      />
       <Route path="/user/profile" element={<UserProfilePage />} />
       <Route path="/user/edit-profile" element={<EditUserProfilePage />} />
-      <Route path="/user/event/:eventId/select-seat-counts" element={<UserTicketSeatCountSelectionPage />} />
-      <Route path="/user/event/:eventId/select-seats" element={<UserTicketSelectionPage />} />
+      <Route
+        path="/user/event/:eventId/select-seat-counts"
+        element={<UserTicketSeatCountSelectionPage />}
+      />
+      <Route
+        path="/user/event/:eventId/select-seats"
+        element={<UserTicketSelectionPage />}
+      />
       <Route path="/user/event/:eventId/checkout" element={<Checkout />} />
-      <Route path="/user/event/:eventId/payment-success" element={<PaymentSuccess />} />
+      <Route
+        path="/user/event/:eventId/payment-success"
+        element={<PaymentSuccess />}
+      />
       <Route path="/user/bookings" element={<UserBookingsPage />} />
       <Route path="/search-results" element={<UserSearchResultPage />} />
+      <Route path="/user/event/:id/ticket-info" element={<TicketInfo />} />
+
+      <Route
+        path="/user/event/:eventId/payment"
+        element={<CheckoutWithoutSeat />}
+      />
+
+      <Route
+        path="/user/event/:eventId/payment-success"
+        element={<PaymentSuccess/>}
+      />
 
       {/* Host Routes */}
       <Route path="/host-home-page" element={<HostHomePage />} />
@@ -72,7 +103,10 @@ function AppRoutes() {
       <Route path="/host/events" element={<HostEventManagementPage />} />
       <Route path="/host/events-edit/:eventId" element={<EditEventPage />} />
       <Route path="/become-host" element={<BecomeHostPage />} />
-      <Route path="/host/event/:eventId/advance-payment" element={ <HostAdvancePaymentPage/>} /> 
+      <Route
+        path="/host/event/:eventId/advance-payment"
+        element={<HostAdvancePaymentPage />}
+      />
     </Routes>
   );
 }
