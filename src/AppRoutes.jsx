@@ -33,6 +33,7 @@ import HostAdvancePayment from "./components/HostComponets/HostAdvancePayment/Ho
 import HostAdvancePaymentPage from "./pages/hostPages/HostAdvancePaymentPage";
 import TicketInfo from "./components/UserComponents/FreeTicket/TicketInfo";
 import CheckoutWithoutSeat from "./components/UserComponents/FreeTicket/CheckoutWithoutSeat";
+import CategoryEvents from "./components/UserComponents/CategoryEvents";
 
 function AppRoutes() {
   return (
@@ -93,6 +94,13 @@ function AppRoutes() {
         path="/user/event/:eventId/payment-success"
         element={<PaymentSuccess/>}
       />
+      
+      <Route path ="/user/category/:categoryName" element={<CategoryEvents/> } />
+
+
+
+
+
 
       {/* Host Routes */}
       <Route path="/host-home-page" element={<HostHomePage />} />

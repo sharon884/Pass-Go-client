@@ -7,7 +7,7 @@ import { Home, User, LogOut } from "lucide-react"
 
 const categories = [
   { name: "Music", icon: "🎵" },
-  { name: "Arts", icon: "🎨" },
+  { name: "Art", icon: "🎨" },
   { name: "Motosports", icon: "🏍️" },
   { name: "Fashion", icon: "👗" },
 ]
@@ -137,7 +137,6 @@ const UserSidebar = () => {
             <span className="font-medium">{isLoggingOut ? "Logging out..." : "Logout"}</span>
           </button>
         </div>
-
         {/* Copyright Footer */}
         <div className="p-4 text-center">
           <p className="text-xs text-gray-400">© 2025 PassGo</p>

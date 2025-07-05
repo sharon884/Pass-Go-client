@@ -10,11 +10,13 @@ const UserEvents = () => {
   const [hoveredCard, setHoveredCard] = useState(null)
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [eventType, setEventType] = useState("all")
+  const [sortBy, setSortBy] = useState("latest")
   const { theme, currentTheme } = useTheme()
 
   const fetchEvents = async (page = 1) => {
     try {
-      const data = await fetchApproveEvents(page, 8)
+      const data = await fetchApproveEvents(page, 8, eventType, sortBy)
       setEvents(data.events)
       setTotalPages(data.totalPages)
       setPage(data.page)
@@ -30,7 +32,7 @@ const UserEvents = () => {
 
   useEffect(() => {
     fetchEvents(page)
-  }, [page])
+  }, [page, eventType, sortBy])
 
   // Hover-based carousel animation
   useEffect(() => {
@@ -65,11 +67,9 @@ const UserEvents = () => {
   // Get previous and next images for side display
   const getSideImages = (eventId, images) => {
     if (!images || images.length <= 1) return { prev: null, next: null }
-
     const currentIndex = currentImageIndex[eventId] || 0
     const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1
     const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1
-
     return {
       prev: images[prevIndex],
       next: images[nextIndex],
@@ -94,6 +94,10 @@ const UserEvents = () => {
         paginationText: "text-gray-700",
         paginationAccent: "#7c3aed",
         paginationSecondary: "#2563eb",
+        filterBg: "bg-white",
+        filterBorder: "border-purple-100",
+        filterText: "text-gray-700",
+        filterFocus: "focus:border-purple-500 focus:ring-purple-500",
       }
     } else {
       return {
@@ -111,6 +115,10 @@ const UserEvents = () => {
         paginationText: "text-gray-200",
         paginationAccent: theme.colors.particle1,
         paginationSecondary: theme.colors.particle2,
+        filterBg: "bg-gray-800/50 backdrop-blur-sm",
+        filterBorder: "border-gray-700",
+        filterText: "text-gray-200",
+        filterFocus: "focus:border-purple-400 focus:ring-purple-400",
       }
     }
   }
@@ -124,11 +132,69 @@ const UserEvents = () => {
         background: currentTheme === "classic" ? "#ffffff" : theme.colors.primaryBg,
       }}
     >
+      {/* Filter and Sort Controls */}
+      <div className="max-w-8xl mx-auto mb-8">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center justify-between">
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            {/* Event Type Filter */}
+            <div className="flex flex-col gap-2">
+              <label className={`text-sm font-medium ${styles.textSecondary}`}>Filter by Type</label>
+              <select
+                value={eventType}
+                onChange={(e) => {
+                  setEventType(e.target.value)
+                  setPage(1) // Reset to first page when filter changes
+                }}
+                className={`px-4 py-2 rounded-lg border ${styles.filterBorder} ${styles.filterBg} ${styles.filterText} ${styles.filterFocus} focus:outline-none focus:ring-2 transition-all duration-300 min-w-[180px]`}
+              >
+                <option value="all">🎫 All Events</option>
+                <option value="free">🆓 Free Events</option>
+                <option value="paid_stage_with_seats">🎭 Reserved Seating</option>
+                <option value="paid_stage_without_seats">💰 General Admission</option>
+              </select>
+            </div>
+
+            {/* Sort By Filter */}
+            <div className="flex flex-col gap-2">
+              <label className={`text-sm font-medium ${styles.textSecondary}`}>Sort By</label>
+              <select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value)
+                  setPage(1) // Reset to first page when sort changes
+                }}
+                className={`px-4 py-2 rounded-lg border ${styles.filterBorder} ${styles.filterBg} ${styles.filterText} ${styles.filterFocus} focus:outline-none focus:ring-2 transition-all duration-300 min-w-[180px]`}
+              >
+                <option value="latest">🕒 Latest First</option>
+                <option value="upcoming">📅 Upcoming Events</option>
+                <option value="price_low">💲 Price: Low to High</option>
+                <option value="price_high">💰 Price: High to Low</option>
+                <option value="most_selling">🔥 Most Popular</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Results Count */}
+          <div className={`text-sm ${styles.textMuted} flex items-center gap-2`}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            <span>
+              Showing {events.length} of {totalPages * 8} events
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Fixed 4 Cards Per Row Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 max-w-8xl mx-auto">
         {events.map((event, index) => {
           const sideImages = getSideImages(event._id, event.images)
-
           return (
             <Link
               to={`/your-event/${event._id}`}
@@ -176,7 +242,6 @@ const UserEvents = () => {
                         />
                       ))}
                   </div>
-
                   {/* Side Images - Manual Scroll Effect */}
                   {hoveredCard === event._id && event.images && event.images.length > 1 && (
                     <>
@@ -193,7 +258,6 @@ const UserEvents = () => {
                           />
                         </div>
                       )}
-
                       {/* Right Side Image */}
                       {sideImages.next && (
                         <div className="absolute right-[-30px] top-1/2 transform -translate-y-1/2 w-16 h-20 sm:w-20 sm:h-24 z-40 opacity-70 hover:opacity-90 transition-all duration-500">
@@ -209,7 +273,6 @@ const UserEvents = () => {
                       )}
                     </>
                   )}
-
                   {/* Enhanced Manual Scroll Indicators */}
                   {hoveredCard === event._id && event.images && event.images.length > 1 && (
                     <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-60">
@@ -235,7 +298,6 @@ const UserEvents = () => {
                       ))}
                     </div>
                   )}
-
                   {/* Aligned Badges Container */}
                   <div className="absolute top-3 left-3 right-3 flex flex-col gap-2 z-30">
                     {/* Category Badge */}
@@ -247,7 +309,6 @@ const UserEvents = () => {
                         🎫 {event.category}
                       </span>
                     </div>
-
                     {/* Event Type Badge */}
                     <div className="flex justify-start">
                       <span
@@ -262,7 +323,6 @@ const UserEvents = () => {
                         {event.eventType === "free" ? "🆓 Free" : "💰 Paid"}
                       </span>
                     </div>
-
                     {/* Reserved Seating Badge */}
                     {event.eventType === "paid_stage_with_seats" && (
                       <div className="flex justify-start">
@@ -273,7 +333,6 @@ const UserEvents = () => {
                     )}
                   </div>
                 </div>
-
                 {/* Enhanced Content Section */}
                 <div className="p-4 sm:p-5">
                   <h2
@@ -281,7 +340,6 @@ const UserEvents = () => {
                   >
                     {event.title}
                   </h2>
-
                   <div className={`flex items-center mb-4 ${styles.textMuted}`}>
                     <svg className="w-4 h-4 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                       <path
@@ -292,7 +350,6 @@ const UserEvents = () => {
                     </svg>
                     <p className="text-sm font-medium">{formatDate(event.date)}</p>
                   </div>
-
                   {/* Enhanced Button */}
                   <button
                     className="w-full text-white font-semibold py-3 px-4 rounded-xl transition-all duration-400 text-sm hover:shadow-xl transform hover:scale-[1.03] active:scale-95 relative overflow-hidden"
@@ -310,7 +367,6 @@ const UserEvents = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </button>
                 </div>
-
                 {/* Enhanced Hover Overlay */}
                 <div
                   className={`absolute inset-0 transition-all duration-700 rounded-xl sm:rounded-2xl ${
@@ -349,14 +405,12 @@ const UserEvents = () => {
           </svg>
           Previous
         </button>
-
         <div className={`px-6 py-3 rounded-full border shadow-lg ${styles.paginationBg}`}>
           <span className={`text-sm font-semibold ${styles.paginationText}`}>
             Page <span style={{ color: styles.paginationAccent }}>{page}</span> of{" "}
             <span style={{ color: styles.paginationSecondary }}>{totalPages}</span>
           </span>
         </div>
-
         <button
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={page === totalPages}
@@ -388,7 +442,6 @@ const UserEvents = () => {
             transform: translateY(0);
           }
         }
-
         @keyframes manualScroll {
           0% {
             transform: translateX(-10px) scale(0.9);
@@ -403,19 +456,16 @@ const UserEvents = () => {
             opacity: 0.6;
           }
         }
-
         /* Manual scroll effect for side images */
         .group:hover .absolute.left-\[-30px\],
         .group:hover .absolute.right-\[-30px\] {
           animation: manualScroll 3s ease-in-out infinite;
         }
-
         /* Enhanced center image scaling */
         .group:hover img {
           transform-origin: center center;
           transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
         /* Mobile optimizations */
         @media (max-width: 640px) {
           .group:active {
@@ -423,14 +473,13 @@ const UserEvents = () => {
             transition: transform 0.2s ease;
           }
         }
-
         /* Desktop hover enhancements */
         @media (min-width: 1024px) {
           .group:hover {
             z-index: 200;
             position: relative;
           }
-          
+                    
           .group:hover .absolute.left-\[-30px\],
           .group:hover .absolute.right-\[-30px\] {
             animation-duration: 4s;
