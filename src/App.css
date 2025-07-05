@@ -1,38 +1,83 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-/* Dark mode styles */
+/* FORCE THEME OVERRIDES */
 :root {
   --background-light: #ffffff;
   --text-light: #0f172a;
   --background-dark: #0f172a;
   --text-dark: #f8fafc;
+  --transition-theme: all 0.3s ease;
 }
 
-/* Base styles that will be overridden by dark mode */
+/* AGGRESSIVE BODY STYLING */
 body {
-  background-color: var(--background-light);
-  color: var(--text-light);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: var(--color-appBg, #ffffff) !important;
+  background-color: var(--color-appBg, #ffffff) !important;
+  color: var(--color-primaryText, #1f2937) !important;
+  transition: all 0.3s ease !important;
 }
 
-/* Dark mode overrides */
-.dark body {
-  background-color: var(--background-dark);
-  color: var(--text-dark);
+/* THEME-SPECIFIC BODY CLASSES */
+body.theme-electric {
+  background: #0a1d3a !important;
+  background-color: #0a1d3a !important;
+  color: #f9fafb !important;
 }
 
-/* Apply dark mode to specific elements */
-.dark .bg-white {
-  background-color: var(--background-dark) !important;
+body.theme-classic {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
 }
 
-.dark .text-slate-900 {
-  color: var(--text-dark) !important;
-}
-
-/* Ensure transitions are smooth */
-html, body, * {
+/* FORCE OVERRIDE ANY CONFLICTING STYLES */
+* {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Remove any conflicting dark mode styles */
+.dark body.theme-classic {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+.dark body.theme-electric {
+  background: #0a1d3a !important;
+  background-color: #0a1d3a !important;
+  color: #f9fafb !important;
+}
+
+/* Toaster theme integration */
+[data-sonner-toaster] {
+  background: var(--color-toasterBg, rgba(255, 255, 255, 0.9)) !important;
+  border: 1px solid var(--color-borderColor, rgba(0, 0, 0, 0.1)) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+[data-sonner-toast] {
+  background: var(--color-cardBg, rgba(255, 255, 255, 0.8)) !important;
+  border: 1px solid var(--color-borderColor, rgba(0, 0, 0, 0.1)) !important;
+  color: var(--color-primaryText, #1f2937) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* Theme-aware scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cardBg, rgba(255, 255, 255, 0.1));
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-borderColor, rgba(0, 0, 0, 0.2));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-borderHover, rgba(0, 0, 0, 0.3));
 }
 
 /* Debug styles */
@@ -46,4 +91,3 @@ html, body, * {
   color: white;
   border-radius: 0.5rem;
 }
-

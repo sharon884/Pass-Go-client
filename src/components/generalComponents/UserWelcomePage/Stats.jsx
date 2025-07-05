@@ -1,8 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useTheme } from "../../../contexts/ThemeContext"
 
 function Stats() {
+  const { theme } = useTheme()
   const [counters, setCounters] = useState({
     users: 0,
     events: 0,
@@ -19,11 +21,9 @@ function Stats() {
     const duration = 2000
     const steps = 60
     const stepDuration = duration / steps
-
     const intervals = Object.keys(finalValues).map((key) => {
       const increment = finalValues[key] / steps
       let currentValue = 0
-
       return setInterval(() => {
         currentValue += increment
         if (currentValue >= finalValues[key]) {
@@ -36,7 +36,6 @@ function Stats() {
         }))
       }, stepDuration)
     })
-
     return () => intervals.forEach((interval) => clearInterval(interval))
   }, [])
 
@@ -47,26 +46,61 @@ function Stats() {
   }
 
   return (
-    <div className="py-20 bg-gradient-to-br from-white via-purple-50/20 to-blue-50/20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-100/10 to-blue-100/10"></div>
+    <div className="py-20 relative overflow-hidden" style={{ background: theme.colors.primaryBg }}>
+      {/* Background gradient overlay */}
+      <div className="absolute inset-0" style={{ background: theme.colors.secondaryBg }}></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
+          {/* Header */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            <h2
+              className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
+              style={{
+                backgroundImage: theme.colors.primaryAccent,
+                color: theme.colors.primaryText,
+              }}
+            >
               Trusted by Thousands
             </h2>
-            <p className="text-xl text-gray-600">Numbers that speak for themselves</p>
+            <p className="text-xl" style={{ color: theme.colors.secondaryText }}>
+              Numbers that speak for themselves
+            </p>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-100/50 p-12 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-200/30 to-blue-200/30 rounded-full blur-2xl animate-pulse"></div>
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-blue-200/30 to-purple-200/30 rounded-full blur-2xl animate-pulse delay-1000"></div>
+          {/* Stats Card */}
+          <div
+            className="backdrop-blur-sm rounded-3xl shadow-2xl border p-12 relative overflow-hidden"
+            style={{
+              backgroundColor: theme.colors.statsCardBg || theme.colors.cardBg,
+              borderColor: theme.colors.borderColor,
+              boxShadow: `0 25px 50px ${theme.colors.glowColor}`,
+            }}
+          >
+            {/* Floating orbs */}
+            <div
+              className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl animate-pulse"
+              style={{
+                background: theme.colors.statsBlurOrb1 || theme.colors.shape1,
+              }}
+            ></div>
+            <div
+              className="absolute bottom-0 left-0 w-40 h-40 rounded-full blur-2xl animate-pulse delay-1000"
+              style={{
+                background: theme.colors.statsBlurOrb2 || theme.colors.shape2,
+              }}
+            ></div>
 
+            {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
               {/* Users */}
               <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 shadow-lg">
+                <div
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 shadow-lg"
+                  style={{
+                    background: theme.colors.statsIconBg || theme.colors.primaryAccent,
+                  }}
+                >
                   <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -76,15 +110,28 @@ function Stats() {
                     />
                   </svg>
                 </div>
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-2"
+                  style={{
+                    backgroundImage: theme.colors.statsTextGradient || theme.colors.primaryAccent,
+                    color: theme.colors.primaryText,
+                  }}
+                >
                   {formatNumber(counters.users)}
                 </div>
-                <p className="text-gray-600 text-lg font-medium">Trusted Users</p>
+                <p className="text-lg font-medium" style={{ color: theme.colors.secondaryText }}>
+                  Trusted Users
+                </p>
               </div>
 
               {/* Events */}
               <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 shadow-lg">
+                <div
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 shadow-lg"
+                  style={{
+                    background: theme.colors.secondaryAccent,
+                  }}
+                >
                   <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -94,15 +141,28 @@ function Stats() {
                     />
                   </svg>
                 </div>
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-2"
+                  style={{
+                    backgroundImage: theme.colors.secondaryAccent,
+                    color: theme.colors.primaryText,
+                  }}
+                >
                   {formatNumber(counters.events)}
                 </div>
-                <p className="text-gray-600 text-lg font-medium">Events Hosted</p>
+                <p className="text-lg font-medium" style={{ color: theme.colors.secondaryText }}>
+                  Events Hosted
+                </p>
               </div>
 
               {/* Tickets */}
               <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 shadow-lg">
+                <div
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 shadow-lg"
+                  style={{
+                    background: theme.colors.primaryAccent,
+                  }}
+                >
                   <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -112,10 +172,18 @@ function Stats() {
                     />
                   </svg>
                 </div>
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                <div
+                  className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-2"
+                  style={{
+                    backgroundImage: theme.colors.primaryAccent,
+                    color: theme.colors.primaryText,
+                  }}
+                >
                   {formatNumber(counters.tickets)}
                 </div>
-                <p className="text-gray-600 text-lg font-medium">Tickets Sold</p>
+                <p className="text-lg font-medium" style={{ color: theme.colors.secondaryText }}>
+                  Tickets Sold
+                </p>
               </div>
             </div>
           </div>
