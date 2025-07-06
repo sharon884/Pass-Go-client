@@ -222,7 +222,7 @@ const HostEvents = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
                             <button
-                              onClick={() => navigate(`/Host/Events/Edit/${event._id}`)}
+                              onClick={() => navigate(`/host/events-edit/${event._id}`)}
                               className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-xs font-medium transition-colors inline-flex items-center"
                             >
                               <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

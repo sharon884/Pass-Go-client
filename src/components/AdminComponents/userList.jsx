@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import api from "../../utils/api/api";
+import { fetchUserBasedOnRole } from "../../services/admin/userManagement";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -14,15 +14,12 @@ const UserList = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [userToBlock, setUserToBlock] = useState(null);
-
+  const role = "user";
   const fetchUsers = async () => {
     try {
-      const response = await api.get("/admin/user-management/userList", {
-        params: { search, page },
-      });
-
-      setUsers(response.data.users);
-      setTotalPages(response.data.totalPages);
+      const response = await fetchUserBasedOnRole(search, page, role);
+      setUsers(response.users);
+      setTotalPages(response.totalPages);
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error("Failed to fetch users");
@@ -31,12 +28,16 @@ const UserList = () => {
 
   const toggleBlock = async (userId) => {
     try {
-      const response = await api.put(`/admin/user-management/users/block/${userId}`);
+      const response = await api.put(
+        `/admin/user-management/users/block/${userId}`
+      );
 
       if (response.data.success) {
         fetchUsers();
         const user = users.find((u) => u._id === userId);
-        toast.success(`User ${user.is_active ? "blocked" : "unblocked"} successfully`);
+        toast.success(
+          `User ${user.is_active ? "blocked" : "unblocked"} successfully`
+        );
       }
     } catch (error) {
       console.log("error toggling user block status", error);
@@ -101,7 +102,9 @@ const UserList = () => {
     <div className="bg-white rounded-lg shadow-sm">
       <div className="p-4 border-b">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h2 className="text-xl font-semibold text-gray-800">User Management</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            User Management
+          </h2>
           <div className="relative">
             <input
               type="text"
@@ -230,7 +233,9 @@ const UserList = () => {
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
           <div className="relative bg-white rounded-lg max-w-md w-full mx-4 md:mx-auto shadow-lg">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit User</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Edit User
+              </h3>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -296,7 +301,9 @@ const UserList = () => {
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
           <div className="relative bg-white rounded-lg max-w-md w-full mx-4 md:mx-auto shadow-lg">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Are you sure?</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Are you sure?
+              </h3>
               <p className="text-sm text-gray-500 mb-4">
                 {userToBlock?.is_active
                   ? "This will block the user from accessing the platform."

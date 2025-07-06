@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import SideBar from "../../components/generalComponents/SideBar"
 import UserList from "../../components/AdminComponents/userList"
 import HostList from "../../components/AdminComponents/HostList"
 import Footer from "../../components/generalComponents/Footer"
 import AdminNavbar from "../../components/AdminComponents/Navbar"
+import AdminSidebar from "../../components/generalComponents/SideBar"
 
 function AdminDashboard() {
   const [activeView, setActiveView] = useState("user")
@@ -21,7 +21,7 @@ function AdminDashboard() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - Fixed positioning */}
         <div className="w-64 bg-white shadow-lg flex-shrink-0 overflow-y-auto">
-          <SideBar />
+          <AdminSidebar />
         </div>
 
         {/* Main content area */}
