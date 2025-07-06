@@ -26,7 +26,7 @@ export const updateUserProfile = async (data) => {
 //Get user profile image and name 
 export const getDetailsForSidebar = async () => {
   try {
-    const response = await api.get("/user/profile/get-details");
+    const response = await api.get("/user/profile/get-user-profile");
     return response.data;
   } catch ( error ) {
     console.log("Error fetching Profile details of user ", error);

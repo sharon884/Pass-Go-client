@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import api from "../../utils/api/api"
+import { fetchUserBasedOnRole } from "../../services/admin/userManagement.js";
 import { fetchAllHost } from "../../services/admin/hostMangementServices"
 
 const HostList = () => {
@@ -19,24 +20,20 @@ const HostList = () => {
   const [showBlockModal, setShowBlockModal] = useState(false)
   const [showVerifyModal, setShowVerifyModal] = useState(false)
   const [selectedHost, setSelectedHost] = useState(null)
+  const role = "host";
 
   const fetchHosts = async () => {
     try {
-
-      const response = await fetchAllHost( search, page );
-      setHosts(response.hosts);
+      const response = await fetchUserBasedOnRole(search, page, role );
+      setHosts(response.users);
       setTotalPages(response.totalPages);
-      // const response = await api.get("/admin/hostManagement/hostList", {
-      //   params: { search, page },
-      // })
-
       // setHosts(response.data.hosts)
       // setTotalPages(response.data.totalPages)
     } catch (error) {
       console.log("error fetching hosts", error);
       toast.error("Failed to fetch hosts");
-      // console.error("Error fetching users", error)
-      // toast.error("Failed to fetch hosts")
+      console.error("Error fetching users", error)
+      toast.error("Failed to fetch hosts")
     }
   }
 

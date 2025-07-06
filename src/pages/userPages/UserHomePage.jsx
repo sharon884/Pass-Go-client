@@ -14,9 +14,9 @@ function UserHomePage() {
       {/* Main Content Area */}
       <main className="flex flex-1">
         {/* Sidebar */}
-        <aside className="flex-shrink-0">
+      
           <UserSidebar />
-        </aside>
+  
 
         {/* Main Content - Events */}
         <div className="flex-1 overflow-auto">
