@@ -21,7 +21,7 @@ api.interceptors.response.use(
             console.log('Attempting to refresh token...');
 
             try {
-                await api.get("/auth/refresh-token");
+                await api.post("/auth/refresh-token");
                 return api(originalRequest);
             } catch ( refreshError ) {
                 console.error("Token refresh failed", refreshError.message);

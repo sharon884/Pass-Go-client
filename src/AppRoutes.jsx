@@ -31,10 +31,11 @@ import BecomeHostPage from "./pages/hostPages/BecomeHostPage";
 import HostPendingRequstPage from "./pages/adminPages/HostPendingRequstPage";
 import HostAdvancePayment from "./components/HostComponets/HostAdvancePayment/HostAdvancePayment";
 import HostAdvancePaymentPage from "./pages/hostPages/HostAdvancePaymentPage";
-import TicketInfo from "./components/UserComponents/FreeTicket/TicketInfo";
+import TicketInfo from "./pages/userPages/TicketInfo";
 import CheckoutWithoutSeat from "./components/UserComponents/FreeTicket/CheckoutWithoutSeat";
 import CategoryEvents from "./components/UserComponents/CategoryEvents";
 import CategoryBasedEvents from "./pages/userPages/CategoryBasedEvents";
+import CheckoutWithoutSeatPage from "./pages/userPages/CheckoutWithoutSeatPage";
 
 function AppRoutes() {
   return (
@@ -84,11 +85,11 @@ function AppRoutes() {
       />
       <Route path="/user/bookings" element={<UserBookingsPage />} />
       <Route path="/search-results" element={<UserSearchResultPage />} />
-      <Route path="/user/event/:id/ticket-info" element={<TicketInfo />} />
+      <Route path="/user/event/:id/ticket-info" element={<TicketInfo/>} />
 
       <Route
-        path="/user/event/:eventId/payment"
-        element={<CheckoutWithoutSeat />}
+        path="/user/event/:eventId/checkout-without-seat"
+        element={<CheckoutWithoutSeatPage/>}
       />
 
       <Route
