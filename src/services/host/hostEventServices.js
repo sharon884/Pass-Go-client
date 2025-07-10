@@ -35,3 +35,15 @@ export const updateEventById = async ( eventId, updatedData ) => {
         throw error;
     }
 };
+
+//fetch event details for view analytics 
+export const getHostEventBookings = async ( eventId ) => {
+    try {
+        const response = await api.get(`/event_analytics/${eventId}/summary`);
+        return response.data;
+    } catch ( error ) {
+        console.log("error while fetching the event bookings for host event analytics");
+        throw error;
+    }
+};
+
