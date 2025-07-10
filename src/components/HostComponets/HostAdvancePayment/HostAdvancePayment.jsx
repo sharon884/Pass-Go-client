@@ -28,7 +28,6 @@ const HostAdvancePayment = () => {
   const handlePayment = async () => {
     try {
       const data = await createAdvanceOrder(eventId);
-      console.log("ivde ahhnow ",data)
       const { razorPayOrderId, amount, currency, key } = data;
 
       const options = {
@@ -51,7 +50,7 @@ const HostAdvancePayment = () => {
 
             if (verifyRes.success) {
               toast.success("Advance Payment Successful!");
-              navigate("/host/dashboard");
+              navigate("/host-home-page");
             } else {
               toast.error("Payment verification failed");
             }

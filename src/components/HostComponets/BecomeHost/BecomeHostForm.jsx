@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { requestedOtp, verifyHostOtp } from "../../../services/host/becomeHostServices"
 import { toast } from "sonner"
-import { becomeHostSchema } from "../../../utils/becomeHostValidation"
+import { becomeHostSchema } from "../../../utils/becomeHostValidation";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const BecomeHostForm = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ const BecomeHostForm = () => {
   const [imagePreview, setImagePreview] = useState(null)
   const [errors, setErrors] = useState({})
   const [fieldTouched, setFieldTouched] = useState({})
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target
@@ -111,7 +113,7 @@ const BecomeHostForm = () => {
 
       if (result.success) {
         toast.success("OTP verified successfully! Your host request is being processed.")
-        // Reset form or redirect as needed
+        navigate("/welcome-page");
       } else {
         toast.error(result.message || "Invalid OTP")
       }

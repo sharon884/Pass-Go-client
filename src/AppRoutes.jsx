@@ -36,6 +36,7 @@ import CheckoutWithoutSeat from "./components/UserComponents/FreeTicket/Checkout
 import CategoryEvents from "./components/UserComponents/CategoryEvents";
 import CategoryBasedEvents from "./pages/userPages/CategoryBasedEvents";
 import CheckoutWithoutSeatPage from "./pages/userPages/CheckoutWithoutSeatPage";
+import UserPaymentSuccess from "./pages/userPages/UserPaymentSuccess";
 
 function AppRoutes() {
   return (
@@ -94,7 +95,7 @@ function AppRoutes() {
 
       <Route
         path="/user/event/:eventId/payment-success"
-        element={<PaymentSuccess/>}
+        element={<UserPaymentSuccess/>}
       />
       
       <Route path ="/user/category/:categoryName" element={<CategoryBasedEvents/> } />

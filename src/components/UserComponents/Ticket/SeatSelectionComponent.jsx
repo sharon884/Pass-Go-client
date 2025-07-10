@@ -113,7 +113,7 @@ const SeatSelectionComponent = () => {
 
   // Separate VIP and General seats
   const vipSeats = seats.filter((seat) => seat.category === "VIP")
-  const generalSeats = seats.filter((seat) => seat.category === "General")
+  const generalSeats = seats.filter((seat) => seat.category === "general")
 
   // Group seats by rows and break into chunks
   const groupSeatsByRow = (seatArray, seatsPerRow = 22) => {
