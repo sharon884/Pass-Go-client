@@ -37,6 +37,7 @@ import CategoryEvents from "./components/UserComponents/CategoryEvents";
 import CategoryBasedEvents from "./pages/userPages/CategoryBasedEvents";
 import CheckoutWithoutSeatPage from "./pages/userPages/CheckoutWithoutSeatPage";
 import UserPaymentSuccess from "./pages/userPages/UserPaymentSuccess";
+import HostEventAnalytics from "./components/HostComponets/HostBookings";
 
 function AppRoutes() {
   return (
@@ -118,6 +119,7 @@ function AppRoutes() {
         path="/host/event/:eventId/advance-payment"
         element={<HostAdvancePaymentPage />}
       />
+      <Route path="/host/events-summary/:eventId" element= {<HostEventAnalytics/> } />
     </Routes>
   );
 }

@@ -222,7 +222,7 @@ const HostEvents = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
                             <button
-                              onClick={() => navigate(`/host/events-edit/${event._id}`)}
+                            
                               className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-lg text-xs font-medium transition-colors inline-flex items-center"
                             >
                               <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -246,7 +246,7 @@ const HostEvents = () => {
                               </svg>
                               Delete
                             </button>
-                            <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-xs font-medium transition-colors inline-flex items-center">
+                            <button   onClick={() => navigate(`/host/events-summary/${event._id}`)} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-xs font-medium transition-colors inline-flex items-center">
                               <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path
                                   strokeLinecap="round"
@@ -367,7 +367,7 @@ const HostEvents = () => {
                         </svg>
                         Delete
                       </button>
-                      <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors inline-flex items-center">
+                      <button    onClick={() => navigate(`/host/events/${event._id}/bookings`)} className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors inline-flex items-center">
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"
