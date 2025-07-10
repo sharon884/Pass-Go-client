@@ -191,7 +191,7 @@ const HostList = () => {
                         host.isVerified ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"
                       }`}
                     >
-                      {host.isVerified ? "Verified" : "Unverified"}
+                      {host.hostVerificationStatus && host.isVerified ? "Verified" : "Unverified"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
