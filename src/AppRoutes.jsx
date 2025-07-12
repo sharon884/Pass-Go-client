@@ -38,6 +38,7 @@ import CategoryBasedEvents from "./pages/userPages/CategoryBasedEvents";
 import CheckoutWithoutSeatPage from "./pages/userPages/CheckoutWithoutSeatPage";
 import UserPaymentSuccess from "./pages/userPages/UserPaymentSuccess";
 import HostEventAnalytics from "./components/HostComponets/HostBookings";
+import BookingDetailsPage from "./components/UserComponents/Bookings/BookingDetailsPage";
 
 function AppRoutes() {
   return (
@@ -100,7 +101,7 @@ function AppRoutes() {
       />
       
       <Route path ="/user/category/:categoryName" element={<CategoryBasedEvents/> } />
-
+      <Route path="/booking-details/:id" element={<BookingDetailsPage/>} />
 
 
 

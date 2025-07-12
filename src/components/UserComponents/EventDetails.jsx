@@ -82,6 +82,24 @@ const EventDetails = () => {
     }
   }, [id])
 
+
+// websocket real time for when cancel tickets happens 
+  useEffect(() => {
+  const handleFreeTicketCancelled = ({ eventId: cancelledEventId, category }) => {
+    if (cancelledEventId === id) {
+      console.log(`Ticket in category '${category}' was cancelled. Refreshing...`);
+      // 👇 This calls the same API again to refresh ticket availability
+      fetchApprovedEventsById(id).then(setEvent).catch(console.error);
+    }
+  };
+
+  socket.on("free-ticket-cancelled", handleFreeTicketCancelled);
+
+  return () => {
+    socket.off("free-ticket-cancelled", handleFreeTicketCancelled);
+  };
+}, [id]);
+
   // Auto-slide functionality for images
   useEffect(() => {
     if (!event || !event.images || event.images.length <= 1) return
