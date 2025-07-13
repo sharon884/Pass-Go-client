@@ -17,7 +17,7 @@ const UserEvents = () => {
 
   const fetchEvents = async (page = 1) => {
     try {
-      const data = await fetchApproveEvents(page, 2, eventType, sortBy)
+      const data = await fetchApproveEvents(page, 12, eventType, sortBy)
       setEvents(data.events || [])
       setTotalPages(data.totalPages || Math.ceil((data.total || data.events?.length || 0) / 8))
       setPage(data.page || page)
