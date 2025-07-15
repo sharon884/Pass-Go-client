@@ -2,20 +2,21 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { toast } from "sonner"
-import { socket } from "../../utils/socket/socket"
-import { fetchApprovedEventsById } from "../../services/user/userEventServices"
-import { useTheme } from "../../contexts/ThemeContext"
+import { toast } from "sonner" // Keeping toast
+import { socket } from "../../utils/socket/socket" // Keeping socket
+import { fetchApprovedEventsById } from "../../services/user/userEventServices" // Keeping original import path
+import { useTheme } from "../../contexts/ThemeContext" // Keeping original useTheme hook
 import EventDistanceMap from "./EventDistanceMap"
 
 const EventDetails = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
+  const [offer, setOffer] = useState(null) // Added state for offer
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const navigate = useNavigate()
-  const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme() // Keeping original useTheme hook
 
-  // Theme-based styling
+  // Theme-based styling - Keeping as is
   const getThemeStyles = () => {
     if (currentTheme === "classic") {
       return {
@@ -30,6 +31,9 @@ const EventDetails = () => {
         categoryBadgeBg: "bg-purple-600",
         loadingColor: "text-purple-600",
         shadowColor: "shadow-md",
+        offerBg: "bg-green-50", // Added for offer section
+        offerText: "text-green-800", // Added for offer section
+        offerBorder: "border-green-200", // Added for offer section
       }
     } else {
       return {
@@ -44,10 +48,12 @@ const EventDetails = () => {
         categoryBadgeBg: "bg-purple-600",
         loadingColor: "text-purple-400",
         shadowColor: "shadow-lg",
+        offerBg: theme?.colors?.successBg || "bg-green-900", // Added for offer section
+        offerText: "text-green-200", // Added for offer section
+        offerBorder: "border-green-800", // Added for offer section
       }
     }
   }
-
   const styles = getThemeStyles()
 
   const handleNavigate = () => {
@@ -65,13 +71,16 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const eventData = await fetchApprovedEventsById(id)
-        setEvent(eventData)
+        // Modified to destructure event and offer
+        const { event: fetchedEvent, offer: fetchedOffer } = await fetchApprovedEventsById(id)
+        setEvent(fetchedEvent)
+        setOffer(fetchedOffer) // Set the offer state
         if (id) {
           socket.emit("join-event-room", id)
         }
       } catch (error) {
         console.log("Failed to fetch event", error)
+        toast.error("Failed to fetch event details.") // Keeping toast
       }
     }
     fetchEvent()
@@ -82,25 +91,27 @@ const EventDetails = () => {
     }
   }, [id])
 
-
-// websocket real time for when cancel tickets happens 
+  // websocket real time for when cancel tickets happens - Keeping as is
   useEffect(() => {
-  const handleFreeTicketCancelled = ({ eventId: cancelledEventId, category }) => {
-    if (cancelledEventId === id) {
-      console.log(`Ticket in category '${category}' was cancelled. Refreshing...`);
-      // 👇 This calls the same API again to refresh ticket availability
-      fetchApprovedEventsById(id).then(setEvent).catch(console.error);
+    const handleFreeTicketCancelled = ({ eventId: cancelledEventId, category }) => {
+      if (cancelledEventId === id) {
+        console.log(`Ticket in category '${category}' was cancelled. Refreshing...`)
+        // Modified to destructure event and offer on refresh
+        fetchApprovedEventsById(id)
+          .then(({ event: fetchedEvent, offer: fetchedOffer }) => {
+            setEvent(fetchedEvent)
+            setOffer(fetchedOffer)
+          })
+          .catch(console.error)
+      }
     }
-  };
+    socket.on("free-ticket-cancelled", handleFreeTicketCancelled)
+    return () => {
+      socket.off("free-ticket-cancelled", handleFreeTicketCancelled)
+    }
+  }, [id])
 
-  socket.on("free-ticket-cancelled", handleFreeTicketCancelled);
-
-  return () => {
-    socket.off("free-ticket-cancelled", handleFreeTicketCancelled);
-  };
-}, [id]);
-
-  // Auto-slide functionality for images
+  // Auto-slide functionality for images - Keeping as is
   useEffect(() => {
     if (!event || !event.images || event.images.length <= 1) return
     const interval = setInterval(() => {
@@ -109,7 +120,7 @@ const EventDetails = () => {
     return () => clearInterval(interval)
   }, [event])
 
-  // Format date to a more readable format
+  // Format date to a more readable format - Keeping as is
   const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
@@ -131,9 +142,7 @@ const EventDetails = () => {
         <div className={`animate-pulse ${styles.loadingColor} text-xl font-semibold`}>Loading....</div>
       </div>
     )
-
   console.log("Business Info: ", event.businessInfo)
-
   return (
     <div
       className={`max-w-4xl mx-auto p-4 md:p-6 ${styles.containerBg}`}
@@ -179,10 +188,8 @@ const EventDetails = () => {
           </div>
         )}
       </div>
-
       {/* Event Title */}
       <h1 className={`text-3xl md:text-4xl font-bold ${styles.textPrimary} mb-4`}>{event.title}</h1>
-
       {/* Event Details */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="col-span-2">
@@ -228,7 +235,6 @@ const EventDetails = () => {
             </div>
           </div>
         </div>
-
         {/* Tickets Section */}
         <div>
           <div
@@ -238,6 +244,62 @@ const EventDetails = () => {
             }}
           >
             <h3 className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>Tickets</h3>
+
+            {/* Offer Display Section - Added this block */}
+            {offer && (
+              <div
+                className={`mb-6 p-5 rounded-xl border ${styles.offerBorder} ${styles.offerBg} shadow-inner`}
+                style={{
+                  background: currentTheme === "classic" ? "#ecfdf5" : theme?.colors?.successBg || "#064e3b",
+                }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </div>
+                  <h4 className={`text-lg font-semibold ${styles.offerText}`}>Special Offer Available!</h4>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                  <div className="flex items-center">
+                    <span className={`font-medium ${styles.offerText}`}>Discount:</span>
+                    <span className={`ml-2 ${styles.textPrimary} font-bold`}>
+                      {offer.discountType === "percentage" ? `${offer.value}% OFF` : `₹${offer.value} OFF`}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className={`font-medium ${styles.offerText}`}>Expires:</span>
+                    <span className={`ml-2 ${styles.textPrimary} font-bold`}>
+                      {new Date(offer.expiryDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  {offer.minTickets && (
+                    <div className="flex items-center sm:col-span-2">
+                      <span className={`font-medium ${styles.offerText}`}>Min. Tickets:</span>
+                      <span className={`ml-2 ${styles.textPrimary} font-bold`}>{offer.minTickets}</span>
+                    </div>
+                  )}
+                </div>
+                <p className={`mt-3 text-xs ${styles.offerText}`}>This offer will be applied at checkout.</p>
+              </div>
+            )}
+
             {/* VIP Ticket */}
             <div
               className={`mb-4 p-4 ${styles.ticketCardBg} rounded-lg border ${styles.cardBorder}`}
@@ -247,7 +309,8 @@ const EventDetails = () => {
             >
               <div className="flex justify-between items-center mb-2">
                 <span className={`font-medium ${styles.textPrimary}`}>VIP</span>
-                <span className="text-purple-600 font-bold">{event?.tickets?.VIP?.price ?? "N/A"}</span>
+                {/* Added currency icon */}
+                <span className="text-purple-600 font-bold">₹{event?.tickets?.VIP?.price ?? "N/A"}</span>
               </div>
               <div className={`text-sm ${styles.textMuted}`}>Available: {event?.tickets?.VIP?.quantity ?? "N/A"}</div>
             </div>
@@ -260,7 +323,8 @@ const EventDetails = () => {
             >
               <div className="flex justify-between items-center mb-2">
                 <span className={`font-medium ${styles.textPrimary}`}>General</span>
-                <span className="text-purple-600 font-bold">{event?.tickets?.general?.price ?? "N/A"}</span>
+                {/* Added currency icon */}
+                <span className="text-purple-600 font-bold">₹{event?.tickets?.general?.price ?? "N/A"}</span>
               </div>
               <div className={`text-sm ${styles.textMuted}`}>
                 Available: {event?.tickets?.general?.quantity ?? "N/A"}
@@ -275,7 +339,6 @@ const EventDetails = () => {
           </div>
         </div>
       </div>
-
       {/* Business Info Section */}
       <div
         className={`${styles.cardBg} rounded-xl p-6 ${styles.shadowColor} border ${styles.cardBorder} mb-8`}
@@ -318,11 +381,9 @@ const EventDetails = () => {
           </div>
         </div>
       </div>
-
       {/* Event Distance Map */}
       {event?.coordinates?.lat && event?.coordinates?.lng && <EventDistanceMap eventCoords={event.coordinates} />}
     </div>
   )
 }
-
 export default EventDetails
