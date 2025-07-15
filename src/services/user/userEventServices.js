@@ -41,7 +41,8 @@ export const fetchApproveEvents = async (
 export const fetchApprovedEventsById = async ( eventId ) => {
     try {
         const response = await api.get(`/user/events/approved-events/${eventId}`);
-        return response.data.event;
+        const { event, offer } = response.data;
+        return { event, offer };
     } catch ( error ) {
         console.error("while fetching approved event by id error:",error );
         throw new Error("while fetching approved event by id error:",error);
