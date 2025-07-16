@@ -2,20 +2,19 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { toast } from "sonner" // Keeping toast
-import { socket } from "../../utils/socket/socket" // Keeping socket
-import { fetchApprovedEventsById } from "../../services/user/userEventServices" // Keeping original import path
-import { useTheme } from "../../contexts/ThemeContext" // Keeping original useTheme hook
+import { toast } from "sonner"
+import { socket } from "../../utils/socket/socket" 
+import { fetchApprovedEventsById } from "../../services/user/userEventServices" 
+import { useTheme } from "../../contexts/ThemeContext" 
 import EventDistanceMap from "./EventDistanceMap"
 
 const EventDetails = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
-  const [offer, setOffer] = useState(null) // Added state for offer
+  const [offer, setOffer] = useState(null) 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const navigate = useNavigate()
-  const { currentTheme, theme } = useTheme() // Keeping original useTheme hook
-
+  const { currentTheme, theme } = useTheme() 
   // Theme-based styling - Keeping as is
   const getThemeStyles = () => {
     if (currentTheme === "classic") {
@@ -31,9 +30,9 @@ const EventDetails = () => {
         categoryBadgeBg: "bg-purple-600",
         loadingColor: "text-purple-600",
         shadowColor: "shadow-md",
-        offerBg: "bg-green-50", // Added for offer section
-        offerText: "text-green-800", // Added for offer section
-        offerBorder: "border-green-200", // Added for offer section
+        offerBg: "bg-green-50",
+        offerText: "text-green-800", 
+        offerBorder: "border-green-200",
       }
     } else {
       return {
@@ -48,9 +47,9 @@ const EventDetails = () => {
         categoryBadgeBg: "bg-purple-600",
         loadingColor: "text-purple-400",
         shadowColor: "shadow-lg",
-        offerBg: theme?.colors?.successBg || "bg-green-900", // Added for offer section
-        offerText: "text-green-200", // Added for offer section
-        offerBorder: "border-green-800", // Added for offer section
+        offerBg: theme?.colors?.successBg || "bg-green-900", 
+        offerText: "text-green-200", 
+        offerBorder: "border-green-800", 
       }
     }
   }
@@ -71,16 +70,16 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        // Modified to destructure event and offer
+       
         const { event: fetchedEvent, offer: fetchedOffer } = await fetchApprovedEventsById(id)
         setEvent(fetchedEvent)
-        setOffer(fetchedOffer) // Set the offer state
+        setOffer(fetchedOffer) 
         if (id) {
           socket.emit("join-event-room", id)
         }
       } catch (error) {
         console.log("Failed to fetch event", error)
-        toast.error("Failed to fetch event details.") // Keeping toast
+        toast.error("Failed to fetch event details.")
       }
     }
     fetchEvent()
@@ -91,12 +90,12 @@ const EventDetails = () => {
     }
   }, [id])
 
-  // websocket real time for when cancel tickets happens - Keeping as is
+ 
   useEffect(() => {
     const handleFreeTicketCancelled = ({ eventId: cancelledEventId, category }) => {
       if (cancelledEventId === id) {
         console.log(`Ticket in category '${category}' was cancelled. Refreshing...`)
-        // Modified to destructure event and offer on refresh
+      
         fetchApprovedEventsById(id)
           .then(({ event: fetchedEvent, offer: fetchedOffer }) => {
             setEvent(fetchedEvent)
@@ -111,16 +110,16 @@ const EventDetails = () => {
     }
   }, [id])
 
-  // Auto-slide functionality for images - Keeping as is
+  
   useEffect(() => {
     if (!event || !event.images || event.images.length <= 1) return
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % event.images.length)
-    }, 5000) // Change slide every 5 seconds
+    }, 5000) 
     return () => clearInterval(interval)
   }, [event])
 
-  // Format date to a more readable format - Keeping as is
+ 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
@@ -245,7 +244,7 @@ const EventDetails = () => {
           >
             <h3 className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>Tickets</h3>
 
-            {/* Offer Display Section - Added this block */}
+            {/* Offer Display Section - Improved Alignment and UI */}
             {offer && (
               <div
                 className={`mb-6 p-5 rounded-xl border ${styles.offerBorder} ${styles.offerBg} shadow-inner`}
@@ -272,16 +271,16 @@ const EventDetails = () => {
                   </div>
                   <h4 className={`text-lg font-semibold ${styles.offerText}`}>Special Offer Available!</h4>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div className="space-y-2 text-sm">
                   <div className="flex items-center">
-                    <span className={`font-medium ${styles.offerText}`}>Discount:</span>
-                    <span className={`ml-2 ${styles.textPrimary} font-bold`}>
+                    <span className={`w-24 font-medium ${styles.offerText}`}>Discount:</span>
+                    <span className={`flex-1 font-bold ${styles.textPrimary}`}>
                       {offer.discountType === "percentage" ? `${offer.value}% OFF` : `₹${offer.value} OFF`}
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <span className={`font-medium ${styles.offerText}`}>Expires:</span>
-                    <span className={`ml-2 ${styles.textPrimary} font-bold`}>
+                    <span className={`w-24 font-medium ${styles.offerText}`}>Expires:</span>
+                    <span className={`flex-1 font-bold ${styles.textPrimary}`}>
                       {new Date(offer.expiryDate).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -290,9 +289,9 @@ const EventDetails = () => {
                     </span>
                   </div>
                   {offer.minTickets && (
-                    <div className="flex items-center sm:col-span-2">
-                      <span className={`font-medium ${styles.offerText}`}>Min. Tickets:</span>
-                      <span className={`ml-2 ${styles.textPrimary} font-bold`}>{offer.minTickets}</span>
+                    <div className="flex items-center">
+                      <span className={`w-24 font-medium ${styles.offerText}`}>Min. Tickets:</span>
+                      <span className={`flex-1 font-bold ${styles.textPrimary}`}>{offer.minTickets}</span>
                     </div>
                   )}
                 </div>

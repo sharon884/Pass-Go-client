@@ -20,6 +20,21 @@ export const getAllSeatsForEvent = async ( eventId ) => {
     }
 };
 
+
+export const getCheckoutDetails = async ( eventId, seatIds ) => {
+     try {
+       
+      const response = await api.post(`/user/tickets/${eventId}/checkout-details`,{
+        seatIds
+      });
+      
+      return response.data;
+
+     } catch ( error ) {
+        throw new Error(error.response?.data?.message || "Failed to fetch checkout-details");
+     }
+}
+
 export const lockSeats = async ( eventId, seatIds ) => {
     try {
         const response = await api.post("/user/tickets/lock-seats", {
