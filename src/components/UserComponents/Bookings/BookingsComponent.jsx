@@ -716,7 +716,7 @@ const BookingsComponent = () => {
                     {/* Action Button */}
                     <div className="pt-2">
                       <a
-                        href={`/booking/${booking._id}`}
+                        href={`/booking-details/${booking._id}`}
                         className={`w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${styles.buttonSecondary} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
                       >
                         View Details
