@@ -1,9 +1,9 @@
 "use client"
-
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { createOrder } from "../../../services/user/userPaymentServices"
+import { getCheckoutDetails } from "../../../services/user/userTickerServices"
 
 const Checkout = () => {
   const { eventId } = useParams()
@@ -13,33 +13,38 @@ const Checkout = () => {
   const [totalAmount, setTotalAmount] = useState(0)
   const [gst, setGst] = useState(0)
   const [subtotal, setSubtotal] = useState(0)
+  const [discount, setDiscount] = useState(0) // Added state for discount
+  const [offerApplied, setOfferApplied] = useState(false) // Added state for offerApplied
   const [timeLeft, setTimeLeft] = useState(0)
 
   useEffect(() => {
-    if (!selectedSeats || !lockExpiresAt) {
-      navigate(-1)
+    const getCheckoutAmount = async () => {
+      try {
+        if (!selectedSeats || !selectedSeats.length) return
+        const seatIds = selectedSeats.map((seat) => seat._id)
+        // Destructure discount and offerApplied from the response
+        const res = await getCheckoutDetails(eventId, seatIds)
+        setSubtotal(res.subtotal)
+        setGst(res.gst)
+        setTotalAmount(res.totalAmount)
+        setDiscount(res.discount) // Set discount
+        setOfferApplied(res.offerApplied) // Set offerApplied
+      } catch (error) {
+        console.error("Failed to fetch checkout details", error)
+        toast.error("Failed to calculate final amount")
+        navigate(-1)
+      }
     }
-    console.log("selected seats in checkout", selectedSeats)
-
-    const baseAmount = selectedSeats.reduce((acc, seat) => acc + seat.price, 0)
-    const gstAmount = +(baseAmount * 0.18).toFixed(2)
-    const totalAmount = +(baseAmount + gstAmount).toFixed(2)
-
-    setSubtotal(baseAmount)
-    setGst(gstAmount)
-    setTotalAmount(totalAmount)
-    console.log("total amount", totalAmount)
-  }, [selectedSeats])
+    getCheckoutAmount()
+  }, [selectedSeats, eventId, navigate]) // Added eventId and navigate to dependencies
 
   // Timer countdown
   useEffect(() => {
     if (!lockExpiresAt) return
-
     const timer = setInterval(() => {
       const now = new Date().getTime()
       const expiry = new Date(lockExpiresAt).getTime()
       const difference = expiry - now
-
       if (difference > 0) {
         setTimeLeft(Math.floor(difference / 1000))
       } else {
@@ -47,7 +52,6 @@ const Checkout = () => {
         navigate(-1)
       }
     }, 1000)
-
     return () => clearInterval(timer)
   }, [lockExpiresAt, navigate])
 
@@ -64,12 +68,9 @@ const Checkout = () => {
         seatIds: selectedSeats.map((seat) => seat._id),
         paymentMethod: "upi",
       }
-
       const response = await createOrder(payload)
       const { razorpayOrderId, amount, currency, key, orderId } = response
-
       console.log("razorpay order id", currency)
-
       const options = {
         key,
         amount,
@@ -101,7 +102,6 @@ const Checkout = () => {
         },
       }
       const razor = new window.Razorpay(options)
-
       console.log("razorpay object", razor)
       razor.open()
     } catch (error) {
@@ -143,7 +143,6 @@ const Checkout = () => {
               </button>
               <h1 className="text-2xl font-bold text-gray-900">Checkout</h1>
             </div>
-
             {/* Timer */}
             {timeLeft > 0 && (
               <div className="flex items-center bg-red-50 text-red-700 px-4 py-2 rounded-lg border border-red-200">
@@ -160,7 +159,6 @@ const Checkout = () => {
           </div>
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Seat Details */}
@@ -178,7 +176,6 @@ const Checkout = () => {
                 </svg>
                 Selected Seats
               </h2>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {selectedSeats.map((seat, index) => (
                   <div
@@ -201,7 +198,6 @@ const Checkout = () => {
                 ))}
               </div>
             </div>
-
             {/* Payment Methods */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
@@ -215,7 +211,6 @@ const Checkout = () => {
                 </svg>
                 Payment Method
               </h2>
-
               <div className="space-y-3">
                 <div className="flex items-center p-4 border-2 border-indigo-600 bg-indigo-50 rounded-lg">
                   <input
@@ -240,12 +235,10 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-
           {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
-
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>
@@ -254,11 +247,18 @@ const Checkout = () => {
                   <span>₹{subtotal}</span>
                 </div>
 
+                {/* Display Discount if applied */}
+                {offerApplied && discount > 0 && (
+                  <div className="flex justify-between text-green-600 font-medium">
+                    <span>Offer Discount</span>
+                    <span>- ₹{discount}</span>
+                  </div>
+                )}
+
                 <div className="flex justify-between text-gray-600">
                   <span>GST (18%)</span>
                   <span>₹{gst}</span>
                 </div>
-
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between text-lg font-semibold text-gray-900">
                     <span>Total Amount</span>
@@ -266,7 +266,6 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-
               {/* Security Info */}
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                 <div className="flex items-center">
@@ -283,7 +282,6 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-
               {/* Pay Button */}
               <button
                 onClick={handlePayment}
@@ -291,7 +289,6 @@ const Checkout = () => {
               >
                 Pay ₹{totalAmount}
               </button>
-
               {/* Terms */}
               <p className="text-xs text-gray-500 mt-4 text-center">
                 By proceeding, you agree to our{" "}
@@ -310,5 +307,4 @@ const Checkout = () => {
     </div>
   )
 }
-
 export default Checkout
