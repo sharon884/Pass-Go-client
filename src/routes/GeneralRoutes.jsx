@@ -1,3 +1,5 @@
+//General Routes file
+
 import React from "react";
 import { Route } from "react-router-dom";
 import LandingPage from "../pages/generalPages/LandingPage";
