@@ -1,8 +1,7 @@
-//User related Route file
-
-
 import React from "react";
 import { Route } from "react-router-dom";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+
 import UserHomePage from "../pages/userPages/UserHomePage";
 import UserEvents from "../components/UserComponents/UserEvent";
 import UserEventDetailPage from "../pages/userPages/UserEventDetailPage";
@@ -20,27 +19,173 @@ import UserPaymentSuccess from "../pages/userPages/UserPaymentSuccess";
 import CategoryBasedEvents from "../pages/userPages/CategoryBasedEvents";
 import BookingDetailsPage from "../components/UserComponents/Bookings/BookingDetailsPage";
 import UserWalletPage from "../pages/userPages/UserWalletPage";
-import UserChangePasswordPage from "../pages/userPages/UserChangePasswordPage"; // You missed importing this
+import UserChangePasswordPage from "../pages/userPages/UserChangePasswordPage";
+
+const allowedRoles = ["user", "host"];
 
 const UserRoutes = [
-  <Route key="/user-home-page" path="/user-home-page" element={<UserHomePage />} />,
-  <Route key="/user/events" path="/user/events" element={<UserEvents />} />,
-  <Route key="/your-event/:id" path="/your-event/:id" element={<UserEventDetailPage />} />,
-  <Route key="/user/change-password" path="/user/change-password" element={<UserChangePasswordPage />} />,
-  <Route key="/user/profile" path="/user/profile" element={<UserProfilePage />} />,
-  <Route key="/user/edit-profile" path="/user/edit-profile" element={<EditUserProfilePage />} />,
-  <Route key="/user/event/:eventId/select-seat-counts" path="/user/event/:eventId/select-seat-counts" element={<UserTicketSeatCountSelectionPage />} />,
-  <Route key="/user/event/:eventId/select-seats" path="/user/event/:eventId/select-seats" element={<UserTicketSeatSelectionPage />} />,
-  <Route key="/user/event/:eventId/checkout" path="/user/event/:eventId/checkout" element={<Checkout />} />,
-  <Route key="/user/event/:eventId/payment-success" path="/user/event/:eventId/payment-success" element={<PaymentSuccess />} />,
-  <Route key="/user/bookings" path="/user/bookings" element={<UserBookingsPage />} />,
-  <Route key="/search-results" path="/search-results" element={<UserSearchResult />} />,
-  <Route key="/user/event/:id/ticket-info" path="/user/event/:id/ticket-info" element={<TicketInfoPage />} />,
-  <Route key="/user/event/:eventId/checkout-without-seat" path="/user/event/:eventId/checkout-without-seat" element={<CheckoutWithoutSeatPage />} />,
-  <Route key="/user/event/:eventId/user-payment-success" path="/user/event/:eventId/payment-success" element={<UserPaymentSuccess />} />,
-  <Route key="/user/category/:categoryName" path="/user/category/:categoryName" element={<CategoryBasedEvents />} />,
-  <Route key="/booking-details/:id" path="/booking-details/:id" element={<BookingDetailsPage />} />,
-  <Route key="/user/wallet" path="/user/wallet" element={<UserWalletPage />} />,
+  <Route
+    key="/user-home-page"
+    path="/user-home-page"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserHomePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/events"
+    path="/user/events"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserEvents />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/your-event/:id"
+    path="/your-event/:id"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserEventDetailPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/change-password"
+    path="/user/change-password"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserChangePasswordPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/profile"
+    path="/user/profile"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserProfilePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/edit-profile"
+    path="/user/edit-profile"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <EditUserProfilePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:eventId/select-seat-counts"
+    path="/user/event/:eventId/select-seat-counts"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserTicketSeatCountSelectionPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:eventId/select-seats"
+    path="/user/event/:eventId/select-seats"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserTicketSeatSelectionPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:eventId/checkout"
+    path="/user/event/:eventId/checkout"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <Checkout />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:eventId/payment-success"
+    path="/user/event/:eventId/payment-success"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <PaymentSuccess />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/bookings"
+    path="/user/bookings"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserBookingsPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/search-results"
+    path="/search-results"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserSearchResult />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:id/ticket-info"
+    path="/user/event/:id/ticket-info"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <TicketInfoPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:eventId/checkout-without-seat"
+    path="/user/event/:eventId/checkout-without-seat"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <CheckoutWithoutSeatPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/event/:eventId/user-payment-success"
+    path="/user/event/:eventId/payment-success"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserPaymentSuccess />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/category/:categoryName"
+    path="/user/category/:categoryName"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <CategoryBasedEvents />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/booking-details/:id"
+    path="/booking-details/:id"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <BookingDetailsPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/user/wallet"
+    path="/user/wallet"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <UserWalletPage />
+      </ProtectedRoute>
+    }
+  />,
 ];
 
 export default UserRoutes;
