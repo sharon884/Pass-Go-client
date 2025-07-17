@@ -672,6 +672,7 @@ const BookingsComponent = () => {
                         <span className={`text-xs ${styles.textMuted}`}>{booking.eventCategory}</span>
                       </div>
                       <div className="text-right flex-shrink-0">
+                        
                         {booking.bookingType === "order" ? (
                           <div>
                             <div className={`text-lg font-semibold ${styles.textPrimary}`}>₹{booking.amount || 0}</div>
@@ -712,11 +713,11 @@ const BookingsComponent = () => {
                     <div className={`text-xs ${styles.textMuted}`}>
                       Booked on {formatDate(booking.createdAt || booking.bookedAt)}
                     </div>
-
+                        
                     {/* Action Button */}
                     <div className="pt-2">
                       <a
-                        href={`/booking-details/${booking._id}`}
+                        href={`/booking/${booking._id}`}
                         className={`w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${styles.buttonSecondary} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
                       >
                         View Details
@@ -731,6 +732,7 @@ const BookingsComponent = () => {
       </div>
     </div>
   )
+  
 }
 
 export default BookingsComponent
