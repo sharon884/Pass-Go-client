@@ -1,6 +1,6 @@
 import "./App.css"
 import { Toaster } from "sonner"
-import AppRoutes from "./AppRoutes"
+import AppRoutes from "./routes/AppRoutes"
 import useHostSocketAndUser from "./hooks/useHostSocketAndUser"
 import useAuthInitializer from "./hooks/useAuthInitializer"
 import { ThemeProvider } from "./contexts/ThemeContext"
@@ -23,7 +23,7 @@ function App() {
       >
         {/* Theme Switcher - Always visible */}
         <ThemeSwitcher />
-        <AppRoutes />
+        <AppRoutes/>
         <Toaster position="top-right" richColors />
       </div>
     </ThemeProvider>
