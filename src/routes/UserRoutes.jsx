@@ -1,3 +1,6 @@
+//User related Route file
+
+
 import React from "react";
 import { Route } from "react-router-dom";
 import UserHomePage from "../pages/userPages/UserHomePage";

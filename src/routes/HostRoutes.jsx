@@ -1,3 +1,5 @@
+//Host related Routes file
+
 import React from "react";
 import { Route } from "react-router-dom";
 import HostHomePage from "../pages/hostPages/HostHomePage";

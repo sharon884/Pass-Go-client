@@ -1,3 +1,5 @@
+//Admin related Route file
+
 import React from "react";
 import { Route } from "react-router-dom";
 import Login from "../pages/generalPages/Login";
