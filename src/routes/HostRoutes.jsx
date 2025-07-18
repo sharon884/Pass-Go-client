@@ -18,20 +18,95 @@ import HostEventAnalytics from "../components/HostComponets/HostBookings";
 
 const HostRoutes = [
   <Route
-    key="host-protected-routes"
-    element={<ProtectedRoute allowedRoles={["host"]}><React.Fragment /></ProtectedRoute>}
-  >
-    <Route path="/host-home-page" element={<HostHomePage />} />
-    <Route path="/host/add-event" element={<HostAddEventPage />} />
-    <Route path="/host/change-password" element={<ChangePasswordHost />} />
-    <Route path="/host/profile" element={<HostProfilePage />} />
-    <Route path="/host/edit-profile" element={<EditHostProfilePage />} />
-    <Route path="/host/events" element={<HostEventManagementPage />} />
-    <Route path="/host/events-edit/:eventId" element={<EditEventPage />} />
-    <Route path="/become-host" element={<BecomeHostPage />} />
-    <Route path="/host/event/:eventId/advance-payment" element={<HostAdvancePaymentPage />} />
-    <Route path="/host/events-summary/:eventId" element={<HostEventAnalytics />} />
-  </Route>
+    key="/host-home-page"
+    path="/host-home-page"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostHomePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/add-event"
+    path="/host/add-event"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostAddEventPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/change-password"
+    path="/host/change-password"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <ChangePasswordHost />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/profile"
+    path="/host/profile"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostProfilePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/edit-profile"
+    path="/host/edit-profile"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <EditHostProfilePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/events"
+    path="/host/events"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostEventManagementPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/events-edit/:eventId"
+    path="/host/events-edit/:eventId"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <EditEventPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/become-host"
+    path="/become-host"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <BecomeHostPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/event/:eventId/advance-payment"
+    path="/host/event/:eventId/advance-payment"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostAdvancePaymentPage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/host/events-summary/:eventId"
+    path="/host/events-summary/:eventId"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostEventAnalytics />
+      </ProtectedRoute>
+    }
+  />,
 ];
 
 export default HostRoutes;

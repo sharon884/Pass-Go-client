@@ -110,7 +110,7 @@ const Navbar = () => {
 
         {/* Desktop Navigation Links */}
         <div className={`hidden lg:flex items-center gap-1`}>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/welcome-page">Home</NavLink>
           <NavLink to="/about">About Us</NavLink>
           <NavLink to="/contact">Contact</NavLink>
           <NavLink to="/events">Explore Events</NavLink>
