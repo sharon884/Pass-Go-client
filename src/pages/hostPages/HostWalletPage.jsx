@@ -2,10 +2,10 @@
 import { useTheme } from "../../contexts/ThemeContext"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
-import UserWallet from "../../components/UserComponents/wallet/UserWallet"
+import HostWallet from "../../components/HostComponets/Wallet/HostWallet"
 import Footer from "../../components/generalComponents/Footer"
 
-function UserWalletPage() {
+function HostWalletPage() {
   const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
@@ -38,7 +38,7 @@ function UserWalletPage() {
         background: currentTheme === "classic" ? "#f9fafb" : theme?.colors?.primaryBg || "#111827",
       }}
     >
-      {/* User Navbar - Fixed at top */}
+      {/* Host Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
@@ -123,7 +123,7 @@ function UserWalletPage() {
                   animationFillMode: "both",
                 }}
               >
-                <UserWallet />
+                <HostWallet />
               </div>
             </div>
           </div>
@@ -304,4 +304,4 @@ function UserWalletPage() {
   )
 }
 
-export default UserWalletPage
+export default HostWalletPage
