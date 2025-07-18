@@ -193,7 +193,7 @@ const TicketInfo = () => {
                 onClick={() => handlePaidBookClick(cat)}
                 disabled={isLocked || ticketStats[cat].available < selectedQuantity}
               >
-                {isLocked && lockedCategory === cat ? "Locked" : `Lock ${cat}`}
+                {isLocked && lockedCategory === cat ? "Locked" : `Book ${cat} Tickets`}
               </button>
             </div>
           ) : null
