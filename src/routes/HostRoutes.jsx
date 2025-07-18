@@ -15,6 +15,8 @@ import EditEventPage from "../pages/hostPages/EditEventPage";
 import BecomeHostPage from "../pages/hostPages/BecomeHostPage";
 import HostAdvancePaymentPage from "../pages/hostPages/HostAdvancePaymentPage";
 import HostEventAnalytics from "../components/HostComponets/HostBookings";
+import HostWalletPage from "../pages/hostPages/HostWalletPage";
+import HostWallet from "../components/HostComponets/Wallet/HostWallet";
 
 const HostRoutes = [
   <Route
@@ -104,6 +106,17 @@ const HostRoutes = [
     element={
       <ProtectedRoute allowedRoles={["host"]}>
         <HostEventAnalytics />
+      </ProtectedRoute>
+    }
+  />,
+
+ 
+    <Route
+    key="/host/wallet"
+    path="/host/wallet"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <HostWalletPage />
       </ProtectedRoute>
     }
   />,
