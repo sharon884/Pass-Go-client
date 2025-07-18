@@ -10,26 +10,41 @@ import AdminDashboard from "../pages/adminPages/AdminDashboard";
 import AdminEventApprovePage from "../pages/adminPages/AdminEventApprovePage";
 import HostPendingRequestPage from "../pages/adminPages/HostPendingRequstPage";
 
-// Only admins should access protected admin routes
+// Admin-only access
 const allowedRoles = ["admin"];
 
 const AdminRoutes = [
-  // Public Route for Admin login
+  // 🔓 Public Route
   <Route key="/admin-login" path="/admin-login" element={<Login />} />,
 
-  // Protected Routes
+  // 🔐 Protected Routes
   <Route
-    key="admin-protected-routes"
+    key="/admin-dashboard"
+    path="/admin-dashboard"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
-        <React.Fragment />
+        <AdminDashboard />
       </ProtectedRoute>
     }
-  >
-    <Route path="/admin-dashboard" element={<AdminDashboard />} />
-    <Route path="/admin/events/approval" element={<AdminEventApprovePage />} />
-    <Route path="/admin/verify-host-request" element={<HostPendingRequestPage />} />
-  </Route>
+  />,
+  <Route
+    key="/admin/events/approval"
+    path="/admin/events/approval"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <AdminEventApprovePage />
+      </ProtectedRoute>
+    }
+  />,
+  <Route
+    key="/admin/verify-host-request"
+    path="/admin/verify-host-request"
+    element={
+      <ProtectedRoute allowedRoles={allowedRoles}>
+        <HostPendingRequestPage />
+      </ProtectedRoute>
+    }
+  />
 ];
 
 export default AdminRoutes;
