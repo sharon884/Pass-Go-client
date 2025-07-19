@@ -49,7 +49,8 @@ const ChangePassword = () => {
         newPassword,
       })
       toast.success("Password updated successfully. Please log in again.")
-      dispatch(logOut())
+      dispatch(logOut());
+      localStorage.clear();
       setFormData({
         currentPassword: "",
         newPassword: "",

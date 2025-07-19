@@ -55,7 +55,7 @@ const BookingDetailsPage = () => {
       // Update booking status locally
       setBooking((prev) => ({ ...prev, status: "cancelled" }))
       setTimeout(() => {
-        navigate("/bookings")
+        navigate("/user/bookings");
       }, 2000)
     } catch (error) {
       toast.error(error.message || "Failed to cancel ticket.")
