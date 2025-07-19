@@ -4,7 +4,8 @@ import { getUserProfile, updateUserProfile } from "../../services/user/userProfi
 import uploadImageToCloudinary from "../../utils/uploadCloudinary/uploadCloudinary"
 import { toast } from "sonner"
 import { useState } from "react"
-import { useEffect } from "react"
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 
 const EditUserProfile = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +16,8 @@ const EditUserProfile = () => {
 
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
-  const [updating, setUpdating] = useState(false)
+  const [updating, setUpdating] = useState(false);
+  const navigate  = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -26,7 +28,8 @@ const EditUserProfile = () => {
           name: user.name,
           mobile: user.mobile,
           profile_image: user.profile_image,
-        })
+        });
+       
       } catch (error) {
         toast.error("Failed to load profile")
       } finally {
@@ -74,7 +77,8 @@ const EditUserProfile = () => {
     setUpdating(true)
     try {
       await updateUserProfile(formData)
-      toast.success("Profile updated successfully")
+      toast.success("Profile updated successfully");
+       navigate("/user-home-page")
     } catch (error) {
       toast.error(error.message || "Profile updation failed")
     } finally {

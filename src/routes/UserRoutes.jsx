@@ -20,6 +20,7 @@ import CategoryBasedEvents from "../pages/userPages/CategoryBasedEvents";
 import BookingDetailsPage from "../components/UserComponents/Bookings/BookingDetailsPage";
 import UserWalletPage from "../pages/userPages/UserWalletPage";
 import UserChangePasswordPage from "../pages/userPages/UserChangePasswordPage";
+import UserBookingDetailsPage from "../pages/userPages/UserBookingDetailsPage";
 
 const allowedRoles = ["user", "host"];
 
@@ -173,7 +174,7 @@ const UserRoutes = [
     path="/booking-details/:id"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
-        <BookingDetailsPage />
+        <UserBookingDetailsPage />
       </ProtectedRoute>
     }
   />,

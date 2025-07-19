@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import uploadImageToCloudinary from "../../utils/uploadCloudinary/uploadCloudinary"
-
+import { getUserProfile, updateUserProfile } from "../../services/user/userProfileServices"
 const EditHostProfile = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,12 +21,12 @@ const EditHostProfile = () => {
   useEffect(() => {
     const fetchHostProfile = async () => {
       try {
-        const response = await getHostProfile()
-        const host = response.host
+        const response = await getUserProfile()
+        const host = response.user
         setFormData({
-          name: host.name,
-          mobile: host.mobile,
-          profile_image: host.profile_image,
+          name: user.name,
+          mobile: user.mobile,
+          profile_image: user.profile_image,
         })
       } catch (error) {
         toast.error("Failed to load profile")
@@ -74,9 +74,9 @@ const EditHostProfile = () => {
     e.preventDefault()
     setUpdating(true)
     try {
-      await updateHostProfile(formData)
+      await updateUserProfile(formData)
       toast.success("Profile updated successfully");
-      navigate('/host-home-page')
+      navigate('/user-home-page')
     } catch (error) {
       toast.error(error.message || "Profile updation failed")
     } finally {

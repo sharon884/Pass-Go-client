@@ -351,7 +351,7 @@ const UserProfile = () => {
               <div className={`mt-6 sm:mt-8 pt-6 border-t ${styles.cardBorder}`}>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
-                    onClick={() => navigate("/user/Edit-Profile-User")}
+                    onClick={() => navigate("/user/edit-profile")}
                     className={`flex-1 text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 flex items-center justify-center hover:shadow-lg`}
                     style={{
                       background:
@@ -371,7 +371,7 @@ const UserProfile = () => {
                     Edit Profile
                   </button>
                   <button
-                    onClick={() => navigate("/profile/Change-Password-User")}
+                    onClick={() => navigate("/user/change-password")}
                     className={`flex-1 ${styles.buttonSecondary} py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center`}
                     style={{
                       background: currentTheme === "classic" ? undefined : theme?.colors?.cardBg || "#374151",
