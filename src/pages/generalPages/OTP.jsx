@@ -2,10 +2,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../utils/api/api";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../features/auth/authSlice";
 
 const OtpPage = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { email, userId, role } = location.state || {}
 
@@ -36,16 +39,17 @@ const OtpPage = () => {
     setError("")
     setSuccess("")
 
-    let endPoint = "" ;
-    if ( role === "user") {
-      endPoint = "/user/auth/verify-otp"
-    }
-    if ( role === "host") {
-      endPoint = "/host/auth/verify-otp"
-    }
-    else if ( role === "admin") {
-      endPoint = "/admin/auth/verify-otp"
-    }
+  let endPoint = "";
+
+if (role === "user") {
+  endPoint = "/user/auth/verify-otp";
+} else if (role === "admin") {
+  endPoint = "/admin/auth/verify-otp";
+} else {
+  toast.error("Invalid role for OTP verification");
+  return;
+}
+
 
     try {
       const response = await api.post( endPoint, {
@@ -55,24 +59,39 @@ const OtpPage = () => {
         role,
       })
 
-      console.log("OTP verified successfully!", response.data)
-      setSuccess("Email verified successfully! Redirecting...");
-      toast.success("Email verified successfyly! Redirecting...");
-        localStorage.setItem("isAuthenticated", true);
-      localStorage.setItem("role", role);
+      console.log("OTP verified successfully!", response.data);
+
+  setError(""); 
+  setSuccess("Email verified successfully! Redirecting...");
+  toast.success("Email verified successfully! Redirecting...");
+
+  localStorage.setItem("isAuthenticated", true);
+  localStorage.setItem("role", role);
+
+        dispatch(
+    setCredentials({
+      id: response.data.id,
+      name: response.data.name,  
+      mobile: response.data.mobile,
+      role,
+      profile_image: response.data.profile_image || "",
+    })
+  );
         
-      if ( role === "user") {
-        navigate("/welcome-page");
-      }else if ( role === "host") {
-        navigate("/welcome-page");
-      }else if ( role === "admin") {
-        navigate("/admin-home-page");
-      }
+     if (role === "user" || role === "host") {
+    navigate("/welcome-page");
+  } else if (role === "admin") {
+    navigate("/admin-home-page");
+  }
 
     } catch (err) {
-      console.error("OTP verification failed", err.response?.data || err.message)
-      setError(err.response?.data?.message || "OTP verification failed. Try again!");
-      toast.error("OTP verification failed.Try again!")
+     console.error("OTP verification failed", err.response?.data || err.message);
+
+  setSuccess(""); 
+  setError(err.response?.data?.message || "OTP verification failed. Try again!");
+  toast.error("OTP verification failed. Try again!");
+
+  return;
     }
   }
 
