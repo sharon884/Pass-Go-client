@@ -20,7 +20,7 @@ const Signup = () => {
   });
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -82,16 +82,16 @@ console.log("Error message:", error.message);
       const userId = response.data.id;
       // localStorage.setItem("isAuthenticated", "true")
       // localStorage.setItem("role", role)
-      dispatch(
-        setCredentials({
-          id: response.data.id,
-          name,
-          email,
-          mobile,
-          role,
-          profile_image: response.data.profile_image || "",
-        })
-      );
+      // dispatch(
+      //   setCredentials({
+      //     id: response.data.id,
+      //     name,
+      //     email,
+      //     mobile,
+      //     role,
+      //     profile_image: response.data.profile_image || "",
+      //   })
+      // );
 
       navigate("/verify-otp", {
         state: {

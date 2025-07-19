@@ -86,7 +86,7 @@ const HostRoutes = [
     key="/become-host"
     path="/become-host"
     element={
-      <ProtectedRoute allowedRoles={["host"]}>
+      <ProtectedRoute allowedRoles={["user","host"]}>
         <BecomeHostPage />
       </ProtectedRoute>
     }
