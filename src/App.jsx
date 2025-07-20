@@ -1,15 +1,15 @@
 import "./App.css"
 import { Toaster } from "sonner"
 import AppRoutes from "./routes/AppRoutes"
-import useHostSocketAndUser from "./hooks/useHostSocketAndUser"
 import useAuthInitializer from "./hooks/useAuthInitializer"
 import { ThemeProvider } from "./contexts/ThemeContext"
 import ThemeSwitcher from "./components/generalComponents/ThemeSwitcher"
+import useGlobalSocketConnections from "./hooks/useGlobalSocketConnections"
 
 function App() {
-  // Initialize sockets and auth
-  useHostSocketAndUser()
+
   useAuthInitializer()
+  useGlobalSocketConnections()
 
   return (
     <ThemeProvider>
