@@ -4,7 +4,7 @@ import api from "../../utils/api/api";
 // Fetch event summary analytics
 export const getHostEventBookings = async (eventId) => {
   try {
-    const response = await api.get(`/host/event_analytics/${eventId}/summary`);
+    const response = await api.get(`/event_analytics/${eventId}/summary`);
     return response.data;
   } catch (error) {
     console.error("Error while fetching host event booking summary:", error);
