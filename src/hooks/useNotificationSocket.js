@@ -16,6 +16,8 @@ const useNotificationSocket = () => {
   };
 
   socket.on("new-notification", handleNotification);
+   socket.off("new-notification", handleNotification);
+   socket.on("new-notification", handleNotification);
 
   return () => {
     socket.off("new-notification", handleNotification);
