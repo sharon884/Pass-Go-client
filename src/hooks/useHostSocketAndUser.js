@@ -8,33 +8,13 @@ const useHostSocketAndUser = () => {
     const { user, isAuthenticated } = useSelector(( state ) => state.auth);
     const [ statusChanged, setStatusChanged ] = useState(null);
 
-    // const [ user, setUser ] = useState(null);
-    // const [ statusChanged, setStatusChanged ] = useState(null);
 
     useEffect(() => {
 
         if ( isAuthenticated && user?.role == "user" && user?.id ) {
             socket.emit("verifying-host", user.id);
         }
-        // const fetchUser = async () => {
-        //     try {
-        //         const authenticated = localStorage.getItem("isAuthenticated");
-        //         const role = localStorage.getItem("role");
-        //         if ( !authenticated || role != "user") {
-        //             return;
-        //         }
-        //         const response = await getUserProfile();
-        //         const userData = response.user;
-        //         setUser(userData);
-        //         if ( userData.id ) {
-        //             socket.emit("verifying-host", userData.id);
-        //         }
-        //     } catch ( error ) {
-        //         console.error("Error fetching user:", error.message);
-        //     }
-        // };
-
-        // fetchUser();
+       
     }, [isAuthenticated,user?.id, user?.role]);
 
     useEffect(() => {
