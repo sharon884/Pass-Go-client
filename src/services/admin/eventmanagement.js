@@ -1,13 +1,15 @@
 import api from "../../utils/api/api";
 
-export const fetchPendingEvents = async () => {
-    try {
-        const response = await api.get("/admin/event-management/pending-events");
-        return response.data;
-    } catch ( error ) {
-        console.error("Error fetching pending events");
-        throw new Error("Faild to fetch pending events");
-    }
+
+
+export const fetchEvents = async ({ endpoint = "/admin/event-management/events", params = {} } = {}) => {
+  try {
+    const response = await api.get(endpoint, { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    throw new Error("Failed to fetch events");
+  }
 };
 
 export const approveEvent  = async ( eventId ) => {

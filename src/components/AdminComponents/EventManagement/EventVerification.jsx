@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { fetchPendingEvents, approveEvent, rejectEvent } from "../../../services/admin/eventmanagement"
+import { fetchEvents, approveEvent, rejectEvent } from "../../../services/admin/eventmanagement"
 import { toast } from "sonner"
 import { useTheme } from "../../../contexts/ThemeContext"
 
@@ -51,18 +51,34 @@ const EventVerificationAdmin = () => {
 
   const styles = getThemeStyles()
 
-  const loadEvents = async (page = 1) => {
-    try {
-      setLoading(true)
-      const data = await fetchPendingEvents(page)
-      setPendingEvents(data.events || [])
-      setPagination(data.pagination)
-    } catch (error) {
-      toast.error("Failed to fetch events")
-    } finally {
-      setLoading(false)
-    }
+ const loadEvents = async (page = 1) => {
+  try {
+    setLoading(true);
+    setSubmitting(true);
+
+    const data = await fetchEvents({
+      params: {
+        page,
+        limit: 10,
+        status: "requested",
+        advancePaid: true, 
+        isApproved: false,
+        order: "desc",
+        sortBy: "createdAt",
+      },
+    });
+
+    setPendingEvents(data.events || []);
+    setPagination(data.pagination);
+  } catch (error) {
+    toast.error("Failed to fetch events");
+  } finally {
+    setLoading(false);
+    setSubmitting(false);
   }
+};
+
+
 
   useEffect(() => {
     loadEvents(pagination.page)
