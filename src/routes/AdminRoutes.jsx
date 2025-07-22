@@ -10,6 +10,8 @@ import AdminDashboard from "../pages/adminPages/AdminDashboard";
 import AdminEventApprovePage from "../pages/adminPages/AdminEventApprovePage";
 import HostPendingRequestPage from "../pages/adminPages/HostPendingRequstPage";
 import AdminWallet from "../components/AdminComponents/wallet/AdminWallet";
+import AdminEventListing from "@/components/AdminComponents/EventManagement/AdminEventListing";
+import AdminEventDetails from "@/components/AdminComponents/EventManagement/AdminEventDetails";
 
 // Admin-only access
 const allowedRoles = ["admin"];
@@ -54,7 +56,27 @@ const AdminRoutes = [
       <AdminWallet/>
     </ProtectedRoute>
   }
-  />
+  />,
+
+  
+  <Route key="/admin/event-lisiting"
+  path="/admin/event-listing"
+  element={
+    <ProtectedRoute allowedRoles={allowedRoles}>
+      <AdminEventListing/>
+    </ProtectedRoute>
+  }
+  />,
+
+<Route key="/admin/event-management/details/:eventId"
+  path="/admin/event-management/details/:eventId"
+  element={
+    <ProtectedRoute allowedRoles={allowedRoles}>
+      <AdminEventDetails/>
+    </ProtectedRoute>
+  }
+  />,
+  
 ];
 
 export default AdminRoutes;
