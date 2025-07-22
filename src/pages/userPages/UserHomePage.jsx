@@ -4,6 +4,7 @@ import Footer from "../../components/generalComponents/Footer"
 import UserEvents from "../../components/UserComponents/UserEvent"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
+import Breadcrumb from "@/components/UI/Breadcrumb/Breadcrumb"
 
 function UserHomePage() {
   const { currentTheme, theme } = useTheme()
@@ -40,6 +41,7 @@ function UserHomePage() {
     >
       {/* User Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
+        <Breadcrumb/>
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{

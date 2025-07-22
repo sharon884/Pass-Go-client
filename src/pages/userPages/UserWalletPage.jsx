@@ -4,6 +4,7 @@ import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEven
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import UserWallet from "../../components/UserComponents/wallet/UserWallet"
 import Footer from "../../components/generalComponents/Footer"
+import Breadcrumb from "@/components/UI/Breadcrumb/Breadcrumb"
 
 function UserWalletPage() {
   const { currentTheme, theme } = useTheme()
@@ -34,12 +35,16 @@ function UserWalletPage() {
   return (
     <div
       className="flex flex-col min-h-screen"
+      
       style={{
         background: currentTheme === "classic" ? "#f9fafb" : theme?.colors?.primaryBg || "#111827",
       }}
+
+    
     >
       {/* User Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
+          <Breadcrumb/>
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{

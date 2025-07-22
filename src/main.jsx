@@ -6,7 +6,9 @@ import { Provider } from "react-redux"
 import { store } from "./app/store.js"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import "./App.css"
-import "leaflet/dist/leaflet.css"
+import "leaflet/dist/leaflet.css";
+import { BreadcrumbProvider  } from "./contexts/BreadcrumbContext";
+import BreadcrumbUpdater from "./components/UI/Breadcrumb/BreadcrumbUpdater"
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
@@ -18,7 +20,11 @@ createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <GoogleOAuthProvider clientId={clientId}>
       <Provider store={store}>
+        <BreadcrumbProvider> 
+        <BreadcrumbUpdater/>
         <App />
+        </BreadcrumbProvider>
+
       </Provider>
     </GoogleOAuthProvider>
   </BrowserRouter>,
