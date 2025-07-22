@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { fetchEvents, approveEvent, rejectEvent } from "../../../services/admin/eventmanagement"
+import {  approveEvent, rejectEvent } from "../../../services/admin/eventmanagement";
+import { fetchEvents  } from "../../../services/general/EventAnalytics";
 import { toast } from "sonner"
 import { useTheme } from "../../../contexts/ThemeContext"
 
