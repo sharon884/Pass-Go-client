@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api/api";
-import validateForm from "../../utils/signupValidation";
+import validateForm from "../../utils/validators/signupValidation";
 import GoogleAuthSignup from "../../components/generalComponents/googleAuthSignup";
 
 const Signup = () => {

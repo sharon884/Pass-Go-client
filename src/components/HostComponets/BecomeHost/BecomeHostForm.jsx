@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { requestedOtp, verifyHostOtp } from "../../../services/host/becomeHostServices"
 import { toast } from "sonner"
-import { becomeHostSchema } from "../../../utils/becomeHostValidation";
+import { becomeHostSchema } from "../../../utils/validators/becomeHostValidation";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const BecomeHostForm = () => {
