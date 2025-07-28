@@ -4,44 +4,55 @@ import { createContext, useContext, useState, useEffect } from "react"
 
 // Define your two completely independent color themes
 const themes = {
-  electric: {
-    name: "Electric Blue",
-    colors: {
-      // Backgrounds
-      primaryBg: "linear-gradient(135deg, #0a1d3a 0%, #14274e 25%, #1e3a8a 50%, #274690 75%, #0a1d3a 100%)",
-      secondaryBg: "rgba(0, 191, 255, 0.1)",
-      cardBg: "rgba(249, 250, 251, 0.05)",
+electric: {
+  name: "Neon Green Dark",
+  colors: {
+    // Backgrounds
+    primaryBg: "#000000", // pure black base
+    secondaryBg: "rgba(0, 255, 132, 0.08)", // neon green light overlay
+    cardBg: "rgba(255, 255, 255, 0.04)",
 
-      // Text
-      primaryText: "#f9fafb",
-      secondaryText: "#e0f2ff",
-      accentText: "#00BFFF",
+    // Text
+    primaryText: "#e5ffe5", // off-white green tint
+    secondaryText: "#a1fca1",
+    accentText: "#00ff84", // exact neon green
 
-      // Accents & Buttons
-      primaryAccent: "linear-gradient(to right, #2563eb, #00c4ff)",
-      secondaryAccent: "linear-gradient(to right, #1e40af, #0284c7)",
-      glowColor: "rgba(0, 191, 255, 0.5)",
+    // Accents & Buttons
+    primaryAccent: "linear-gradient(to right, #00ff84, #00ffaa)",
+    secondaryAccent: "linear-gradient(to right, #00ffaa, #66ffc2)",
+    glowColor: "rgba(0, 255, 132, 0.3)",
 
-      // Particles & Effects
-      particle1: "#00BFFF",
-      particle2: "#3b82f6",
-      particle3: "#00c4ff",
-      particle4: "#2563eb",
+    // Particles & Effects
+    particle1: "#00ff84",
+    particle2: "#00ffaa",
+    particle3: "#66ffc2",
+    particle4: "#00cc66",
 
-      // Borders
-      borderColor: "rgba(0, 191, 255, 0.2)",
-      borderHover: "rgba(0, 191, 255, 0.4)",
+    // Borders
+    borderColor: "rgba(0, 255, 132, 0.12)",
+    borderHover: "rgba(0, 255, 132, 0.3)",
 
-      // Geometric shapes
-      shape1: "linear-gradient(45deg, #00BFFF 0%, #3b82f6 100%)",
-      shape2: "linear-gradient(135deg, #2563eb 0%, #00c4ff 100%)",
-      shape3: "conic-gradient(from 0deg, #00BFFF, #3b82f6, #2563eb, #00c4ff, #00BFFF)",
+    // Geometric shapes
+    shape1: "rgba(0, 255, 132, 0.05)",
+    shape2: "rgba(0, 204, 102, 0.06)",
+    shape3: "rgba(0, 153, 76, 0.07)",
 
-      // App specific colors
-      appBg: "#0a1d3a",
-      toasterBg: "rgba(249, 250, 251, 0.1)",
-    },
+    // App specific
+    appBg: "#000000", // full dark
+    toasterBg: "rgba(0, 255, 132, 0.05)",
+
+    // Stats component if used
+    statsMainBg: "#000000",
+    statsOverlayBg: "rgba(0, 255, 132, 0.03)",
+    statsCardBg: "rgba(255, 255, 255, 0.06)",
+    statsIconBg: "linear-gradient(to right, #00ff84, #00ffaa)",
+    statsTextGradient: "linear-gradient(to right, #00ff84, #00ffaa)",
+    statsBlurOrb1: "rgba(0, 255, 132, 0.1)",
+    statsBlurOrb2: "rgba(0, 204, 102, 0.1)",
   },
+},
+
+
 
   classic: {
     name: "Clean White",
