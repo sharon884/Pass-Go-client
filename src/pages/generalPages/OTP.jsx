@@ -4,7 +4,8 @@ import api from "../../utils/api/api";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
-
+import  { resendOtp } from "../../services/user/userAuthServices"
+ 
 const OtpPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -96,16 +97,23 @@ if (role === "user") {
   }
 
 
-  const handleResendOtp = () => {
-    if (resendCooldown > 0) return
+ 
+const handleResendOtp = async () => {
+  if (resendCooldown > 0) return;
 
-    setError("")
-    setSuccess("OTP resent to your email!")
-    setResendCooldown(60) // 60 seconds cooldown
-
-    // In a real implementation, you would make an API call here
-    console.log("Resending OTP to:", email)
+  try {
+    await resendOtp(email);
+    setError("");
+    setSuccess("OTP resent to your email!");
+    toast.success("OTP resent to your email!");
+    setResendCooldown(60); 
+  } catch (err) {
+    setSuccess("");
+    setError(err.message);
+    toast.error(err.message);
   }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">

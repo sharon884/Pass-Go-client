@@ -1,7 +1,6 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
-import RoleSelectionModal from "../../components/ForgetPassword/RoleSelectionModal"
 import EmailInputModal from "../../components/ForgetPassword/EmailInputModal"
 import api from "../../utils/api/api"
 import OtpVerificationModal from "../../components/ForgetPassword/OtpVerificationModal"
@@ -9,19 +8,12 @@ import NewPasswordModal from "../../components/ForgetPassword/NewPasswordModal"
 import Footer from "../../components/generalComponents/Footer"
 
 function ForgetPassword() {
-  const [showRoleModal, setShowRoleModal] = useState(true)
-  const [selectedRole, setSelectedRole] = useState(null)
-  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [selectedRole] = useState("user") // default role set
+  const [showEmailModal, setShowEmailModal] = useState(true)
   const [showOtpModal, setShowOtpModal] = useState(false)
   const [email, setEmail] = useState("")
   const [showResetModal, setShowResetModal] = useState(false)
   const [id, setId] = useState("")
-
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role)
-    setShowRoleModal(false)
-    setShowEmailModal(true)
-  }
 
   const handleEmailSubmit = async (email) => {
     setEmail(email)
@@ -54,7 +46,6 @@ function ForgetPassword() {
   }
 
   const handleClose = () => {
-    setShowRoleModal(false)
     setShowEmailModal(false)
     setShowOtpModal(false)
     setShowResetModal(false)
@@ -62,8 +53,7 @@ function ForgetPassword() {
 
   return (
     <div className="min-h-screen">
-      {showRoleModal && <RoleSelectionModal onClose={() => setShowRoleModal(false)} onRoleSelect={handleRoleSelect} />}
-
+      {/* Only Email Modal shown initially */}
       {showEmailModal && (
         <EmailInputModal role={selectedRole} onSubmit={handleEmailSubmit} onClose={() => setShowEmailModal(false)} />
       )}
@@ -88,7 +78,7 @@ function ForgetPassword() {
           }}
         />
       )}
-      <Footer/>
+      <Footer />
     </div>
   )
 }
