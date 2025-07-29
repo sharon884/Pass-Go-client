@@ -1,39 +1,20 @@
-import { useEffect, useState } from "react";
+// src/components/LandingBanner.jsx
 
-const images = [
-  "/leo_visions-vFMIAG_udn0-unsplash.jpg",
-  "/paul-bJYcF9osDW0-unsplash.jpg",
-  "/samantha-gades-fIHozNWfcvs-unsplash.jpg",
-];
+import React from "react";
 
-const SlideshowBanner = () => {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 5000); // change image every 5 seconds
-
-    return () => clearInterval(interval); // cleanup on unmount
-  }, []);
-
+const LandingBanner = () => {
   return (
-    <section className="relative w-full h-[80vh] overflow-hidden">
-      {/* Images (only show current) */}
-      {images.map((img, index) => (
-        <img
-          key={index}
-          src={img}
-          alt={`Slide ${index + 1}`}
-          className={`absolute w-full h-full object-cover transition-opacity duration-1000 ${
-            current === index ? "opacity-100 z-10" : "opacity-0 z-0"
-          }`}
-        />
-      ))}
+    <section className="relative w-full h-[80vh]">
+      {/* Banner Image */}
+      <img
+        src="/leo_visions-vFMIAG_udn0-unsplash.jpg"
+        alt="Event Banner"
+        className="w-full h-full object-cover brightness-75"
+      />
 
-      {/* Overlay Text */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 z-20">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-md">
+      {/* Overlay Content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 text-white">
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4 drop-shadow-md">
           Turning Moments Into Memories
         </h1>
         <p className="text-lg md:text-xl mb-6 max-w-xl drop-shadow-md">
@@ -43,20 +24,8 @@ const SlideshowBanner = () => {
           Explore Events
         </button>
       </div>
-
-      {/* Optional Dots */}
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
-        {images.map((_, idx) => (
-          <div
-            key={idx}
-            className={`w-3 h-3 rounded-full ${
-              idx === current ? "bg-white" : "bg-gray-400"
-            }`}
-          />
-        ))}
-      </div>
     </section>
   );
 };
 
-export default SlideshowBanner;
+export default LandingBanner;
