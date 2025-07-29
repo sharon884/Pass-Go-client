@@ -12,6 +12,7 @@ import HostPendingRequestPage from "../pages/adminPages/HostPendingRequstPage";
 import AdminWallet from "../components/AdminComponents/wallet/AdminWallet";
 import AdminEventListing from "@/components/AdminComponents/EventManagement/AdminEventListing";
 import AdminEventDetails from "@/components/AdminComponents/EventManagement/AdminEventDetails";
+import NotificationPage from "@/pages/generalPages/NotificationPage";
 
 // Admin-only access
 const allowedRoles = ["admin"];
@@ -73,6 +74,17 @@ const AdminRoutes = [
   element={
     <ProtectedRoute allowedRoles={allowedRoles}>
       <AdminEventDetails/>
+    </ProtectedRoute>
+  }
+  />,
+
+  
+<Route
+  key="/admin/notifications"
+  path="/admin/notifications"
+  element={
+    <ProtectedRoute allowedRoles={allowedRoles}>
+      <NotificationPage />
     </ProtectedRoute>
   }
   />,
