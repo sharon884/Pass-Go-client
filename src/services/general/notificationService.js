@@ -2,7 +2,7 @@ import api from "../../utils/api/api";
 
 export const fetchNotifications = async ({ page = 1, limit = 10, role }) => {
   try {
-    const response = await api.get("/notifications/all_notifications", {
+    const response = await api.get("/notifications/all-notifications", {
       params: { page, limit, role },
     });
     return response.data;
