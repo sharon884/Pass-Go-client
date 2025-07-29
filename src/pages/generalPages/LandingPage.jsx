@@ -4,6 +4,7 @@ import Footer from '../../components/generalComponents/Footer';
 import LandingComponent from '../../components/generalComponents/landing';
 import LandingBanner from '@/components/Landing/LandingBanner';
 import InfoSection from '@/components/Landing/InfoSection';
+import RunningEvents from '@/components/Landing/RunningEvents';
 function LandingPage() {
   return (
     <div>
@@ -11,6 +12,7 @@ function LandingPage() {
       <div>
       <LandingBanner/>
       <InfoSection/>
+      <RunningEvents/>
       </div>
       <div>
 
