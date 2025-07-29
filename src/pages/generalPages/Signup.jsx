@@ -1,11 +1,7 @@
-"use client";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api/api";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../features/auth/authSlice";
-import validateForm from "../../utils/signupValidation";
+import validateForm from "../../utils/validators/signupValidation";
 import GoogleAuthSignup from "../../components/generalComponents/googleAuthSignup";
 
 const Signup = () => {
@@ -20,7 +16,6 @@ const Signup = () => {
   });
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -54,8 +49,7 @@ const Signup = () => {
 
     const { name, email, password, mobile, role, referralCode } = formData;
     console.log("Form data:", formData);
-console.log("Error message:", error.message);
-
+    console.log("Error message:", error.message);
 
     let endPoint = "";
     if (role === "user") {
@@ -80,18 +74,6 @@ console.log("Error message:", error.message);
       setSuccess(response.data.message);
 
       const userId = response.data.id;
-      // localStorage.setItem("isAuthenticated", "true")
-      // localStorage.setItem("role", role)
-      // dispatch(
-      //   setCredentials({
-      //     id: response.data.id,
-      //     name,
-      //     email,
-      //     mobile,
-      //     role,
-      //     profile_image: response.data.profile_image || "",
-      //   })
-      // );
 
       navigate("/verify-otp", {
         state: {
