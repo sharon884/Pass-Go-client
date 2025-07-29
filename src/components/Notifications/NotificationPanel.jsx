@@ -4,7 +4,7 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
   deleteReadNotifications,
-} from "../../services/notificationService";
+} from "../../services/general/notificationService";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 
