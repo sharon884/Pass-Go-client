@@ -17,6 +17,7 @@ import HostAdvancePaymentPage from "../pages/hostPages/HostAdvancePaymentPage";
 import HostEventAnalytics from "../components/HostComponets/HostBookings";
 import HostWalletPage from "../pages/hostPages/HostWalletPage";
 import HostWallet from "../components/HostComponets/Wallet/HostWallet";
+import NotificationPage from "@/pages/generalPages/NotificationPage";
 
 const HostRoutes = [
   <Route
@@ -120,6 +121,16 @@ const HostRoutes = [
       </ProtectedRoute>
     }
   />,
+
+  <Route
+  key="/host/notifications"
+  path="/host/notifications"
+  element={
+    <ProtectedRoute allowedRoles={["host"]}>
+      <NotificationPage />
+    </ProtectedRoute>
+  }
+/>,
 ];
 
 export default HostRoutes;

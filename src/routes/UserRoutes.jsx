@@ -21,6 +21,7 @@ import BookingDetailsPage from "../components/UserComponents/Bookings/BookingDet
 import UserWalletPage from "../pages/userPages/UserWalletPage";
 import UserChangePasswordPage from "../pages/userPages/UserChangePasswordPage";
 import UserBookingDetailsPage from "../pages/userPages/UserBookingDetailsPage";
+import NotificationPage from "@/pages/generalPages/NotificationPage";
 
 const allowedRoles = ["user", "host"];
 
@@ -187,6 +188,16 @@ const UserRoutes = [
       </ProtectedRoute>
     }
   />,
+
+  <Route
+  key="/user/notifications"
+  path="/user/notifications"
+  element={
+    <ProtectedRoute allowedRoles={["user", "host"]}>
+      <NotificationPage />
+    </ProtectedRoute>
+  }
+/>
 ];
 
 export default UserRoutes;
