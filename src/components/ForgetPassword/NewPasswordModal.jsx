@@ -1,63 +1,59 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import api from "../../utils/api/api"
+import { useState } from "react";
+import api from "../../utils/api/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { validatePassword } from "../../utils/validators/passwordValidation";
 
 function NewPasswordModal({ id, role, onClose }) {
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("")
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const validatePassword = (password) => {
-    return password.length >= 6
-  }
-
   const handleSubmit = async () => {
-    // Reset error
-    setError("")
+    setError("");
 
-    // Validate password
-    if (!validatePassword(password)) {
-      setError("Password must be at least 6 characters long");
-      return
+    // Use imported validatePassword
+    const validationMessage = validatePassword(password);
+    if (validationMessage) {
+      setError(validationMessage);
+      return;
     }
 
-    // Check if passwords match
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
-      let endPoint = ""
+      let endPoint = "";
       if (role === "user") {
-        endPoint = "/user/auth/reset-password"
+        endPoint = "/user/auth/reset-password";
       } else if (role === "host") {
-        endPoint = "/host/auth/reset-password"
+        endPoint = "/host/auth/reset-password";
       }
 
-      const response = await api.post(endPoint, { id, password })
+      const response = await api.post(endPoint, { id, password });
 
       if (response.data.success) {
         toast.success(response.data.message || "Password reset successful. Log in now!");
-        navigate("/login")
-        onClose()
+        navigate("/login");
+        onClose();
       } else {
-        setError("Something went wrong")
+        setError("Something went wrong");
       }
     } catch (error) {
-      console.log(error)
-      setError(error.response?.data?.message || "Something went wrong")
+      console.log(error);
+      setError(error.response?.data?.message || "Something went wrong");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -71,8 +67,8 @@ function NewPasswordModal({ id, role, onClose }) {
               placeholder="New Password"
               value={password}
               onChange={(e) => {
-                setPassword(e.target.value)
-                setError("")
+                setPassword(e.target.value);
+                setError("");
               }}
               className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#4F3DFF]"
             />
@@ -84,8 +80,8 @@ function NewPasswordModal({ id, role, onClose }) {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => {
-                setConfirmPassword(e.target.value)
-                setError("")
+                setConfirmPassword(e.target.value);
+                setError("");
               }}
               className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#4F3DFF]"
             />
@@ -116,7 +112,7 @@ function NewPasswordModal({ id, role, onClose }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default NewPasswordModal
+export default NewPasswordModal;
