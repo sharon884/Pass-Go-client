@@ -6,7 +6,7 @@ import Login from "../pages/generalPages/Login";
 import OtpPage from "../pages/generalPages/OTP";
 import ForgetPassword from "../pages/generalPages/ForgetPassword";
 import WelcomPage from "../pages/generalPages/WelcomPage";
-import PublicRoute from "../components/auth/PublicRoute"; // 👈 import your wrapper
+import PublicRoute from "../components/auth/PublicRoute"; 
 
 const GeneralRoutes = [
   <Route key="/" path="/" element={<LandingPage />} />,

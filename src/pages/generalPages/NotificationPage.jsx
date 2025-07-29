@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const NotificationPage = () => {
   const user = useSelector((state) => state.auth.user);
-  const userId = user?.id || localStorage.getItem("id");
+  const userId = user?.id ;
   const role = user?.role || localStorage.getItem("role");
 
   return (

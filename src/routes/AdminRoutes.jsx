@@ -76,6 +76,17 @@ const AdminRoutes = [
     </ProtectedRoute>
   }
   />,
+
+  
+<Route
+  key="/admin/notifications"
+  path="/admin/notifications"
+  element={
+    <ProtectedRoute allowedRoles={allowedRoles}>
+      <NotificationPage />
+    </ProtectedRoute>
+  }
+  />,
   
 ];
 
