@@ -2,6 +2,7 @@ import HostEvents from "../../components/HostComponets/HostEvent"
 import Footer from "../../components/generalComponents/Footer"
 import HostSidebar from "../../components/generalComponents/SideBars/HostSideBar"
 import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar"
+import CancelEventModal from "@/components/HostComponets/Modals/CancelEventModal"
 
 function HostEventManagementPage() {
   return (
@@ -27,6 +28,10 @@ function HostEventManagementPage() {
             <HostEvents />
           </div>
         </div>
+
+        
+
+        <CancelEventModal/>
       </div>
 
       {/* Footer - At bottom */}
