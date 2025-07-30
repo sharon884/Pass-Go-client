@@ -4,7 +4,7 @@ import {
   approveCancellationRequest,
 } from "../../../services/admin/adminEventCancellationService";
 import { toast } from "sonner";
-import defaultEventImg from "../../assets/event-default.jpg"; // fallback image
+
 
 const AdminCancellationRequests = () => {
   const [requests, setRequests] = useState([]);
