@@ -5,7 +5,7 @@ import {
   PieChart, Pie, Cell, Legend
 } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+// import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
@@ -28,13 +28,14 @@ export default function AdminAnalyticsDashboard() {
     loadStats();
   }, []);
 
-  if (loading || !stats) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-        {Array(6).fill(0).map((_, i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}
-      </div>
-    );
-  }
+if (loading || !stats) {
+  return (
+    <div className="p-4">
+      <p>Loading analytics data...</p>
+    </div>
+  );
+}
+
 
   return (
     <div className="p-4 space-y-6">
