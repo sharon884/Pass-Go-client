@@ -1,7 +1,8 @@
 import HostEvents from "../../components/HostComponets/HostEvent"
 import Footer from "../../components/generalComponents/Footer"
 import HostSidebar from "../../components/generalComponents/SideBars/HostSideBar"
-import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar"
+import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar";
+
 
 function HostEventManagementPage() {
   return (
@@ -27,6 +28,8 @@ function HostEventManagementPage() {
             <HostEvents />
           </div>
         </div>
+
+
       </div>
 
       {/* Footer - At bottom */}
