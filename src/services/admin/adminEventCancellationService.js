@@ -3,7 +3,7 @@ import api from "../../utils/api/api";
 //  Get all pending cancellation requests
 export const fetchPendingCancellationRequests = async () => {
     try {
-        const response = await api.get("/admin/cancellation-requests");
+        const response = await api.get("/admin/event/cancellation/pending");
         return response.data;
     }catch ( error ) {
          return {
@@ -16,7 +16,7 @@ export const fetchPendingCancellationRequests = async () => {
 //  Approve cancellation request
 export const approveCancellationRequest = async (requestId) => {
     try {
-        const response = await api.patch(`/admin/cancellation-requests/approve/${requestId}`);
+        const response = await api.patch(`/admin/event/cancellation/approve/${requestId}`);
         return response.data;
     }catch ( error ) {
          return {
