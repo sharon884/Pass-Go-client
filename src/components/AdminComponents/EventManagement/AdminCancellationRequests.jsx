@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchPendingCancellationRequests, approveCancellationRequest } from "../../services/adminCancellationService";
-import { toast } from "react-toastify";
+import { fetchPendingCancellationRequests, approveCancellationRequest } from "../../../services/admin/adminEventCancellationService";
+import { toast } from "sonner";
 import defaultEventImg from "../../assets/event-default.jpg"; // fallback image
 
 const AdminCancellationRequests = () => {
