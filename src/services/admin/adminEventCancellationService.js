@@ -13,6 +13,7 @@ export const fetchPendingCancellationRequests = async () => {
     }
 };
 
+console.log("added for testing ");
 //  Approve cancellation request
 export const approveCancellationRequest = async (requestId) => {
     try {
