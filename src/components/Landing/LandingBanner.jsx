@@ -20,9 +20,6 @@ const LandingBanner = () => {
         <p className="text-lg md:text-xl mb-6 max-w-xl drop-shadow-md">
           Discover, host, and enjoy events like never before with Pass-Go.
         </p>
-        <button className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg text-white font-semibold transition">
-          Explore Events
-        </button>
       </div>
     </section>
   );
