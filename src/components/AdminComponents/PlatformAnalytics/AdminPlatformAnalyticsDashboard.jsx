@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAdminAnalytics } from "../../../services/admin/adminAnalyticsService";
+import { fetchAdminAnalytics } from "../../../services/admin/adminPlatformAnalyticsService";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
