@@ -1,24 +1,29 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { toast } from "sonner"
-import { useTheme } from "../../contexts/ThemeContext"
-import { getHostEventBookings } from "../../services/host/hostAnalyticsServices"
-import { addOffer, cancelOffer } from "../../services/host/hostEventOfferServices"
-import AddOfferModal from "./AddOfferModal"
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { useTheme } from "../../contexts/ThemeContext";
+import { getHostEventBookings } from "../../services/host/hostAnalyticsServices";
+import {
+  addOffer,
+  cancelOffer,
+} from "../../services/host/hostEventOfferServices";
+import AddOfferModal from "./AddOfferModal";
+import CancelEventModal from "../../components/HostComponets/Modals/CancelEventModal";
 
 const HostEventAnalytics = () => {
-  const { eventId } = useParams()
-  const [loading, setLoading] = useState(true)
-  const [summary, setSummary] = useState(null)
-  const [showAddOfferModal, setShowAddOfferModal] = useState(false)
-  const [cancellingOffer, setCancellingOffer] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [activeTab, setActiveTab] = useState("overview")
-  const [animatedCards, setAnimatedCards] = useState({})
-  const { currentTheme, theme } = useTheme()
+  const { eventId } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState(null);
+  const [showAddOfferModal, setShowAddOfferModal] = useState(false);
+  const [cancellingOffer, setCancellingOffer] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [activeTab, setActiveTab] = useState("overview");
+  const [animatedCards, setAnimatedCards] = useState({});
+  const { currentTheme, theme } = useTheme();
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   // Enhanced theme styles with gradients and animations
   const getThemeStyles = () => {
@@ -38,7 +43,7 @@ const HostEventAnalytics = () => {
         primaryGradient: "bg-gradient-to-r from-blue-600 to-indigo-600",
         successGradient: "bg-gradient-to-r from-emerald-500 to-green-500",
         warningGradient: "bg-gradient-to-r from-amber-500 to-yellow-500",
-      }
+      };
     } else {
       return {
         mainBg: "bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900",
@@ -55,139 +60,141 @@ const HostEventAnalytics = () => {
         primaryGradient: "bg-gradient-to-r from-purple-600 to-indigo-600",
         successGradient: "bg-gradient-to-r from-emerald-600 to-green-600",
         warningGradient: "bg-gradient-to-r from-amber-600 to-yellow-600",
-      }
+      };
     }
-  }
+  };
 
-  const styles = getThemeStyles()
+  const styles = getThemeStyles();
 
   // Animation helper
   const animateCard = (cardId) => {
-    setAnimatedCards((prev) => ({ ...prev, [cardId]: true }))
+    setAnimatedCards((prev) => ({ ...prev, [cardId]: true }));
     setTimeout(() => {
-      setAnimatedCards((prev) => ({ ...prev, [cardId]: false }))
-    }, 600)
-  }
+      setAnimatedCards((prev) => ({ ...prev, [cardId]: false }));
+    }, 600);
+  };
 
   const fetchSummary = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await getHostEventBookings(eventId)
+      const res = await getHostEventBookings(eventId);
       if (res.success) {
-        setSummary(res.data)
+        setSummary(res.data);
         // Animate cards on data load
-        setTimeout(() => animateCard("metrics"), 100)
-        setTimeout(() => animateCard("tickets"), 200)
-        setTimeout(() => animateCard("calendar"), 300)
+        setTimeout(() => animateCard("metrics"), 100);
+        setTimeout(() => animateCard("tickets"), 200);
+        setTimeout(() => animateCard("calendar"), 300);
       } else {
-        toast.error(res.message || "Failed to load event summary")
+        toast.error(res.message || "Failed to load event summary");
       }
     } catch (err) {
-      toast.error("Something went wrong fetching summary")
+      toast.error("Something went wrong fetching summary");
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   const handleCancelOffer = async () => {
-    setCancellingOffer(true)
+    setCancellingOffer(true);
     try {
-      const res = await cancelOffer(eventId)
+      const res = await cancelOffer(eventId);
       if (res.success) {
-        toast.success("Offer canceled successfully")
-        fetchSummary()
-        animateCard("offer")
+        toast.success("Offer canceled successfully");
+        fetchSummary();
+        animateCard("offer");
       } else {
-        toast.error(res.message || "Failed to cancel offer")
+        toast.error(res.message || "Failed to cancel offer");
       }
     } catch (err) {
-      toast.error("Error while cancelling the offer")
+      toast.error("Error while cancelling the offer");
     }
-    setCancellingOffer(false)
-  }
+    setCancellingOffer(false);
+  };
 
   const handleAddOffer = async (offerData) => {
     try {
-      const res = await addOffer(eventId, offerData)
+      const res = await addOffer(eventId, offerData);
       if (res.success) {
-        toast.success("Offer added successfully")
-        fetchSummary()
-        setShowAddOfferModal(false)
-        animateCard("offer")
+        toast.success("Offer added successfully");
+        fetchSummary();
+        setShowAddOfferModal(false);
+        animateCard("offer");
       } else {
-        toast.error(res.message || "Failed to add offer")
+        toast.error(res.message || "Failed to add offer");
       }
     } catch (err) {
-      toast.error("Error while adding the offer")
+      toast.error("Error while adding the offer");
     }
-  }
+  };
 
   // Calendar functions (keeping existing logic)
   const getDaysInMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-  }
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  };
 
   const getFirstDayOfMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-  }
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
 
   const getSalesForDate = (date) => {
-    if (!summary?.dailySales) return 0
-    const dateStr = date.toISOString().split("T")[0]
+    if (!summary?.dailySales) return 0;
+    const dateStr = date.toISOString().split("T")[0];
     const sale = summary.dailySales.find((sale) => {
-      const saleDate = new Date(sale._id + "T00:00:00.000Z").toISOString().split("T")[0]
-      return saleDate === dateStr
-    })
-    return sale ? sale.count : 0
-  }
+      const saleDate = new Date(sale._id + "T00:00:00.000Z")
+        .toISOString()
+        .split("T")[0];
+      return saleDate === dateStr;
+    });
+    return sale ? sale.count : 0;
+  };
 
   const isToday = (date) => {
-    const today = new Date()
+    const today = new Date();
     return (
       date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
-    )
-  }
+    );
+  };
 
   const isSameDate = (date1, date2) => {
-    if (!date1 || !date2) return false
-    return date1.toDateString() === date2.toDateString()
-  }
+    if (!date1 || !date2) return false;
+    return date1.toDateString() === date2.toDateString();
+  };
 
   const navigateMonth = (direction) => {
     setCurrentMonth((prev) => {
-      const newMonth = new Date(prev)
-      newMonth.setMonth(prev.getMonth() + direction)
-      return newMonth
-    })
-  }
+      const newMonth = new Date(prev);
+      newMonth.setMonth(prev.getMonth() + direction);
+      return newMonth;
+    });
+  };
 
   const getFilteredTicketStats = () => {
     if (!summary?.ticketStats) {
       return {
         VIP: { sold: 5, total: 90, remaining: 85 },
         General: { sold: 1, total: 90, remaining: 89 },
-      }
+      };
     }
-    const filtered = {}
+    const filtered = {};
     Object.entries(summary.ticketStats).forEach(([category, stats]) => {
-      const lowerCategory = category.toLowerCase()
+      const lowerCategory = category.toLowerCase();
       if (lowerCategory.includes("vip") || lowerCategory.includes("general")) {
-        filtered[category] = stats
+        filtered[category] = stats;
       }
-    })
+    });
     if (Object.keys(filtered).length === 0) {
       return {
         VIP: { sold: 5, total: 90, remaining: 85 },
         General: { sold: 1, total: 90, remaining: 89 },
-      }
+      };
     }
-    return filtered
-  }
+    return filtered;
+  };
 
   useEffect(() => {
-    fetchSummary()
-  }, [eventId])
+    fetchSummary();
+  }, [eventId]);
 
   if (loading) {
     return (
@@ -211,15 +218,22 @@ const HostEventAnalytics = () => {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (!summary) {
     return (
-      <div className={`min-h-screen ${styles.mainBg} flex items-center justify-center p-8`}>
+      <div
+        className={`min-h-screen ${styles.mainBg} flex items-center justify-center p-8`}
+      >
         <div className="text-center">
           <div className="w-24 h-24 mx-auto mb-6 opacity-60">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className={styles.textMuted}>
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              className={styles.textMuted}
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -228,15 +242,19 @@ const HostEventAnalytics = () => {
               />
             </svg>
           </div>
-          <h3 className={`text-2xl font-bold ${styles.textPrimary} mb-2`}>No Event Data</h3>
-          <p className={styles.textMuted}>Unable to load event analytics at this time.</p>
+          <h3 className={`text-2xl font-bold ${styles.textPrimary} mb-2`}>
+            No Event Data
+          </h3>
+          <p className={styles.textMuted}>
+            Unable to load event analytics at this time.
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
-  const { event, ticketsSold, totalRevenue, dailySales, offer } = summary
-  const filteredTicketStats = getFilteredTicketStats()
+  const { event, ticketsSold, totalRevenue, dailySales, offer } = summary;
+  const filteredTicketStats = getFilteredTicketStats();
 
   return (
     <div className={`min-h-screen ${styles.mainBg} p-4 sm:p-6 lg:p-8`}>
@@ -253,7 +271,9 @@ const HostEventAnalytics = () => {
               >
                 {event.title}
               </h1>
-              <p className={`${styles.textSecondary} text-lg`}>{event.description}</p>
+              <p className={`${styles.textSecondary} text-lg`}>
+                {event.description}
+              </p>
             </div>
             <div className="flex gap-3">
               <button
@@ -261,7 +281,12 @@ const HostEventAnalytics = () => {
                                 transform transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95
                                 flex items-center gap-2`}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -270,6 +295,27 @@ const HostEventAnalytics = () => {
                   />
                 </svg>
                 Edit Event
+              </button>
+              <button
+                onClick={() => setIsCancelModalOpen(true)}
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-500 to-rose-500 text-white font-semibold 
+             transform transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95 
+             flex items-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                Request Cancellation
               </button>
             </div>
           </div>
@@ -350,7 +396,11 @@ const HostEventAnalytics = () => {
                   {metric.icon}
                 </div>
                 <div className="text-right">
-                  <p className={`text-sm ${styles.textMuted} uppercase tracking-wider font-medium`}>{metric.label}</p>
+                  <p
+                    className={`text-sm ${styles.textMuted} uppercase tracking-wider font-medium`}
+                  >
+                    {metric.label}
+                  </p>
                   <p
                     className={`text-3xl font-bold ${styles.textPrimary} mt-1 group-hover:scale-110 transition-transform`}
                   >
@@ -367,10 +417,14 @@ const HostEventAnalytics = () => {
 
         {/* Enhanced Ticket Categories with Animations */}
         <div
-          className={`${styles.cardBg} rounded-3xl shadow-xl border ${styles.borderColor} p-8
+          className={`${styles.cardBg} rounded-3xl shadow-xl border ${
+            styles.borderColor
+          } p-8
                         ${animatedCards.tickets ? "animate-pulse" : ""}`}
         >
-          <h3 className={`text-2xl font-bold ${styles.textPrimary} mb-8 flex items-center gap-3`}>
+          <h3
+            className={`text-2xl font-bold ${styles.textPrimary} mb-8 flex items-center gap-3`}
+          >
             <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
               <span className="text-xl">🎭</span>
             </div>
@@ -378,15 +432,19 @@ const HostEventAnalytics = () => {
           </h3>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {Object.entries(filteredTicketStats).map(([category, stats], index) => {
-              const percentage = stats.total > 0 ? (stats.sold / stats.total) * 100 : 0
-              const isVip = category.toLowerCase().includes("vip")
-              const gradientColor = isVip ? "from-purple-500 to-pink-500" : "from-orange-500 to-red-500"
+            {Object.entries(filteredTicketStats).map(
+              ([category, stats], index) => {
+                const percentage =
+                  stats.total > 0 ? (stats.sold / stats.total) * 100 : 0;
+                const isVip = category.toLowerCase().includes("vip");
+                const gradientColor = isVip
+                  ? "from-purple-500 to-pink-500"
+                  : "from-orange-500 to-red-500";
 
-              return (
-                <div
-                  key={category}
-                  className={`p-8 rounded-2xl border-2 ${styles.borderColor} 
+                return (
+                  <div
+                    key={category}
+                    className={`p-8 rounded-2xl border-2 ${styles.borderColor} 
                                transform transition-all duration-500 hover:scale-105 hover:shadow-xl
                                bg-gradient-to-br ${
                                  isVip
@@ -394,87 +452,133 @@ const HostEventAnalytics = () => {
                                    : "from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20"
                                }
                                group cursor-pointer`}
-                  style={{ animationDelay: `${index * 200}ms` }}
-                  onClick={() => animateCard("tickets")}
-                >
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={`w-16 h-16 bg-gradient-to-r ${gradientColor} rounded-2xl 
+                    style={{ animationDelay: `${index * 200}ms` }}
+                    onClick={() => animateCard("tickets")}
+                  >
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`w-16 h-16 bg-gradient-to-r ${gradientColor} rounded-2xl 
                                      flex items-center justify-center text-2xl transform transition-transform 
                                      group-hover:rotate-12 group-hover:scale-110`}
+                        >
+                          {isVip ? "⭐" : "👥"}
+                        </div>
+                        <div>
+                          <h4
+                            className={`text-xl font-bold ${styles.textPrimary}`}
+                          >
+                            {category}
+                          </h4>
+                          <p className={`${styles.textMuted} text-sm`}>
+                            Category Performance
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        className={`text-3xl font-bold bg-gradient-to-r ${gradientColor} bg-clip-text text-transparent`}
                       >
-                        {isVip ? "⭐" : "👥"}
+                        {percentage.toFixed(1)}%
+                      </div>
+                    </div>
+
+                    {/* Animated Progress Ring */}
+                    <div className="relative w-32 h-32 mx-auto mb-6">
+                      <svg
+                        className="w-32 h-32 transform -rotate-90"
+                        viewBox="0 0 120 120"
+                      >
+                        <circle
+                          cx="60"
+                          cy="60"
+                          r="50"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="8"
+                          className="text-gray-200 dark:text-gray-700"
+                        />
+                        <circle
+                          cx="60"
+                          cy="60"
+                          r="50"
+                          fill="none"
+                          strokeWidth="8"
+                          className={`${
+                            isVip ? "text-purple-500" : "text-orange-500"
+                          } transition-all duration-1000`}
+                          strokeDasharray={`${percentage * 3.14} 314`}
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div
+                            className={`text-2xl font-bold ${styles.textPrimary}`}
+                          >
+                            {stats.sold}
+                          </div>
+                          <div className={`text-xs ${styles.textMuted}`}>
+                            sold
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <div
+                          className={`text-lg font-bold ${styles.textPrimary}`}
+                        >
+                          {stats.sold}
+                        </div>
+                        <div
+                          className={`text-xs ${styles.textMuted} uppercase tracking-wide`}
+                        >
+                          Sold
+                        </div>
                       </div>
                       <div>
-                        <h4 className={`text-xl font-bold ${styles.textPrimary}`}>{category}</h4>
-                        <p className={`${styles.textMuted} text-sm`}>Category Performance</p>
+                        <div
+                          className={`text-lg font-bold ${styles.textPrimary}`}
+                        >
+                          {stats.total}
+                        </div>
+                        <div
+                          className={`text-xs ${styles.textMuted} uppercase tracking-wide`}
+                        >
+                          Total
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className={`text-3xl font-bold bg-gradient-to-r ${gradientColor} bg-clip-text text-transparent`}
-                    >
-                      {percentage.toFixed(1)}%
-                    </div>
-                  </div>
-
-                  {/* Animated Progress Ring */}
-                  <div className="relative w-32 h-32 mx-auto mb-6">
-                    <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
-                      <circle
-                        cx="60"
-                        cy="60"
-                        r="50"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        className="text-gray-200 dark:text-gray-700"
-                      />
-                      <circle
-                        cx="60"
-                        cy="60"
-                        r="50"
-                        fill="none"
-                        strokeWidth="8"
-                        className={`${isVip ? "text-purple-500" : "text-orange-500"} transition-all duration-1000`}
-                        strokeDasharray={`${percentage * 3.14} 314`}
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className={`text-2xl font-bold ${styles.textPrimary}`}>{stats.sold}</div>
-                        <div className={`text-xs ${styles.textMuted}`}>sold</div>
+                      <div>
+                        <div
+                          className={`text-lg font-bold ${styles.textPrimary}`}
+                        >
+                          {stats.remaining}
+                        </div>
+                        <div
+                          className={`text-xs ${styles.textMuted} uppercase tracking-wide`}
+                        >
+                          Left
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <div className={`text-lg font-bold ${styles.textPrimary}`}>{stats.sold}</div>
-                      <div className={`text-xs ${styles.textMuted} uppercase tracking-wide`}>Sold</div>
-                    </div>
-                    <div>
-                      <div className={`text-lg font-bold ${styles.textPrimary}`}>{stats.total}</div>
-                      <div className={`text-xs ${styles.textMuted} uppercase tracking-wide`}>Total</div>
-                    </div>
-                    <div>
-                      <div className={`text-lg font-bold ${styles.textPrimary}`}>{stats.remaining}</div>
-                      <div className={`text-xs ${styles.textMuted} uppercase tracking-wide`}>Left</div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+                );
+              }
+            )}
           </div>
         </div>
 
         {/* Enhanced Calendar with 3D Effects */}
         <div
-          className={`${styles.cardBg} rounded-3xl shadow-xl border ${styles.borderColor} p-8
+          className={`${styles.cardBg} rounded-3xl shadow-xl border ${
+            styles.borderColor
+          } p-8
                         ${animatedCards.calendar ? "animate-pulse" : ""}`}
         >
-          <h3 className={`text-2xl font-bold ${styles.textPrimary} mb-8 flex items-center gap-3`}>
+          <h3
+            className={`text-2xl font-bold ${styles.textPrimary} mb-8 flex items-center gap-3`}
+          >
             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
               <span className="text-xl">📅</span>
             </div>
@@ -483,8 +587,12 @@ const HostEventAnalytics = () => {
               <span
                 className={`text-lg ${styles.textMuted} ml-4 px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-xl`}
               >
-                {selectedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}:{" "}
-                {getSalesForDate(selectedDate)} tickets
+                {selectedDate.toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+                : {getSalesForDate(selectedDate)} tickets
               </span>
             )}
           </h3>
@@ -497,13 +605,28 @@ const HostEventAnalytics = () => {
                               transform transition-all duration-200 hover:scale-110 hover:shadow-lg active:scale-95
                               ${styles.hoverBg}`}
             >
-              <svg className={`w-6 h-6 ${styles.textPrimary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className={`w-6 h-6 ${styles.textPrimary}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
-            <h4 className={`text-2xl font-bold ${styles.textPrimary} px-6 py-3 rounded-2xl ${styles.accentBg}`}>
-              {currentMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+            <h4
+              className={`text-2xl font-bold ${styles.textPrimary} px-6 py-3 rounded-2xl ${styles.accentBg}`}
+            >
+              {currentMonth.toLocaleDateString("en-US", {
+                month: "long",
+                year: "numeric",
+              })}
             </h4>
 
             <button
@@ -512,8 +635,18 @@ const HostEventAnalytics = () => {
                               transform transition-all duration-200 hover:scale-110 hover:shadow-lg active:scale-95
                               ${styles.hoverBg}`}
             >
-              <svg className={`w-6 h-6 ${styles.textPrimary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className={`w-6 h-6 ${styles.textPrimary}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
@@ -530,37 +663,45 @@ const HostEventAnalytics = () => {
             ))}
 
             {(() => {
-              const daysInMonth = getDaysInMonth(currentMonth)
-              const firstDay = getFirstDayOfMonth(currentMonth)
-              const days = []
+              const daysInMonth = getDaysInMonth(currentMonth);
+              const firstDay = getFirstDayOfMonth(currentMonth);
+              const days = [];
 
               // Empty cells
               for (let i = 0; i < firstDay; i++) {
-                days.push(<div key={`empty-${i}`} className="p-4"></div>)
+                days.push(<div key={`empty-${i}`} className="p-4"></div>);
               }
 
               // Calendar days with enhanced styling
               for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
-                const salesCount = getSalesForDate(date)
-                const isSelected = isSameDate(date, selectedDate)
-                const isTodayDate = isToday(date)
+                const date = new Date(
+                  currentMonth.getFullYear(),
+                  currentMonth.getMonth(),
+                  day
+                );
+                const salesCount = getSalesForDate(date);
+                const isSelected = isSameDate(date, selectedDate);
+                const isTodayDate = isToday(date);
 
                 let buttonClass = `p-4 text-sm rounded-2xl transition-all duration-300 relative ${styles.textPrimary} 
-                                 transform hover:scale-110 hover:shadow-lg active:scale-95 font-semibold`
+                                 transform hover:scale-110 hover:shadow-lg active:scale-95 font-semibold`;
 
                 if (isTodayDate) {
-                  buttonClass += ` bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg`
+                  buttonClass += ` bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg`;
                 } else if (isSelected) {
-                  buttonClass += ` bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg`
+                  buttonClass += ` bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg`;
                 } else if (salesCount > 0) {
-                  buttonClass += ` bg-gradient-to-r from-orange-200 to-yellow-200 dark:from-orange-800 dark:to-yellow-800 hover:from-orange-300 hover:to-yellow-300`
+                  buttonClass += ` bg-gradient-to-r from-orange-200 to-yellow-200 dark:from-orange-800 dark:to-yellow-800 hover:from-orange-300 hover:to-yellow-300`;
                 } else {
-                  buttonClass += ` ${styles.cardBg} border ${styles.borderColor} ${styles.hoverBg}`
+                  buttonClass += ` ${styles.cardBg} border ${styles.borderColor} ${styles.hoverBg}`;
                 }
 
                 days.push(
-                  <button key={day} onClick={() => setSelectedDate(date)} className={buttonClass}>
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDate(date)}
+                    className={buttonClass}
+                  >
                     <div className="flex flex-col items-center">
                       <span className="text-lg">{day}</span>
                       {salesCount > 0 && (
@@ -573,10 +714,10 @@ const HostEventAnalytics = () => {
                         </div>
                       )}
                     </div>
-                  </button>,
-                )
+                  </button>
+                );
               }
-              return days
+              return days;
             })()}
           </div>
 
@@ -588,8 +729,12 @@ const HostEventAnalytics = () => {
               { label: "Selected", color: "from-blue-500 to-purple-500" },
             ].map((item) => (
               <div key={item.label} className="flex items-center gap-2">
-                <div className={`w-4 h-4 bg-gradient-to-r ${item.color} rounded-full shadow-sm`}></div>
-                <span className={`text-sm ${styles.textMuted} font-medium`}>{item.label}</span>
+                <div
+                  className={`w-4 h-4 bg-gradient-to-r ${item.color} rounded-full shadow-sm`}
+                ></div>
+                <span className={`text-sm ${styles.textMuted} font-medium`}>
+                  {item.label}
+                </span>
               </div>
             ))}
           </div>
@@ -597,10 +742,14 @@ const HostEventAnalytics = () => {
 
         {/* Enhanced Offer Management */}
         <div
-          className={`${styles.cardBg} rounded-3xl shadow-xl border ${styles.borderColor} p-8
+          className={`${styles.cardBg} rounded-3xl shadow-xl border ${
+            styles.borderColor
+          } p-8
                         ${animatedCards.offer ? "animate-bounce" : ""}`}
         >
-          <h3 className={`text-2xl font-bold ${styles.textPrimary} mb-8 flex items-center gap-3`}>
+          <h3
+            className={`text-2xl font-bold ${styles.textPrimary} mb-8 flex items-center gap-3`}
+          >
             <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center">
               <span className="text-xl">🎁</span>
             </div>
@@ -622,26 +771,42 @@ const HostEventAnalytics = () => {
                       ✅
                     </div>
                     <div>
-                      <h4 className={`text-2xl font-bold ${styles.textPrimary}`}>Active Offer</h4>
-                      <p className={`${styles.textSecondary}`}>Your promotional offer is live!</p>
+                      <h4
+                        className={`text-2xl font-bold ${styles.textPrimary}`}
+                      >
+                        Active Offer
+                      </h4>
+                      <p className={`${styles.textSecondary}`}>
+                        Your promotional offer is live!
+                      </p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     {[
-                      { label: "Discount Type", value: offer.discountType, icon: "🏷️" },
+                      {
+                        label: "Discount Type",
+                        value: offer.discountType,
+                        icon: "🏷️",
+                      },
                       {
                         label: "Discount Value",
-                        value: offer.discountType === "percentage" ? `${offer.value}%` : `₹${offer.value}`,
+                        value:
+                          offer.discountType === "percentage"
+                            ? `${offer.value}%`
+                            : `₹${offer.value}`,
                         icon: "💸",
                       },
                       {
                         label: "Expires On",
-                        value: new Date(offer.expiryDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        }),
+                        value: new Date(offer.expiryDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        ),
                         icon: "⏰",
                       },
                     ].map((item) => (
@@ -652,11 +817,17 @@ const HostEventAnalytics = () => {
                       >
                         <div className="flex items-center gap-3 mb-2">
                           <span className="text-2xl">{item.icon}</span>
-                          <p className={`text-sm ${styles.textMuted} uppercase tracking-wider font-medium`}>
+                          <p
+                            className={`text-sm ${styles.textMuted} uppercase tracking-wider font-medium`}
+                          >
                             {item.label}
                           </p>
                         </div>
-                        <p className={`text-xl font-bold ${styles.textPrimary} capitalize`}>{item.value}</p>
+                        <p
+                          className={`text-xl font-bold ${styles.textPrimary} capitalize`}
+                        >
+                          {item.value}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -696,10 +867,14 @@ const HostEventAnalytics = () => {
                 >
                   🎯
                 </div>
-                <h4 className={`text-2xl font-bold ${styles.textPrimary} mb-4`}>No Active Offer</h4>
-                <p className={`${styles.textSecondary} text-lg mb-8 max-w-md mx-auto`}>
-                  Boost your ticket sales with an attractive promotional offer. Create one now to attract more
-                  attendees!
+                <h4 className={`text-2xl font-bold ${styles.textPrimary} mb-4`}>
+                  No Active Offer
+                </h4>
+                <p
+                  className={`${styles.textSecondary} text-lg mb-8 max-w-md mx-auto`}
+                >
+                  Boost your ticket sales with an attractive promotional offer.
+                  Create one now to attract more attendees!
                 </p>
                 <button
                   onClick={() => setShowAddOfferModal(true)}
@@ -725,8 +900,14 @@ const HostEventAnalytics = () => {
           theme={theme}
         />
       )}
-    </div>
-  )
-}
 
-export default HostEventAnalytics
+      <CancelEventModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setIsCancelModalOpen(false)}
+        eventId={eventId}
+      />
+    </div>
+  );
+};
+
+export default HostEventAnalytics;

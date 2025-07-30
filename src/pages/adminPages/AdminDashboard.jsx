@@ -6,6 +6,7 @@ import HostList from "../../components/AdminComponents/HostList"
 import Footer from "../../components/generalComponents/Footer"
 import AdminNavbar from "../../components/AdminComponents/Navbar"
 import AdminSidebar from "../../components/generalComponents/SideBar"
+import AdminCancellationRequests from "@/components/AdminComponents/EventManagement/AdminCancellationRequests"
 
 function AdminDashboard() {
   const [activeView, setActiveView] = useState("user")
@@ -75,7 +76,7 @@ function AdminDashboard() {
           </div>
         </div>
       </div>
-
+     <AdminCancellationRequests/>
       {/* Footer - Fixed at bottom */}
       <div className="bg-white border-t flex-shrink-0">
         <Footer />
