@@ -1,11 +1,10 @@
-"use client"
-
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import api from "../../utils/api/api"
 import { useDispatch } from "react-redux"
 import { logOut } from "../../features/auth/authSlice"
 import { toast } from "react-toastify"
+import { validatePassword } from "../../utils/validators/passwordValidation"
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState({
@@ -13,18 +12,30 @@ const ChangePassword = () => {
     newPassword: "",
     confirmPassword: "",
   })
-
   const [loading, setLoading] = useState(false)
   const [showPasswords, setShowPasswords] = useState({
     current: false,
     new: false,
     confirm: false,
   })
+  const [errors, setErrors] = useState({})
+  const [passwordTouched, setPasswordTouched] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+
+    // Clear errors when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }))
+    }
+
+    // Mark password as touched when user starts typing new password
+    if (name === "newPassword" && !passwordTouched) {
+      setPasswordTouched(true)
+    }
   }
 
   const togglePasswordVisibility = (field) => {
@@ -34,10 +45,34 @@ const ChangePassword = () => {
     }))
   }
 
+  const getPasswordValidationStatus = () => {
+    if (!passwordTouched || !formData.newPassword) return {}
+
+    return {
+      length: formData.newPassword.length >= 6,
+      uppercase: /[A-Z]/.test(formData.newPassword),
+      required: formData.newPassword.trim().length > 0,
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const { currentPassword, newPassword, confirmPassword } = formData
+
+    // Clear previous errors
+    setErrors({})
+
+    // Validate new password
+    const passwordValidationError = validatePassword(newPassword)
+    if (passwordValidationError) {
+      setErrors({ newPassword: passwordValidationError })
+      toast.error(passwordValidationError)
+      return
+    }
+
+    // Check if passwords match
     if (newPassword !== confirmPassword) {
+      setErrors({ confirmPassword: "New password and confirm password do not match" })
       toast.error("New password and confirm password do not match")
       return
     }
@@ -49,8 +84,8 @@ const ChangePassword = () => {
         newPassword,
       })
       toast.success("Password updated successfully. Please log in again.")
-      dispatch(logOut());
-      localStorage.clear();
+      dispatch(logOut())
+      localStorage.clear()
       setFormData({
         currentPassword: "",
         newPassword: "",
@@ -59,11 +94,16 @@ const ChangePassword = () => {
       navigate("/login")
     } catch (error) {
       console.log(error)
-      toast.error(error.response?.data?.message || "Failed to update password.")
+      const errorMessage = error.response?.data?.message || "Failed to update password."
+      setErrors({ general: errorMessage })
+      toast.error(errorMessage)
     } finally {
       setLoading(false)
     }
   }
+
+  const validationStatus = getPasswordValidationStatus()
+  const currentValidationError = passwordTouched ? validatePassword(formData.newPassword) : ""
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -83,6 +123,13 @@ const ChangePassword = () => {
           <h2 className="text-2xl font-bold text-gray-900">Change Password</h2>
           <p className="mt-2 text-sm text-gray-600">Update your account password to keep your account secure</p>
         </div>
+
+        {/* General Error Message */}
+        {errors.general && (
+          <div className="mb-6 p-3 bg-red-50 border border-red-100 rounded-lg">
+            <p className="text-red-500 text-sm">{errors.general}</p>
+          </div>
+        )}
 
         {/* Form */}
         <div className="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
@@ -110,7 +157,9 @@ const ChangePassword = () => {
                   placeholder="Current Password"
                   value={formData.currentPassword}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.currentPassword ? "border-red-300" : "border-gray-300"
+                  }`}
                   required
                 />
                 <button
@@ -145,6 +194,7 @@ const ChangePassword = () => {
                   )}
                 </button>
               </div>
+              {errors.currentPassword && <p className="mt-1 text-sm text-red-500">{errors.currentPassword}</p>}
             </div>
 
             {/* New Password */}
@@ -170,7 +220,9 @@ const ChangePassword = () => {
                   value={formData.newPassword}
                   placeholder="New Password"
                   onChange={handleChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.newPassword || currentValidationError ? "border-red-300" : "border-gray-300"
+                  }`}
                   required
                 />
                 <button
@@ -205,6 +257,38 @@ const ChangePassword = () => {
                   )}
                 </button>
               </div>
+
+              {/* Password Requirements Validation */}
+              {passwordTouched && formData.newPassword && (
+                <div className="mt-2 space-y-1">
+                  <div
+                    className={`flex items-center text-xs ${validationStatus.required ? "text-green-600" : "text-red-500"}`}
+                  >
+                    <div
+                      className={`w-2 h-2 rounded-full mr-2 ${validationStatus.required ? "bg-green-500" : "bg-red-500"}`}
+                    ></div>
+                    Password is required
+                  </div>
+                  <div
+                    className={`flex items-center text-xs ${validationStatus.length ? "text-green-600" : "text-red-500"}`}
+                  >
+                    <div
+                      className={`w-2 h-2 rounded-full mr-2 ${validationStatus.length ? "bg-green-500" : "bg-red-500"}`}
+                    ></div>
+                    At least 6 characters
+                  </div>
+                  <div
+                    className={`flex items-center text-xs ${validationStatus.uppercase ? "text-green-600" : "text-red-500"}`}
+                  >
+                    <div
+                      className={`w-2 h-2 rounded-full mr-2 ${validationStatus.uppercase ? "bg-green-500" : "bg-red-500"}`}
+                    ></div>
+                    At least one uppercase letter
+                  </div>
+                </div>
+              )}
+
+              {errors.newPassword && <p className="mt-1 text-sm text-red-500">{errors.newPassword}</p>}
             </div>
 
             {/* Confirm Password */}
@@ -225,7 +309,12 @@ const ChangePassword = () => {
                   placeholder="Confirm New Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.confirmPassword ||
+                    (formData.confirmPassword && formData.newPassword !== formData.confirmPassword)
+                      ? "border-red-300"
+                      : "border-gray-300"
+                  }`}
                   required
                 />
                 <button
@@ -260,6 +349,24 @@ const ChangePassword = () => {
                   )}
                 </button>
               </div>
+
+              {/* Password Match Indicator */}
+              {formData.confirmPassword && (
+                <div
+                  className={`mt-2 flex items-center text-xs ${
+                    formData.newPassword === formData.confirmPassword ? "text-green-600" : "text-red-500"
+                  }`}
+                >
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${
+                      formData.newPassword === formData.confirmPassword ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  ></div>
+                  {formData.newPassword === formData.confirmPassword ? "Passwords match" : "Passwords do not match"}
+                </div>
+              )}
+
+              {errors.confirmPassword && <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>}
             </div>
 
             {/* Password Requirements */}
@@ -279,10 +386,8 @@ const ChangePassword = () => {
                 <div>
                   <h4 className="text-sm font-medium text-indigo-800 mb-1">Password Requirements</h4>
                   <ul className="text-sm text-indigo-700 space-y-1">
-                    <li>• At least 8 characters long</li>
-                    <li>• Include uppercase and lowercase letters</li>
-                    <li>• Include at least one number</li>
-                    <li>• Include at least one special character</li>
+                    <li>• At least 6 characters long</li>
+                    <li>• Include at least one uppercase letter</li>
                   </ul>
                 </div>
               </div>
@@ -300,7 +405,6 @@ const ChangePassword = () => {
                 </svg>
                 Cancel
               </button>
-
               <button
                 type="submit"
                 disabled={loading}
