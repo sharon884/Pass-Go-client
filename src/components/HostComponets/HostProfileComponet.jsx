@@ -4,7 +4,6 @@ import { toast } from "sonner"
 import { useState } from "react"
 import { useEffect } from "react"
 import { useTheme } from "../../contexts/ThemeContext"
-import VerifyRequestButton from "./Profile/VerifyRequestButton.jsx"
 import { getUserProfile } from "../../services/user/userProfileServices.js"
 
 const HostProfile = () => {
