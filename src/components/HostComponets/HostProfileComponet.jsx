@@ -432,7 +432,7 @@ const HostProfile = () => {
                     Edit Profile
                   </button>
                   <button
-                    onClick={() => navigate("/profile/Change-Password-Host")}
+                    onClick={() => navigate("/host/change-password")}
                     className={`${styles.buttonSecondary} py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center shadow-sm hover:shadow-md`}
                     style={{
                       background: currentTheme === "classic" ? undefined : theme?.colors?.cardBg || "#374151",
