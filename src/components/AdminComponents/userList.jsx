@@ -1,7 +1,6 @@
-"use client"
 
 import { useState, useEffect } from "react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 import { fetchUserBasedOnRole, toggleBlockUser, editUser } from "../../services/admin/userManagement"
 
 const UserList = () => {
