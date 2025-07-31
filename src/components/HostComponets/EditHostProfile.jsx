@@ -29,7 +29,7 @@ const EditHostProfile = () => {
           profile_image: user.profile_image,
         })
       } catch (error) {
-        toast.error("Failed to load profile")
+        toast.error("Failed to load profileeee")
       } finally {
         setLoading(false)
       }
