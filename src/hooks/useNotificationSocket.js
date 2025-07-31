@@ -10,8 +10,10 @@ const useNotificationSocket = () => {
   if (!isAuthenticated || !user?.id) return;
 
   socket.emit("join-notification-room", user.id);
+  console.log("user joined the notification room", user.id);
 
   const handleNotification = ({ type, message }) => {
+    console.log(message)
     toast.info(`[${type.toUpperCase()}] ${message}`);
   };
 
