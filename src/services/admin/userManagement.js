@@ -14,6 +14,15 @@ export const fetchUserBasedOnRole  = async ( search, page, role  ) => {
     }
 } 
 
+export const toggleBlockUser = async (userId) => {
+  try {
+    const response = await api.put(`/admin/user-management/users/block/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error blocking/unblocking user:", error.response?.data?.message);
+    throw new Error("Failed to toggle block status for user");
+  }
+};
 
 
 
