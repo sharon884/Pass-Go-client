@@ -450,7 +450,7 @@ const HostProfile = () => {
                     Change Password
                   </button>
                   <div className="flex items-center justify-center">
-                    <VerifyRequestButton />
+                    {/* <VerifyRequestButton /> */}
                   </div>
                 </div>
               </div>
