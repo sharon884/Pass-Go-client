@@ -1,8 +1,7 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import {  approveEvent, rejectEvent } from "../../../services/admin/eventmanagement";
-import { fetchEvents  } from "../../../services/general/EventAnalytics";
+import { approveEvent, rejectEvent } from "../../../services/admin/eventmanagement"
+import { fetchEvents } from "../../../services/general/EventAnalytics"
 import { toast } from "sonner"
 import { useTheme } from "../../../contexts/ThemeContext"
 
@@ -14,7 +13,6 @@ const EventVerificationAdmin = () => {
   const [rejectionReason, setRejectionReason] = useState({})
   const [expandedEvent, setExpandedEvent] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
-
   const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
@@ -49,37 +47,32 @@ const EventVerificationAdmin = () => {
       }
     }
   }
-
   const styles = getThemeStyles()
 
- const loadEvents = async (page = 1) => {
-  try {
-    setLoading(true);
-    setSubmitting(true);
-
-    const data = await fetchEvents({
-      params: {
-        page,
-        limit: 10,
-        status: "requested",
-        advancePaid: true, 
-        isApproved: false,
-        order: "desc",
-        sortBy: "createdAt",
-      },
-    });
-
-    setPendingEvents(data.events || []);
-    setPagination(data.pagination);
-  } catch (error) {
-    toast.error("Failed to fetch events");
-  } finally {
-    setLoading(false);
-    setSubmitting(false);
+  const loadEvents = async (page = 1) => {
+    try {
+      setLoading(true)
+      setSubmitting(true)
+      const data = await fetchEvents({
+        params: {
+          page,
+          limit: 10,
+          status: "requested",
+          advancePaid: true,
+          isApproved: false,
+          order: "desc",
+          sortBy: "createdAt",
+        },
+      })
+      setPendingEvents(data.events || [])
+      setPagination(data.pagination)
+    } catch (error) {
+      toast.error("Failed to fetch events")
+    } finally {
+      setLoading(false)
+      setSubmitting(false)
+    }
   }
-};
-
-
 
   useEffect(() => {
     loadEvents(pagination.page)
@@ -130,7 +123,6 @@ const EventVerificationAdmin = () => {
       }}
     >
       <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 ${styles.textPrimary}`}>Pending Event Approvals</h2>
-
       {loading ? (
         <div className={`text-center py-8 ${styles.textMuted}`}>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-current mx-auto mb-2"></div>
@@ -159,7 +151,6 @@ const EventVerificationAdmin = () => {
                   {expandedEvent === event._id ? "Hide" : "View"} Details
                 </button>
               </div>
-
               {expandedEvent === event._id && (
                 <div className={`mt-4 sm:mt-6 text-sm space-y-3 sm:space-y-4 ${styles.textSecondary}`}>
                   <div className="space-y-2">
@@ -175,11 +166,11 @@ const EventVerificationAdmin = () => {
                     <p>
                       <strong className={styles.textPrimary}>Time:</strong> {event.time}
                     </p>
+                    {/* Updated line for location display */}
                     <p>
-                      <strong className={styles.textPrimary}>Location:</strong> {event.location}
+                      <strong className={styles.textPrimary}>Location:</strong> {event.locationName ?? "N/A"}
                     </p>
                   </div>
-
                   {event.images && event.images.length > 0 && (
                     <div>
                       <strong className={styles.textPrimary}>Images:</strong>
@@ -196,7 +187,6 @@ const EventVerificationAdmin = () => {
                       </div>
                     </div>
                   )}
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
                     {event.tickets?.VIP && (
                       <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
@@ -233,7 +223,6 @@ const EventVerificationAdmin = () => {
                   </div>
                 </div>
               )}
-
               <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-center">
                 <button
                   onClick={() => handleApprove(event._id)}
@@ -242,7 +231,6 @@ const EventVerificationAdmin = () => {
                 >
                   {submitting ? "Processing..." : "Approve"}
                 </button>
-
                 <input
                   type="text"
                   placeholder="Rejection reason"
@@ -258,7 +246,6 @@ const EventVerificationAdmin = () => {
                     background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#4b5563",
                   }}
                 />
-
                 <button
                   onClick={() => handleReject(event._id)}
                   className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors order-3 sm:order-none"
@@ -269,7 +256,6 @@ const EventVerificationAdmin = () => {
               </div>
             </div>
           ))}
-
           {/* Pagination Controls */}
           <div className="flex flex-col sm:flex-row justify-center items-center mt-6 sm:mt-8 gap-4">
             <button
@@ -279,11 +265,9 @@ const EventVerificationAdmin = () => {
             >
               Previous
             </button>
-
             <span className={`text-sm ${styles.textMuted} order-first sm:order-none`}>
               Page {pagination.page} of {pagination.totalPages}
             </span>
-
             <button
               onClick={() => handlePageChange(1)}
               disabled={pagination.page === pagination.totalPages}
@@ -294,7 +278,6 @@ const EventVerificationAdmin = () => {
           </div>
         </div>
       )}
-
       {/* Image Preview Modal */}
       {selectedImage && (
         <div

@@ -3,18 +3,19 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { socket } from "../../utils/socket/socket" 
-import { fetchApprovedEventsById } from "../../services/user/userEventServices" 
-import { useTheme } from "../../contexts/ThemeContext" 
+import { socket } from "../../utils/socket/socket"
+import { fetchApprovedEventsById } from "../../services/user/userEventServices"
+import { useTheme } from "../../contexts/ThemeContext"
 import EventDistanceMap from "./EventDistanceMap"
 
 const EventDetails = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
-  const [offer, setOffer] = useState(null) 
+  const [offer, setOffer] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const navigate = useNavigate()
-  const { currentTheme, theme } = useTheme() 
+  const { currentTheme, theme } = useTheme()
+
   // Theme-based styling - Keeping as is
   const getThemeStyles = () => {
     if (currentTheme === "classic") {
@@ -31,7 +32,7 @@ const EventDetails = () => {
         loadingColor: "text-purple-600",
         shadowColor: "shadow-md",
         offerBg: "bg-green-50",
-        offerText: "text-green-800", 
+        offerText: "text-green-800",
         offerBorder: "border-green-200",
       }
     } else {
@@ -47,9 +48,9 @@ const EventDetails = () => {
         categoryBadgeBg: "bg-purple-600",
         loadingColor: "text-purple-400",
         shadowColor: "shadow-lg",
-        offerBg: theme?.colors?.successBg || "bg-green-900", 
-        offerText: "text-green-200", 
-        offerBorder: "border-green-800", 
+        offerBg: theme?.colors?.successBg || "bg-green-900",
+        offerText: "text-green-200",
+        offerBorder: "border-green-800",
       }
     }
   }
@@ -70,10 +71,9 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-       
         const { event: fetchedEvent, offer: fetchedOffer } = await fetchApprovedEventsById(id)
         setEvent(fetchedEvent)
-        setOffer(fetchedOffer) 
+        setOffer(fetchedOffer)
         if (id) {
           socket.emit("join-event-room", id)
         }
@@ -90,12 +90,10 @@ const EventDetails = () => {
     }
   }, [id])
 
- 
   useEffect(() => {
     const handleFreeTicketCancelled = ({ eventId: cancelledEventId, category }) => {
       if (cancelledEventId === id) {
         console.log(`Ticket in category '${category}' was cancelled. Refreshing...`)
-      
         fetchApprovedEventsById(id)
           .then(({ event: fetchedEvent, offer: fetchedOffer }) => {
             setEvent(fetchedEvent)
@@ -110,16 +108,14 @@ const EventDetails = () => {
     }
   }, [id])
 
-  
   useEffect(() => {
     if (!event || !event.images || event.images.length <= 1) return
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % event.images.length)
-    }, 5000) 
+    }, 5000)
     return () => clearInterval(interval)
   }, [event])
 
- 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
@@ -141,6 +137,7 @@ const EventDetails = () => {
         <div className={`animate-pulse ${styles.loadingColor} text-xl font-semibold`}>Loading....</div>
       </div>
     )
+
   console.log("Business Info: ", event.businessInfo)
   return (
     <div
@@ -229,7 +226,8 @@ const EventDetails = () => {
               </div>
               <div className="flex items-start">
                 <div className={`w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Location:</div>
-                <div className={styles.textPrimary}>{event.location}</div>
+                {/* UPDATED: Display locationName instead of coordinates */}
+                <div className={styles.textPrimary}>{event.locationName ?? "N/A"}</div>
               </div>
             </div>
           </div>
@@ -243,7 +241,6 @@ const EventDetails = () => {
             }}
           >
             <h3 className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>Tickets</h3>
-
             {/* Offer Display Section - Improved Alignment and UI */}
             {offer && (
               <div
@@ -298,7 +295,6 @@ const EventDetails = () => {
                 <p className={`mt-3 text-xs ${styles.offerText}`}>This offer will be applied at checkout.</p>
               </div>
             )}
-
             {/* VIP Ticket */}
             <div
               className={`mb-4 p-4 ${styles.ticketCardBg} rounded-lg border ${styles.cardBorder}`}
@@ -381,8 +377,16 @@ const EventDetails = () => {
         </div>
       </div>
       {/* Event Distance Map */}
-      {event?.coordinates?.lat && event?.coordinates?.lng && <EventDistanceMap eventCoords={event.coordinates} />}
+      {event?.location?.coordinates && (
+        <EventDistanceMap
+          eventCoords={{
+            lat: event.location.coordinates[1], // Latitude
+            lng: event.location.coordinates[0], // Longitude
+          }}
+        />
+      )}
     </div>
   )
 }
+
 export default EventDetails
