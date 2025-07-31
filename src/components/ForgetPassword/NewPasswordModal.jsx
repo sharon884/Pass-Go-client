@@ -1,59 +1,71 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import api from "../../utils/api/api";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { validatePassword } from "../../utils/validators/passwordValidation";
+import { useState } from "react"
+import api from "../../utils/api/api"
+import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
+import { validatePassword } from "../../utils/validators/passwordValidation"
 
 function NewPasswordModal({ id, role, onClose }) {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [passwordTouched, setPasswordTouched] = useState(false)
+  const navigate = useNavigate()
 
   const handleSubmit = async () => {
-    setError("");
+    setError("")
 
     // Use imported validatePassword
-    const validationMessage = validatePassword(password);
+    const validationMessage = validatePassword(password)
     if (validationMessage) {
-      setError(validationMessage);
-      return;
+      setError(validationMessage)
+      return
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
+      setError("Passwords do not match")
+      return
     }
 
-    setIsSubmitting(true);
-
+    setIsSubmitting(true)
     try {
-      let endPoint = "";
+      let endPoint = ""
       if (role === "user") {
-        endPoint = "/user/auth/reset-password";
+        endPoint = "/user/auth/reset-password"
       } else if (role === "host") {
-        endPoint = "/host/auth/reset-password";
+        endPoint = "/host/auth/reset-password"
       }
 
-      const response = await api.post(endPoint, { id, password });
-
+      const response = await api.post(endPoint, { id, password })
       if (response.data.success) {
-        toast.success(response.data.message || "Password reset successful. Log in now!");
-        navigate("/login");
-        onClose();
+        toast.success(response.data.message || "Password reset successful. Log in now!")
+        navigate("/login")
+        onClose()
       } else {
-        setError("Something went wrong");
+        setError("Something went wrong")
       }
     } catch (error) {
-      console.log(error);
-      setError(error.response?.data?.message || "Something went wrong");
+      console.log(error)
+      setError(error.response?.data?.message || "Something went wrong")
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
+
+  const getPasswordValidationStatus = () => {
+    if (!passwordTouched || !password) return {}
+
+    return {
+      length: password.length >= 6,
+      uppercase: /[A-Z]/.test(password),
+      required: password.trim().length > 0,
+    }
+  }
+
+  const validationStatus = getPasswordValidationStatus()
+  const currentValidationError = passwordTouched ? validatePassword(password) : ""
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -67,11 +79,46 @@ function NewPasswordModal({ id, role, onClose }) {
               placeholder="New Password"
               value={password}
               onChange={(e) => {
-                setPassword(e.target.value);
-                setError("");
+                setPassword(e.target.value)
+                setError("")
+                if (!passwordTouched) setPasswordTouched(true)
               }}
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#4F3DFF]"
+              className={`w-full p-3 border-2 rounded-lg focus:outline-none transition-colors ${
+                currentValidationError && passwordTouched
+                  ? "border-red-300 focus:border-red-400"
+                  : "border-gray-200 focus:border-[#4F3DFF]"
+              }`}
             />
+
+            {/* Password Requirements */}
+            {passwordTouched && password && (
+              <div className="mt-2 space-y-1">
+                <div
+                  className={`flex items-center text-xs ${validationStatus.required ? "text-green-600" : "text-red-500"}`}
+                >
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${validationStatus.required ? "bg-green-500" : "bg-red-500"}`}
+                  ></div>
+                  Password is required
+                </div>
+                <div
+                  className={`flex items-center text-xs ${validationStatus.length ? "text-green-600" : "text-red-500"}`}
+                >
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${validationStatus.length ? "bg-green-500" : "bg-red-500"}`}
+                  ></div>
+                  At least 6 characters
+                </div>
+                <div
+                  className={`flex items-center text-xs ${validationStatus.uppercase ? "text-green-600" : "text-red-500"}`}
+                >
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${validationStatus.uppercase ? "bg-green-500" : "bg-red-500"}`}
+                  ></div>
+                  At least one uppercase letter
+                </div>
+              </div>
+            )}
           </div>
 
           <div>
@@ -80,11 +127,31 @@ function NewPasswordModal({ id, role, onClose }) {
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                setError("");
+                setConfirmPassword(e.target.value)
+                setError("")
               }}
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#4F3DFF]"
+              className={`w-full p-3 border-2 rounded-lg focus:outline-none transition-colors ${
+                confirmPassword && password !== confirmPassword
+                  ? "border-red-300 focus:border-red-400"
+                  : "border-gray-200 focus:border-[#4F3DFF]"
+              }`}
             />
+
+            {/* Password Match Indicator */}
+            {confirmPassword && (
+              <div
+                className={`mt-2 flex items-center text-xs ${
+                  password === confirmPassword ? "text-green-600" : "text-red-500"
+                }`}
+              >
+                <div
+                  className={`w-2 h-2 rounded-full mr-2 ${
+                    password === confirmPassword ? "bg-green-500" : "bg-red-500"
+                  }`}
+                ></div>
+                {password === confirmPassword ? "Passwords match" : "Passwords do not match"}
+              </div>
+            )}
           </div>
 
           {error && (
@@ -112,7 +179,7 @@ function NewPasswordModal({ id, role, onClose }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default NewPasswordModal;
+export default NewPasswordModal

@@ -1,19 +1,18 @@
 "use client"
-
-import { getHostProfile, updateHostProfile } from "../../services/host/hostProfileServices"
-import { toast } from "sonner";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { toast } from "sonner"
+import { useState } from "react"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import uploadImageToCloudinary from "../../utils/uploadCloudinary/uploadCloudinary"
 import { getUserProfile, updateUserProfile } from "../../services/user/userProfileServices"
+
 const EditHostProfile = () => {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     profile_image: "",
-  });
-  const navigate = useNavigate();
+  })
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [updating, setUpdating] = useState(false)
@@ -22,7 +21,7 @@ const EditHostProfile = () => {
     const fetchHostProfile = async () => {
       try {
         const response = await getUserProfile()
-        const host = response.user
+        const user = response.user
         setFormData({
           name: user.name,
           mobile: user.mobile,
@@ -53,12 +52,11 @@ const EditHostProfile = () => {
 
     setUploading(true)
     toast.info("Uploading image...")
-
     try {
       const imageUrl = await uploadImageToCloudinary(file)
       if (imageUrl) {
         setFormData((prev) => ({ ...prev, profile_image: imageUrl }))
-       console.log(profile_image)
+        console.log("Image uploaded:", imageUrl)
         toast.success("Image upload successfully!")
       } else {
         toast.error("Image upload failed")
@@ -75,8 +73,8 @@ const EditHostProfile = () => {
     setUpdating(true)
     try {
       await updateUserProfile(formData)
-      toast.success("Profile updated successfully");
-      navigate('/user-home-page')
+      toast.success("Profile updated successfully")
+      navigate("/user-home-page")
     } catch (error) {
       toast.error(error.message || "Profile updation failed")
     } finally {
@@ -113,7 +111,6 @@ const EditHostProfile = () => {
           </h2>
           <p className="mt-1 text-sm text-gray-500">Update your host information and profile picture.</p>
         </div>
-
         {/* Form */}
         <div className="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
@@ -138,7 +135,6 @@ const EditHostProfile = () => {
                     </svg>
                   </div>
                 )}
-
                 {/* Upload overlay */}
                 <div className="absolute bottom-2 right-2">
                   <label
@@ -174,13 +170,11 @@ const EditHostProfile = () => {
                   />
                 </div>
               </div>
-
               <div className="mt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
                 <p className="text-xs text-gray-500">Click the camera icon to upload a new image (max 5MB)</p>
               </div>
             </div>
-
             {/* Form Fields */}
             <div className="grid grid-cols-1 gap-6">
               <div>
@@ -210,7 +204,6 @@ const EditHostProfile = () => {
                   />
                 </div>
               </div>
-
               <div>
                 <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-2">
                   Mobile Number
@@ -239,7 +232,6 @@ const EditHostProfile = () => {
                 </div>
               </div>
             </div>
-
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
               <button
@@ -252,7 +244,6 @@ const EditHostProfile = () => {
                 </svg>
                 Cancel
               </button>
-
               <button
                 type="submit"
                 disabled={updating || uploading}
@@ -275,7 +266,6 @@ const EditHostProfile = () => {
             </div>
           </form>
         </div>
-
         {/* Host Tips */}
         <div className="mt-6 bg-indigo-50 border border-indigo-200 rounded-lg p-4">
           <div className="flex items-start">
@@ -297,7 +287,6 @@ const EditHostProfile = () => {
             </div>
           </div>
         </div>
-
         {/* Host Features */}
         <div className="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-4">
           <div className="flex items-start">
@@ -323,7 +312,6 @@ const EditHostProfile = () => {
             </div>
           </div>
         </div>
-
         {/* PassGo Branding */}
         <div className="mt-8 text-center">
           <div className="flex items-center justify-center">

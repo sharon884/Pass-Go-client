@@ -4,7 +4,6 @@ import { toast } from "sonner"
 import { useState } from "react"
 import { useEffect } from "react"
 import { useTheme } from "../../contexts/ThemeContext"
-import VerifyRequestButton from "./Profile/VerifyRequestButton.jsx"
 import { getUserProfile } from "../../services/user/userProfileServices.js"
 
 const HostProfile = () => {
@@ -432,7 +431,7 @@ const HostProfile = () => {
                     Edit Profile
                   </button>
                   <button
-                    onClick={() => navigate("/profile/Change-Password-Host")}
+                    onClick={() => navigate("/host/change-password")}
                     className={`${styles.buttonSecondary} py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center shadow-sm hover:shadow-md`}
                     style={{
                       background: currentTheme === "classic" ? undefined : theme?.colors?.cardBg || "#374151",
@@ -450,7 +449,7 @@ const HostProfile = () => {
                     Change Password
                   </button>
                   <div className="flex items-center justify-center">
-                    <VerifyRequestButton />
+                   
                   </div>
                 </div>
               </div>

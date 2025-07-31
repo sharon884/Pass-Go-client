@@ -1,11 +1,6 @@
-"use client"
-
 import { useState, useEffect } from "react"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import api from "../../utils/api/api"
-import { fetchUserBasedOnRole } from "../../services/admin/userManagement.js";
-import { fetchAllHost } from "../../services/admin/hostMangementServices"
+import { toast } from "sonner"
+import { fetchUserBasedOnRole, toggleBlockUser, editUser } from "../../services/admin/userManagement.js"
 
 const HostList = () => {
   const [hosts, setHosts] = useState([])
@@ -18,22 +13,21 @@ const HostList = () => {
   const [editMobile, setEditMobile] = useState("")
   const [showEditModal, setShowEditModal] = useState(false)
   const [showBlockModal, setShowBlockModal] = useState(false)
-  const [showVerifyModal, setShowVerifyModal] = useState(false)
   const [selectedHost, setSelectedHost] = useState(null)
-  const role = "host";
+  const [loading, setLoading] = useState(false)
+  const role = "host"
 
   const fetchHosts = async () => {
     try {
-      const response = await fetchUserBasedOnRole(search, page, role );
-      setHosts(response.users);
-      setTotalPages(response.totalPages);
-      // setHosts(response.data.hosts)
-      // setTotalPages(response.data.totalPages)
+      setLoading(true)
+      const response = await fetchUserBasedOnRole(search, page, role)
+      setHosts(response.users)
+      setTotalPages(response.totalPages)
     } catch (error) {
-      console.log("error fetching hosts", error);
-      toast.error("Failed to fetch hosts");
-      console.error("Error fetching users", error)
+      console.log("error fetching hosts", error)
       toast.error("Failed to fetch hosts")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -43,47 +37,15 @@ const HostList = () => {
 
   const toggleBlock = async (hostId) => {
     try {
-      const response = await toggleBlockHost(hostId);
-      if (response.data.success) {
+      const response = await toggleBlockUser(hostId)
+      if (response.success) {
         fetchHosts()
         const host = hosts.find((h) => h._id === hostId)
-        toast.success(`Host ${host.is_active ? "blocked" : "unblocked"} successfully`);
-
-      // const response = await api.put(`/admin/hostManagement/host/block/${hostId}`)
-      // if (response.data.success) {
-      //   fetchHosts()
-      //   const host = hosts.find((h) => h._id === hostId)
-      //   toast.success(`Host ${host.is_active ? "blocked" : "unblocked"} successfully`)
+        toast.success(`Host ${host.is_active ? "blocked" : "unblocked"} successfully`)
       }
     } catch (error) {
-      console.log("error toggling host block status", error);
-      toast.error("Failed to update host status");
-
-      // console.log("error toggling host block status", error)
-      // toast.error("Failed to update host status")
-    }
-  }
-
-  const toggleVerify = async (hostId) => {
-    try {
-      const response = await toggleVerify(hostId);
-      if ( response.data.success ) {
-        fetchHosts();
-        const host = hosts.find((h) => h._id === hostId);
-        toast.success(`Host ${host.isVerified ? "unverified" : "verified"} successfully`);
-      
-      }
-      // const response = await api.put(`/admin/hostManagement/host/verify/${hostId}`)
-      // if (response.data.success) {
-      //   fetchHosts()
-      //   const host = hosts.find((h) => h._id === hostId)
-      //   toast.success(`Host ${host.isVerified ? "unverified" : "verified"} successfully`)
-      
-    } catch (error) {
-      console.log("error toggling host verify status", error);
-      toast.error("Failed to update host verification status");
-      // console.error("error toggling host verify status", error)
-      // toast.error("Failed to update host verification status")
+      console.log("error toggling host block status", error)
+      toast.error("Failed to update host status")
     }
   }
 
@@ -95,22 +57,21 @@ const HostList = () => {
     setShowEditModal(true)
   }
 
-  const editHost = async () => {
+  const handleEditHost = async () => {
     try {
-      const response = await editHost
-      // const response = await api.put("/admin/hostManagement/host/edit", {
-      //   id: editId,
-      //   email: editEmail,
-      //   mobile: editMobile,
-      //   name: editName,
-      // })
-
-      // if (response.data.success) {
-      //   fetchHosts()
-      //   resetFields()
-      //   setShowEditModal(false)
-      //   toast.success("Host updated successfully")
-      // }
+      const userData = {
+        id: editId,
+        name: editName,
+        email: editEmail,
+        mobile: editMobile,
+      }
+      const response = await editUser(userData)
+      if (response.success) {
+        fetchHosts()
+        resetFields()
+        setShowEditModal(false)
+        toast.success("Host updated successfully")
+      }
     } catch (error) {
       console.log("error editing host", error)
       toast.error("Failed to update host")
@@ -127,11 +88,6 @@ const HostList = () => {
   const handleBlockConfirm = (host) => {
     setSelectedHost(host)
     setShowBlockModal(true)
-  }
-
-  const handleVerifyConfirm = (host) => {
-    setSelectedHost(host)
-    setShowVerifyModal(true)
   }
 
   return (
@@ -151,81 +107,87 @@ const HostList = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Verification
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {hosts.length > 0 ? (
-              hosts.map((host) => (
-                <tr key={host._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{host.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{host.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{host.mobile}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{host.role}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        host.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {host.is_active ? "Active" : "Blocked"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        host.isVerified ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {host.hostVerificationStatus && host.isVerified ? "Verified" : "Unverified"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => handleBlockConfirm(host)}
-                      className="text-[#5A3FFF] hover:text-[#4930cc] mr-2 transition-colors"
-                    >
-                      {host.is_active ? "Block" : "Unblock"}
-                    </button>
-                    <button
-                      onClick={() => handleVerifyConfirm(host)}
-                      className="text-[#5A3FFF] hover:text-[#4930cc] mr-2 transition-colors"
-                    >
-                      {host.isVerified ? "Unverify" : "Verify"}
-                    </button>
-                    <button
-                      onClick={() => handleEdit(host)}
-                      className="text-[#5A3FFF] hover:text-[#4930cc] transition-colors"
-                    >
-                      Edit
-                    </button>
+      {loading ? (
+        <div className="flex items-center justify-center py-8">
+          <div className="w-8 h-8 border-4 border-[#5A3FFF] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Mobile
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Verification
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {hosts.length > 0 ? (
+                hosts.map((host) => (
+                  <tr key={host._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{host.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{host.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{host.mobile}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{host.role}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          host.isVerified ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {host.isVerified ? "Verified" : "Unverified"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          host.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {host.is_active ? "Active" : "Blocked"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        onClick={() => handleBlockConfirm(host)}
+                        className="text-[#5A3FFF] hover:text-[#4930cc] mr-4 transition-colors"
+                      >
+                        {host.is_active ? "Block" : "Unblock"}
+                      </button>
+                      <button
+                        onClick={() => handleEdit(host)}
+                        className="text-[#5A3FFF] hover:text-[#4930cc] transition-colors"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">
+                    No hosts found
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">
-                  No hosts found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="px-6 py-4 flex items-center justify-between border-t">
         <div className="text-sm text-gray-500">
@@ -306,7 +268,7 @@ const HostList = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={editHost}
+                  onClick={handleEditHost}
                   className="px-4 py-2 bg-[#5A3FFF] rounded-md text-sm font-medium text-white hover:bg-[#4930cc] focus:outline-none transition-colors"
                 >
                   Save Changes
@@ -343,39 +305,6 @@ const HostList = () => {
                   className="px-4 py-2 bg-[#5A3FFF] rounded-md text-sm font-medium text-white hover:bg-[#4930cc] focus:outline-none transition-colors"
                 >
                   {selectedHost?.is_active ? "Block" : "Unblock"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Verify Confirmation Modal */}
-      {showVerifyModal && (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
-          <div className="relative bg-white rounded-lg max-w-md w-full mx-4 md:mx-auto shadow-lg">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Are you sure?</h3>
-              <p className="text-sm text-gray-500 mb-4">
-                {selectedHost?.isVerified
-                  ? "This will remove verification status from this host."
-                  : "This will verify this host on the platform."}
-              </p>
-              <div className="flex justify-end space-x-3">
-                <button
-                  onClick={() => setShowVerifyModal(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    toggleVerify(selectedHost._id)
-                    setShowVerifyModal(false)
-                  }}
-                  className="px-4 py-2 bg-[#5A3FFF] rounded-md text-sm font-medium text-white hover:bg-[#4930cc] focus:outline-none transition-colors"
-                >
-                  {selectedHost?.isVerified ? "Unverify" : "Verify"}
                 </button>
               </div>
             </div>
