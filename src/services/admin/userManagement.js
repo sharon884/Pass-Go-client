@@ -26,5 +26,21 @@ export const toggleBlockUser = async (userId) => {
 
 
 
+export const editUser = async (userData) => {
+  try {
+    const response = await api.put("/admin/user-management/users/edit", {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      mobile: userData.mobile,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error editing user:", error.response?.data?.message);
+    throw new Error("Failed to edit user details");
+  }
+};
+
+
 
 
