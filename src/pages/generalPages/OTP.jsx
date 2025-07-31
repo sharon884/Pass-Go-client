@@ -1,32 +1,43 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import api from "../../utils/api/api";
-import { toast } from "sonner";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../features/auth/authSlice";
-import  { resendOtp } from "../../services/user/userAuthServices"
- 
+"use client"
+
+import { useLocation, useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import api from "../../utils/api/api"
+import { toast } from "sonner"
+import { useDispatch } from "react-redux"
+import { setCredentials } from "../../features/auth/authSlice"
+import { resendOtp } from "../../services/user/userAuthServices"
+
 const OtpPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
+  const location = useLocation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { email, userId, role } = location.state || {}
-
-
   const [otp, setOtp] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [resendCooldown, setResendCooldown] = useState(0)
+  const [showResendButton, setShowResendButton] = useState(false)
+  const [initialTimer, setInitialTimer] = useState(60)
 
   useEffect(() => {
-
     if (!email || !userId || !role) {
       navigate("/signup")
     }
   }, [email, userId, role, navigate])
 
-  // Countdown timer for resend button
+  // Initial timer to show resend button after 60 seconds
+  useEffect(() => {
+    let timer
+    if (initialTimer > 0) {
+      timer = setTimeout(() => setInitialTimer(initialTimer - 1), 1000)
+    } else {
+      setShowResendButton(true)
+    }
+    return () => clearTimeout(timer)
+  }, [initialTimer])
+
+  // Countdown timer for resend button cooldown
   useEffect(() => {
     let timer
     if (resendCooldown > 0) {
@@ -40,80 +51,68 @@ const OtpPage = () => {
     setError("")
     setSuccess("")
 
-  let endPoint = "";
-
-if (role === "user") {
-  endPoint = "/user/auth/verify-otp";
-} else if (role === "admin") {
-  endPoint = "/admin/auth/verify-otp";
-} else {
-  toast.error("Invalid role for OTP verification");
-  return;
-}
-
+    let endPoint = ""
+    if (role === "user") {
+      endPoint = "/user/auth/verify-otp"
+    } else if (role === "admin") {
+      endPoint = "/admin/auth/verify-otp"
+    } else {
+      toast.error("Invalid role for OTP verification")
+      return
+    }
 
     try {
-      const response = await api.post( endPoint, {
+      const response = await api.post(endPoint, {
         email,
         userId,
         otp,
         role,
       })
+      console.log("OTP verified successfully!", response.data)
+      setError("")
+      setSuccess("Email verified successfully! Redirecting...")
+      toast.success("Email verified successfully! Redirecting...")
+      localStorage.setItem("isAuthenticated", true)
+      localStorage.setItem("role", role)
 
-      console.log("OTP verified successfully!", response.data);
+      dispatch(
+        setCredentials({
+          id: response.data.id,
+          name: response.data.name,
+          mobile: response.data.mobile,
+          role,
+          profile_image: response.data.profile_image || "",
+        }),
+      )
 
-  setError(""); 
-  setSuccess("Email verified successfully! Redirecting...");
-  toast.success("Email verified successfully! Redirecting...");
-
-  localStorage.setItem("isAuthenticated", true);
-  localStorage.setItem("role", role);
-
-        dispatch(
-    setCredentials({
-      id: response.data.id,
-      name: response.data.name,  
-      mobile: response.data.mobile,
-      role,
-      profile_image: response.data.profile_image || "",
-    })
-  );
-        
-     if (role === "user" || role === "host") {
-    navigate("/welcome-page");
-  } else if (role === "admin") {
-    navigate("/admin-home-page");
-  }
-
+      if (role === "user" || role === "host") {
+        navigate("/welcome-page")
+      } else if (role === "admin") {
+        navigate("/admin-home-page")
+      }
     } catch (err) {
-     console.error("OTP verification failed", err.response?.data || err.message);
-
-  setSuccess(""); 
-  setError(err.response?.data?.message || "OTP verification failed. Try again!");
-  toast.error("OTP verification failed. Try again!");
-
-  return;
+      console.error("OTP verification failed", err.response?.data || err.message)
+      setSuccess("")
+      setError(err.response?.data?.message || "OTP verification failed. Try again!")
+      toast.error("OTP verification failed. Try again!")
+      return
     }
   }
 
-
- 
-const handleResendOtp = async () => {
-  if (resendCooldown > 0) return;
-
-  try {
-    await resendOtp(email);
-    setError("");
-    setSuccess("OTP resent to your email!");
-    toast.success("OTP resent to your email!");
-    setResendCooldown(60); 
-  } catch (err) {
-    setSuccess("");
-    setError(err.message);
-    toast.error(err.message);
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0) return
+    try {
+      await resendOtp(email)
+      setError("")
+      setSuccess("OTP resent to your email!")
+      toast.success("OTP resent to your email!")
+      setResendCooldown(60)
+    } catch (err) {
+      setSuccess("")
+      setError(err.message)
+      toast.error(err.message)
+    }
   }
-};
-
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
@@ -141,7 +140,6 @@ const handleResendOtp = async () => {
             </p>
           </div>
         </div>
-
         {/* Right side - Form */}
         <div className="w-full md:w-7/12 p-8">
           <div className="max-w-md mx-auto">
@@ -149,7 +147,6 @@ const handleResendOtp = async () => {
             <p className="text-center text-gray-600 mb-8">
               We've sent an OTP to your email: <span className="font-medium">{email}</span>
             </p>
-
             {/* Error and Success Messages */}
             {error && (
               <div className="mb-4 bg-red-50 text-red-700 p-3 rounded-lg flex items-center">
@@ -168,7 +165,6 @@ const handleResendOtp = async () => {
                 {error}
               </div>
             )}
-
             {success && (
               <div className="mb-4 bg-green-50 text-green-700 p-3 rounded-lg flex items-center">
                 <svg
@@ -186,7 +182,6 @@ const handleResendOtp = async () => {
                 {success}
               </div>
             )}
-
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="otp">
@@ -203,7 +198,6 @@ const handleResendOtp = async () => {
                   required
                 />
               </div>
-
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   type="submit"
@@ -211,24 +205,27 @@ const handleResendOtp = async () => {
                 >
                   Verify OTP
                 </button>
-                <button
-                  type="button"
-                  onClick={handleResendOtp}
-                  disabled={resendCooldown > 0}
-                  className="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend OTP"}
-                </button>
+                {showResendButton && (
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={resendCooldown > 0}
+                    className="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend OTP"}
+                  </button>
+                )}
               </div>
             </form>
-
+            {!showResendButton && (
+              <p className="mt-4 text-center text-sm text-gray-500">Resend OTP will be available in {initialTimer}s</p>
+            )}
             <p className="mt-6 text-center text-sm text-gray-600">
               Didn't receive the email?{" "}
               <a href="#" className="text-indigo-600 hover:text-indigo-500 font-medium">
                 Check your spam folder
               </a>
             </p>
-
             {/* Social Media Icons */}
             <div className="flex justify-center space-x-4 mt-8">
               <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors duration-200">
@@ -241,14 +238,12 @@ const handleResendOtp = async () => {
                   />
                 </svg>
               </a>
-
               <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors duration-200">
                 <span className="sr-only">Twitter</span>
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                 </svg>
               </a>
-
               <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors duration-200">
                 <span className="sr-only">Facebook</span>
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

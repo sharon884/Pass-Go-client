@@ -1,110 +1,109 @@
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
-import { fetchUserBasedOnRole } from "../../services/admin/userManagement";
+
+import { useState, useEffect } from "react"
+import { toast } from "sonner"
+import { fetchUserBasedOnRole, toggleBlockUser, editUser } from "../../services/admin/userManagement"
 
 const UserList = () => {
-  const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [editId, setEditId] = useState(null);
-  const [editName, setEditName] = useState("");
-  const [editEmail, setEditEmail] = useState("");
-  const [editMobile, setEditMobile] = useState("");
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [userToBlock, setUserToBlock] = useState(null);
-  const role = "user";
+  const [users, setUsers] = useState([])
+  const [search, setSearch] = useState("")
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [editId, setEditId] = useState(null)
+  const [editName, setEditName] = useState("")
+  const [editEmail, setEditEmail] = useState("")
+  const [editMobile, setEditMobile] = useState("")
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [userToBlock, setUserToBlock] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const role = "user"
+
   const fetchUsers = async () => {
     try {
-      const response = await fetchUserBasedOnRole(search, page, role);
-      setUsers(response.users);
-      setTotalPages(response.totalPages);
+      setLoading(true)
+      const response = await fetchUserBasedOnRole(search, page, role)
+      setUsers(response.users)
+      setTotalPages(response.totalPages)
     } catch (error) {
-      console.error("Error fetching users:", error);
-      toast.error("Failed to fetch users");
+      console.error("Error fetching users:", error)
+      toast.error("Failed to fetch users")
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   const toggleBlock = async (userId) => {
     try {
-      const response = await api.put(
-        `/admin/user-management/users/block/${userId}`
-      );
-
-      if (response.data.success) {
-        fetchUsers();
-        const user = users.find((u) => u._id === userId);
-        toast.success(
-          `User ${user.is_active ? "blocked" : "unblocked"} successfully`
-        );
+      const response = await toggleBlockUser(userId)
+      if (response.success) {
+        fetchUsers()
+        const user = users.find((u) => u._id === userId)
+        toast.success(`User ${user.is_active ? "blocked" : "unblocked"} successfully`)
       }
     } catch (error) {
-      console.log("error toggling user block status", error);
-      toast.error("Failed to update user status");
+      console.log("error toggling user block status", error)
+      toast.error("Failed to update user status")
     }
-  };
+  }
 
   const handleEdit = (user) => {
-    setEditId(user._id);
-    setEditName(user.name);
-    setEditEmail(user.email);
-    setEditMobile(user.mobile);
-    setShowEditModal(true);
-  };
+    setEditId(user._id)
+    setEditName(user.name)
+    setEditEmail(user.email)
+    setEditMobile(user.mobile)
+    setShowEditModal(true)
+  }
 
-  const editUser = async () => {
+  const handleEditUser = async () => {
     try {
-      const response = await api.put("/admin/user-management/users/edit", {
+      const userData = {
         id: editId,
-        email: editEmail,
         name: editName,
+        email: editEmail,
         mobile: editMobile,
-      });
-
-      if (response.data.success) {
-        fetchUsers();
-        resetFields();
-        setShowEditModal(false);
-        toast.success("User updated successfully");
+      }
+      const response = await editUser(userData)
+      if (response.success) {
+        fetchUsers()
+        resetFields()
+        setShowEditModal(false)
+        toast.success("User updated successfully")
       }
     } catch (error) {
-      console.log("error editing user", error);
-      toast.error("Failed to update user");
+      console.log("error editing user", error)
+      toast.error("Failed to update user")
     }
-  };
+  }
 
   const resetFields = () => {
-    setEditId(null);
-    setEditEmail("");
-    setEditMobile("");
-    setEditName("");
-  };
+    setEditId(null)
+    setEditEmail("")
+    setEditMobile("")
+    setEditName("")
+  }
 
   const handleBlockConfirm = (user) => {
-    setUserToBlock(user);
-    setShowConfirmModal(true);
-  };
+    setUserToBlock(user)
+    setShowConfirmModal(true)
+  }
 
   const confirmBlock = () => {
     if (userToBlock) {
-      toggleBlock(userToBlock._id);
-      setShowConfirmModal(false);
-      setUserToBlock(null);
+      toggleBlock(userToBlock._id)
+      setShowConfirmModal(false)
+      setUserToBlock(null)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchUsers();
-  }, [search, page]);
+    fetchUsers()
+  }, [search, page])
 
   return (
     <div className="bg-white rounded-lg shadow-sm">
       <div className="p-4 border-b">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h2 className="text-xl font-semibold text-gray-800">
-            User Management
-          </h2>
+          <h2 className="text-xl font-semibold text-gray-800">User Management</h2>
           <div className="relative">
             <input
               type="text"
@@ -117,86 +116,84 @@ const UserList = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Mobile
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {users.length > 0 ? (
-              users.map((user) => (
-                <tr key={user._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {user.name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {user.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {user.mobile}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {user.role}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        user.is_active
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {user.is_active ? "Active" : "Blocked"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => handleBlockConfirm(user)}
-                      className="text-[#5A3FFF] hover:text-[#4930cc] mr-4"
-                    >
-                      {user.is_active ? "Block" : "Unblock"}
-                    </button>
-                    <button
-                      onClick={() => handleEdit(user)}
-                      className="text-[#5A3FFF] hover:text-[#4930cc]"
-                    >
-                      Edit
-                    </button>
+      {loading ? (
+        <div className="flex items-center justify-center py-8">
+          <div className="w-8 h-8 border-4 border-[#5A3FFF] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Mobile
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Verification
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {users.length > 0 ? (
+                users.map((user) => (
+                  <tr key={user._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.mobile}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{user.role}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          user.isVerified ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {user.isVerified ? "Verified" : "Unverified"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          user.is_active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {user.is_active ? "Active" : "Blocked"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        onClick={() => handleBlockConfirm(user)}
+                        className="text-[#5A3FFF] hover:text-[#4930cc] mr-4"
+                      >
+                        {user.is_active ? "Block" : "Unblock"}
+                      </button>
+                      <button onClick={() => handleEdit(user)} className="text-[#5A3FFF] hover:text-[#4930cc]">
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">
+                    No users found
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="6"
-                  className="px-6 py-4 text-center text-sm text-gray-500"
-                >
-                  No users found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="px-6 py-4 flex items-center justify-between border-t">
         <div className="text-sm text-gray-500">
@@ -233,14 +230,10 @@ const UserList = () => {
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
           <div className="relative bg-white rounded-lg max-w-md w-full mx-4 md:mx-auto shadow-lg">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Edit User
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit User</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                   <input
                     type="text"
                     placeholder="Name"
@@ -250,9 +243,7 @@ const UserList = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                   <input
                     type="email"
                     placeholder="Email"
@@ -262,9 +253,7 @@ const UserList = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Mobile
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Mobile</label>
                   <input
                     type="text"
                     placeholder="Mobile"
@@ -277,15 +266,15 @@ const UserList = () => {
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   onClick={() => {
-                    resetFields();
-                    setShowEditModal(false);
+                    resetFields()
+                    setShowEditModal(false)
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={editUser}
+                  onClick={handleEditUser}
                   className="px-4 py-2 bg-[#5A3FFF] rounded-md text-sm font-medium text-white hover:bg-[#4930cc] focus:outline-none"
                 >
                   Save Changes
@@ -301,9 +290,7 @@ const UserList = () => {
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
           <div className="relative bg-white rounded-lg max-w-md w-full mx-4 md:mx-auto shadow-lg">
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Are you sure?
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Are you sure?</h3>
               <p className="text-sm text-gray-500 mb-4">
                 {userToBlock?.is_active
                   ? "This will block the user from accessing the platform."
@@ -328,7 +315,7 @@ const UserList = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default UserList;
+export default UserList

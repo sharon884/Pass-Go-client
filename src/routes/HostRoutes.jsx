@@ -18,6 +18,7 @@ import HostEventAnalytics from "../components/HostComponets/HostBookings";
 import HostWalletPage from "../pages/hostPages/HostWalletPage";
 import HostWallet from "../components/HostComponets/Wallet/HostWallet";
 import NotificationPage from "@/pages/generalPages/NotificationPage";
+import ChangePassword from "@/components/UserComponents/ChangePassword";
 
 const HostRoutes = [
   <Route
@@ -43,7 +44,7 @@ const HostRoutes = [
     path="/host/change-password"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
-        <ChangePasswordHost />
+        <ChangePassword/>
       </ProtectedRoute>
     }
   />,
