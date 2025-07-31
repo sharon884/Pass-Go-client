@@ -1,16 +1,15 @@
 "use client"
-
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { getUserBookings } from "../../../services/user/userBookingsServices"
 import { cancelFreeTicket, cancelPaidTickets } from "../../../services/user/userCancelTicketServices"
 import { toast } from "sonner"
 import html2canvas from "html2canvas"
-import { Share2, Download } from "lucide-react" // Import Lucide icons
+import { Share2, Download } from "lucide-react"
 
 const BookingDetailsPage = () => {
-  const { id } = useParams() // Booking ID
-  const location = useLocation() // Get bookingType from state
+  const { id } = useParams()
+  const location = useLocation()
   const navigate = useNavigate()
   const bookingType = location.state?.bookingType
   const [booking, setBooking] = useState(null)
@@ -52,10 +51,9 @@ const BookingDetailsPage = () => {
         await cancelPaidTickets([booking._id])
         toast.success("Paid ticket refund requested.")
       }
-      // Update booking status locally
       setBooking((prev) => ({ ...prev, status: "cancelled" }))
       setTimeout(() => {
-        navigate("/user/bookings");
+        navigate("/user/bookings")
       }, 2000)
     } catch (error) {
       toast.error(error.message || "Failed to cancel ticket.")
@@ -67,11 +65,12 @@ const BookingDetailsPage = () => {
   const handleDownloadTicket = async (idx) => {
     const element = document.getElementById(`ticket-${idx}`)
     if (!element) return
+
     try {
       const canvas = await html2canvas(element, {
-        scale: 2, // Increased scale for better quality
-        useCORS: true, // Ensure CORS is handled for images
-        backgroundColor: "#ffffff", // Explicitly set background color to avoid oklch issues
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
       })
       const dataURL = canvas.toDataURL("image/png")
       const link = document.createElement("a")
@@ -95,7 +94,7 @@ const BookingDetailsPage = () => {
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
-        backgroundColor: "#ffffff", // Explicitly set background color
+        backgroundColor: "#ffffff",
       })
       canvas.toBlob(async (blob) => {
         if (blob && navigator.share) {
@@ -108,7 +107,9 @@ const BookingDetailsPage = () => {
             await navigator.share({
               files: files,
               title: `My Ticket for ${booking.event?.title}`,
-              text: `Check out my ticket for ${booking.event?.title} on ${new Date(booking.event?.date).toLocaleDateString()}!`,
+              text: `Check out my ticket for ${booking.event?.title} on ${new Date(
+                booking.event?.date,
+              ).toLocaleDateString()}!`,
             })
             toast.success("Ticket shared successfully!")
           } catch (error) {
@@ -134,7 +135,6 @@ const BookingDetailsPage = () => {
   if (loading) return <div className="p-6 text-center text-lg text-gray-600">Loading booking details...</div>
   if (!booking) return <div className="p-6 text-center text-red-500 text-lg">Booking not found.</div>
 
-  // Conditional rendering logic
   const showCancelButton = booking.status !== "cancelled" && booking.status !== "created"
   const showTicketsSection =
     booking.eticketUrl?.length > 0 && booking.status !== "cancelled" && booking.status !== "created"
@@ -161,7 +161,7 @@ const BookingDetailsPage = () => {
           <strong>Category:</strong> {booking.category}
         </p>
         <p>
-          <strong>Location:</strong> {booking.event?.location}
+          <strong>Location:</strong> {booking.event?.locationName || "Location not specified"}
         </p>
         <p>
           <strong>Date:</strong> {new Date(booking.event?.date).toLocaleDateString()}
@@ -237,6 +237,7 @@ const BookingDetailsPage = () => {
           {cancelling ? "Cancelling..." : "Cancel Ticket"}
         </button>
       )}
+
       {booking.status === "cancelled" && (
         <p className="mt-4 text-green-600 font-semibold">This ticket has been cancelled.</p>
       )}
