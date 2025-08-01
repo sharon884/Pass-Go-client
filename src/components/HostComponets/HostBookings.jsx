@@ -11,6 +11,7 @@ import {
 } from "../../services/host/hostEventOfferServices";
 import AddOfferModal from "./AddOfferModal";
 import CancelEventModal from "../../components/HostComponets/Modals/CancelEventModal";
+import { useNavigate } from "react-router-dom";
 
 const HostEventAnalytics = () => {
   const { eventId } = useParams();
@@ -24,6 +25,7 @@ const HostEventAnalytics = () => {
   const [animatedCards, setAnimatedCards] = useState({});
   const { currentTheme, theme } = useTheme();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Enhanced theme styles with gradients and animations
   const getThemeStyles = () => {
@@ -276,7 +278,7 @@ const HostEventAnalytics = () => {
               </p>
             </div>
             <div className="flex gap-3">
-              <button
+              <button onClick={()=>navigate(`/host/events-edit/${eventId}`)}
                 className={`px-6 py-3 rounded-2xl ${styles.primaryGradient} text-white font-semibold
                                 transform transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95
                                 flex items-center gap-2`}
