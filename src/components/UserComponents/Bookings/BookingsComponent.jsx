@@ -74,6 +74,7 @@ const BookingsComponent = () => {
       }
     }
   }
+
   const styles = getThemeStyles()
 
   useEffect(() => {
@@ -106,7 +107,7 @@ const BookingsComponent = () => {
         bookingType: "order",
         eventDate: order.event?.date,
         eventTitle: order.event?.title,
-        eventLocation: order.event?.location,
+        eventLocation: order.event?.locationName || "Location not specified",
         eventCategory: order.event?.category,
         eventImages: order.event?.images,
         eventTime: order.event?.time,
@@ -120,7 +121,7 @@ const BookingsComponent = () => {
         bookingType: "ticket",
         eventDate: ticket.event?.date,
         eventTitle: ticket.event?.title,
-        eventLocation: ticket.event?.location,
+        eventLocation: ticket.event?.locationName || "Location not specified",
         eventCategory: ticket.event?.category,
         eventImages: ticket.event?.images,
         eventTime: ticket.event?.time,
@@ -472,9 +473,7 @@ const BookingsComponent = () => {
                               <div className={`text-sm font-medium ${styles.textPrimary}`}>
                                 {booking.eventTitle || "Event not found"}
                               </div>
-                              <div className={`text-sm ${styles.textMuted}`}>
-                                {booking.eventLocation || "Location not specified"}
-                              </div>
+                              <div className={`text-sm ${styles.textMuted}`}>{booking.eventLocation}</div>
                               <div className="flex items-center space-x-2 mt-1">
                                 <span className={`text-xs ${styles.textMuted}`}>
                                   {booking.eventCategory || "Category not specified"}
@@ -611,9 +610,7 @@ const BookingsComponent = () => {
                           <h3 className={`text-base font-medium ${styles.textPrimary}`}>
                             {booking.eventTitle || "Event not found"}
                           </h3>
-                          <p className={`text-sm ${styles.textMuted}`}>
-                            {booking.eventLocation || "Location not specified"}
-                          </p>
+                          <p className={`text-sm ${styles.textMuted}`}>{booking.eventLocation}</p>
                           <div className="flex items-center space-x-2 mt-1">
                             <span
                               className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getBookingTypeColor(
@@ -672,7 +669,6 @@ const BookingsComponent = () => {
                         <span className={`text-xs ${styles.textMuted}`}>{booking.eventCategory}</span>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        
                         {booking.bookingType === "order" ? (
                           <div>
                             <div className={`text-lg font-semibold ${styles.textPrimary}`}>₹{booking.amount || 0}</div>
@@ -713,7 +709,7 @@ const BookingsComponent = () => {
                     <div className={`text-xs ${styles.textMuted}`}>
                       Booked on {formatDate(booking.createdAt || booking.bookedAt)}
                     </div>
-                        
+
                     {/* Action Button */}
                     <div className="pt-2">
                       <a
@@ -732,7 +728,6 @@ const BookingsComponent = () => {
       </div>
     </div>
   )
-  
 }
 
 export default BookingsComponent
