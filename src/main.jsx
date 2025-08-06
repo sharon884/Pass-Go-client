@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google"
 import "./App.css"
 import "leaflet/dist/leaflet.css";
 import { BreadcrumbProvider  } from "./contexts/BreadcrumbContext";
-import BreadcrumbUpdater from "./components/UI/Breadcrumb/BreadcrumbUpdater"
+import BreadcrumbUpdater from "./Components/UI/Breadcrumb/BreadcrumbUpdater"
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
