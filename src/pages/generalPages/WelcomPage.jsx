@@ -1,6 +1,6 @@
 import React from 'react'
 import Welcome from '../../components/generalComponents/UserWelcomePage/Welcome'
-import Qoute from '../../components/generalComponents/UserWelcomePage/qoute'
+import Quote from '../../components/generalComponents/UserWelcomePage/Quote'
 import Cta from '../../components/generalComponents/UserWelcomePage/Cta'
 import UserStories from '../../components/generalComponents/UserWelcomePage/UserStories'
 import Stats from '../../components/generalComponents/UserWelcomePage/Stats'
