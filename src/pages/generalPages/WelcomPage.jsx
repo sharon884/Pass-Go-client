@@ -21,7 +21,7 @@ function WelcomPage() {
     <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors duration-300">
       <Welcome/>
       <SearchBar/>
-      <Qoute/>
+      <Quote/>
       <Cta/>
       <UserStories/>
       <Stats/>
