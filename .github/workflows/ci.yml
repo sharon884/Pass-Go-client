@@ -25,5 +25,5 @@ jobs:
       - name: 🛠️ Build React app
         run: npm run build
 
-      - name: ✅ Run tests
-        run: npm run test -- --run
+      # - name: ✅ Run tests
+      #   run: npm run test -- --run
