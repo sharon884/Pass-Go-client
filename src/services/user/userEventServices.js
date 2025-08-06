@@ -14,20 +14,23 @@ export const searchEvents = async( query, page = 1, limit = 6 ) => {
 };
 export const fetchApproveEvents = async (
   page = 1,
-  limit = 6,
+  limit = 8, // Updated default limit to 8
   eventType = "all",
-  sortBy = "",
-  category = ""
+  sortBy = "latest",
+  category = "", // Added category parameter
+  latitude = null, // Added latitude parameter
+  longitude = null, // Added longitude parameter
 ) => {
   try {
     const params = {
       page,
       limit,
     }
-
     if (eventType && eventType !== "all") params.eventType = eventType
     if (sortBy) params.sortBy = sortBy
-    if (category) params.category = category 
+    if (category) params.category = category // Add category to params
+    if (latitude !== null) params.latitude = latitude // Add latitude to params
+    if (longitude !== null) params.longitude = longitude // Add longitude to params
 
     const response = await api.get(`/user/events/approved-events`, { params })
     return response.data
@@ -36,6 +39,7 @@ export const fetchApproveEvents = async (
     throw new Error("Failed to fetch approved events")
   }
 }
+
 
 
 export const fetchApprovedEventsById = async ( eventId ) => {

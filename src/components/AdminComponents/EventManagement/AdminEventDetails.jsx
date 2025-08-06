@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getEventBookingsSummary } from "../../../services/general/EventAnalytics"
@@ -11,7 +10,6 @@ const AdminEventDetails = () => {
   const [loading, setLoading] = useState(true)
   const [activeView, setActiveView] = useState("summary")
   const [hoveredMetric, setHoveredMetric] = useState(null)
-
   const COMMISSION_RATE = 10
 
   useEffect(() => {
@@ -154,9 +152,9 @@ const AdminEventDetails = () => {
           ].map((metric, index) => (
             <div
               key={metric.label}
-              className={`bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700 p-6 
-                         transform transition-all duration-300 hover:scale-105 hover:bg-gray-800/80 
-                         hover:border-blue-500/50 cursor-pointer group
+              className={`bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700 p-6
+                          transform transition-all duration-300 hover:scale-105 hover:bg-gray-800/80
+                          hover:border-blue-500/50 cursor-pointer group
                          ${hoveredMetric === index ? "ring-2 ring-blue-500/30" : ""}`}
               onMouseEnter={() => setHoveredMetric(index)}
               onMouseLeave={() => setHoveredMetric(null)}
@@ -177,7 +175,6 @@ const AdminEventDetails = () => {
                 </div>
                 <p className="text-gray-500 text-xs">{metric.description}</p>
               </div>
-
               {/* Animated progress bar */}
               <div className="mt-4 h-1 bg-gray-700 rounded-full overflow-hidden">
                 <div
@@ -203,7 +200,7 @@ const AdminEventDetails = () => {
                 { label: "Event Type", value: event.type.replace(/_/g, " ").toUpperCase(), icon: "🎭" },
                 { label: "Event Date", value: dayjs(event.date).format("MMM DD, YYYY"), icon: "📅" },
                 { label: "Category", value: event.category, icon: "🏷️" },
-                { label: "Location", value: event.location, icon: "📍" },
+                { label: "Location", value: event.locationName || "Location not specified", icon: "📍" },
                 { label: "Status", value: event.status.toUpperCase(), icon: "⚡" },
               ].map((item) => (
                 <div
