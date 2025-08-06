@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { fetchAdminWallet } from "../../../services/admin/adminWallerServices";
-import ThemedTable from "../../UI/ThemedTable"
+import ThemedTable from "../../ui/ThemedTable"
 import { useTheme } from "../../../contexts/ThemeContext";
 
 const AdminWallet = () => {
