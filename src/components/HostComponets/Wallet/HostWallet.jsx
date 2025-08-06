@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { fetchHostWallet } from "../../../services/host/hostWalletServices"
-import ThemedTable from "../../UI/ThemedTable"
+import ThemedTable from "../../ui/ThemedTable"
 import { useTheme } from "../../../contexts/ThemeContext"
 
 const HostWallet = () => {
