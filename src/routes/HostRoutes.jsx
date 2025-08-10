@@ -135,8 +135,8 @@ const HostRoutes = [
   />,
 
   <Route
-    key="/Terms&Conditions"
-    path="/Terms&Conditions"
+    key="/host/terms&conditions"
+    path="/host/terms&conditions"
     element={<HostTermsConditionsPage />}
   />,
 ];

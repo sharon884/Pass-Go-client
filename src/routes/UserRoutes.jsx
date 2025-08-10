@@ -201,8 +201,8 @@ const UserRoutes = [
 />,
 
   <Route
-    key="/Terms&Conditions"
-    path="/Terms&Conditions"
+    key="/user/terms&conditions"
+    path="/user/terms&conditions"
     element={<UserTermsConditionsPage/>}
   />,
 ];
