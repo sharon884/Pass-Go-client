@@ -1,20 +1,20 @@
-"use client"
-import { useState } from "react"
-import { useForm, FormProvider } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import eventValidationSchema from "../../../utils/hostRelatedValidations/EventAddingValidation"
-import api from "../../../utils/api/api"
-import EventDetailsForm from "./EventDetailsForm"
-import TicketDetailsForm from "./TicketDetailsForm"
-import BussinessInfoForm from "./BussinessInfoFrom"
-import ReviewSubmit from "./ReviewSubmit"
-import { toast } from "sonner"
-import { CheckCircle, ChevronLeft, ChevronRight, Send } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+"use client";
+import { useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import eventValidationSchema from "../../../utils/hostRelatedValidations/EventAddingValidation";
+import api from "../../../utils/api/api";
+import EventDetailsForm from "./EventDetailsForm";
+import TicketDetailsForm from "./TicketDetailsForm";
+import BussinessInfoForm from "./BussinessInfoFrom";
+import ReviewSubmit from "./ReviewSubmit";
+import { toast } from "sonner";
+import { CheckCircle, ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const EventModalWrapper = () => {
-  const [currentStep, setCurrentStep] = useState(0)
-  const navigate = useNavigate()
+  const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
   const methods = useForm({
     resolver: zodResolver(eventValidationSchema),
     mode: "onTouched",
@@ -23,10 +23,9 @@ const EventModalWrapper = () => {
       description: "",
       category: "",
       images: [],
-      // Initialize location as an empty string for the display name
-      // and coordinates as null or an empty object for the lat/lng pair
-      location: "", // This will be the human-readable location name
-      coordinates: null, // This will hold { lat, lng } from LocationPicker
+
+      location: "",
+      coordinates: null,
       date: "",
       time: "",
       eventType: "",
@@ -48,59 +47,75 @@ const EventModalWrapper = () => {
         mobile: "",
       },
     },
-  })
-  const { handleSubmit, getValues } = methods
+  });
+  const { handleSubmit, getValues } = methods;
   const steps = [
     { label: "Event Details", component: <EventDetailsForm /> },
     { label: "Ticket Info", component: <TicketDetailsForm /> },
     { label: "Business Info", component: <BussinessInfoForm /> },
-    { label: "Review & Submit", component: <ReviewSubmit goToStep={setCurrentStep} /> },
-  ]
+    {
+      label: "Review & Submit",
+      component: <ReviewSubmit goToStep={setCurrentStep} />,
+    },
+  ];
 
   const onSubmit = async (formData) => {
-    console.log("Raw form data before transformation", formData)
+    console.log("Raw form data before transformation", formData);
 
     // Destructure locationName (string) and coordinates ({ lat, lng })
-    const { location: locationName, coordinates, ...rest } = formData
+    const { location: locationName, coordinates, ...rest } = formData;
 
     // Construct the GeoJSON location object
     const geoJsonLocation = {
       type: "Point",
       // Ensure coordinates are [longitude, latitude] as required by GeoJSON
       coordinates: coordinates ? [coordinates.lng, coordinates.lat] : [],
-    }
+    };
 
-    // Create the final data object to send to the backend
     const dataToSend = {
       ...rest,
-      location: geoJsonLocation, // Use the GeoJSON object for the 'location' field
-      locationName: locationName, // NEW: Add the human-readable location name
-    }
+      location: geoJsonLocation,
+      locationName: locationName,
+    };
 
-    console.log("Final submit data after transformation", dataToSend)
+    console.log("Final submit data after transformation", dataToSend);
 
     try {
-      const response = await api.post("/host/event/draft", dataToSend) // Send the transformed data
+      const response = await api.post("/host/event/draft", dataToSend);
       if (response.data.success) {
-        const eventId = response.data.eventId
-        toast.success("Event saved. proceeding to advance payment...")
-        navigate(`/host/event/${eventId}/advance-payment`)
+        const eventId = response.data.eventId;
+        toast.success("Event saved. proceeding to advance payment...");
+        navigate(`/host/event/${eventId}/advance-payment`);
       } else {
-        toast.error(response.data.message || "Something went wrong")
+        toast.error(response.data.message || "Something went wrong");
       }
     } catch (error) {
-      console.log("event adding failed ", error.response?.data || error.message)
-      toast.error(error.response?.data?.message || "Failed to add event. Please try again.")
+      console.log(
+        "event adding failed ",
+        error.response?.data || error.message
+      );
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to add event. Please try again."
+      );
     }
-  }
+  };
 
-  const { trigger } = methods
+  const { trigger } = methods;
   const handleNext = async () => {
-    const values = getValues()
-    let fieldsToValidate = []
+    const values = getValues();
+    let fieldsToValidate = [];
     if (currentStep === 0) {
-      // Add 'location' (which is locationName in formData) to validation
-      fieldsToValidate = ["title", "description", "category", "location", "date", "time", "images", "eventType"]
+      fieldsToValidate = [
+        "title",
+        "description",
+        "category",
+        "location",
+        "date",
+        "time",
+        "images",
+        "eventType",
+      ];
     } else if (currentStep === 1) {
       if (values.eventType !== "free") {
         fieldsToValidate = [
@@ -108,21 +123,25 @@ const EventModalWrapper = () => {
           "tickets.VIP.quantity",
           "tickets.general.price",
           "tickets.general.quantity",
-        ]
+        ];
       } // If free, no validation required for ticket fields
     } else if (currentStep === 2) {
-      fieldsToValidate = ["businessInfo.name", "businessInfo.email", "businessInfo.mobile"]
+      fieldsToValidate = [
+        "businessInfo.name",
+        "businessInfo.email",
+        "businessInfo.mobile",
+      ];
     }
-    const isStepValid = await trigger(fieldsToValidate)
+    const isStepValid = await trigger(fieldsToValidate);
     if (isStepValid) {
-      setCurrentStep((prev) => prev + 1)
-      window.scrollTo(0, 0)
+      setCurrentStep((prev) => prev + 1);
+      window.scrollTo(0, 0);
     } else {
-      toast.error("Please fill all required fields correctly")
+      toast.error("Please fill all required fields correctly");
     }
-  }
-  const isLastStep = currentStep === steps.length - 1
-  const progress = ((currentStep + 1) / steps.length) * 100
+  };
+  const isLastStep = currentStep === steps.length - 1;
+  const progress = ((currentStep + 1) / steps.length) * 100;
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
       {/* Progress Tracker */}
@@ -131,15 +150,17 @@ const EventModalWrapper = () => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`flex flex-col items-center ${index <= currentStep ? "text-[#5C3BFE]" : "text-gray-400"}`}
+              className={`flex flex-col items-center ${
+                index <= currentStep ? "text-[#5C3BFE]" : "text-gray-400"
+              }`}
             >
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${
                   index < currentStep
                     ? "bg-[#5C3BFE] text-white"
                     : index === currentStep
-                      ? "border-2 border-[#5C3BFE] text-[#5C3BFE]"
-                      : "border-2 border-gray-200 text-gray-400"
+                    ? "border-2 border-[#5C3BFE] text-[#5C3BFE]"
+                    : "border-2 border-gray-200 text-gray-400"
                 }`}
               >
                 {index < currentStep ? <CheckCircle size={16} /> : index + 1}
@@ -154,12 +175,16 @@ const EventModalWrapper = () => {
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-        <p className="text-right text-sm text-gray-500 mt-1">{progress.toFixed(0)}% completed</p>
+        <p className="text-right text-sm text-gray-500 mt-1">
+          {progress.toFixed(0)}% completed
+        </p>
       </div>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="border-b pb-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">{steps[currentStep].label}</h2>
+            <h2 className="text-2xl font-bold text-gray-800">
+              {steps[currentStep].label}
+            </h2>
           </div>
           <div className="min-h-[400px]">{steps[currentStep].component}</div>
           <div className="flex justify-between pt-4 border-t mt-8">
@@ -194,7 +219,7 @@ const EventModalWrapper = () => {
         </form>
       </FormProvider>
     </div>
-  )
-}
+  );
+};
 
-export default EventModalWrapper
+export default EventModalWrapper;

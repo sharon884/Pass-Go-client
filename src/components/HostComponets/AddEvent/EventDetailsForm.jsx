@@ -6,7 +6,7 @@ import uploadImageToCloudinary from "../../../utils/uploadCloudinary/uploadCloud
 import { Calendar, Clock, ImageIcon, Info, MapPin, Tag, Type } from "lucide-react"
 import layout from "../../../../src/assets/layout.png"
 import layout2 from "../../../../src/assets/layout1.png"
-import LocationPicker from "./LocationPicker" // 🟢 Your custom map picker
+import LocationPicker from "./LocationPicker" 
 
 const categories = ["Music", "Art", "Fashion", "Motosports"]
 
