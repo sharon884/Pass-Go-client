@@ -22,6 +22,7 @@ import UserWalletPage from "../pages/userPages/UserWalletPage";
 import UserChangePasswordPage from "../pages/userPages/UserChangePasswordPage";
 import UserBookingDetailsPage from "../pages/userPages/UserBookingDetailsPage";
 import NotificationPage from "@/pages/generalPages/NotificationPage";
+import UserTermsConditionsPage from "@/pages/userPages/UserTerms&ConditionsPage";
 
 const allowedRoles = ["user", "host"];
 
@@ -197,7 +198,13 @@ const UserRoutes = [
       <NotificationPage />
     </ProtectedRoute>
   }
-/>
+/>,
+
+  <Route
+    key="/Terms&Conditions"
+    path="/Terms&Conditions"
+    element={<UserTermsConditionsPage/>}
+  />,
 ];
 
 export default UserRoutes;
