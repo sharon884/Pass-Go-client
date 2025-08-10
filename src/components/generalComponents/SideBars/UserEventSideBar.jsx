@@ -224,7 +224,7 @@ const UserSidebar = () => {
       { to: "/user/wallet", icon: Wallet, label: "Wallet" },
       { to: "/user/notifications", icon: Bell, label: "Notifications" },
       { to: "/user/wishlist", icon: Heart, label: "Wishlist" },
-      { to: "/user/terms", icon: FileText, label: "Terms & Conditions" },
+      { to: "/user/terms&conditions", icon: FileText, label: "Terms & Conditions" },
     ],
     [],
   )

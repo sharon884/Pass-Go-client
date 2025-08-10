@@ -204,7 +204,7 @@ const HostSidebar = () => {
       { to: "/host/wallet", icon: Wallet, label: "Wallet" },
       { to: "/host/earnings", icon: DollarSign, label: "Earnings & Payout" },
       { to: "/host/notifications", icon: Bell, label: "Notifications" },
-      { to: "/host/terms", icon: FileText, label: "Terms & Conditions" },
+      { to: "/host/terms&conditions", icon: FileText, label: "Terms & Conditions" },
     ],
     [],
   )
