@@ -1,4 +1,4 @@
-
+"use client"
 import { useEffect, useRef, useState } from "react"
 
 const ROTATE_MS = 8000 // slide duration
@@ -109,7 +109,10 @@ const LandingBanner = () => {
   }
 
   return (
-    <section ref={sectionRef} className="relative w-full h-[80vh] overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative w-full h-[80vh] md:h-[90vh] xl:h-screen min-h-[560px] overflow-hidden"
+    >
       {/* Current Image (base layer) */}
       <img
         key={current}
@@ -168,10 +171,11 @@ const LandingBanner = () => {
       />
 
       {/* Overlay Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 text-white">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-8 text-white">
         <h1
           className={[
-            "text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-md tracking-tight",
+            "text-[clamp(2rem,6vw,3.75rem)] md:text-[clamp(2.5rem,5vw,4.5rem)] xl:text-[clamp(3rem,4vw,5rem)]",
+            "font-extrabold leading-tight mb-4 drop-shadow-md tracking-tight",
             "transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu",
             textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
           ].join(" ")}
@@ -180,7 +184,8 @@ const LandingBanner = () => {
         </h1>
         <p
           className={[
-            "text-base sm:text-lg md:text-xl mb-8 max-w-2xl drop-shadow-md text-white/90",
+            "text-[clamp(1rem,2.2vw,1.25rem)] md:text-[clamp(1.1rem,1.8vw,1.375rem)]",
+            "mb-8 max-w-[min(90vw,48rem)] drop-shadow-md text-white/90 leading-relaxed md:leading-8",
             "transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu delay-150",
             textVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
           ].join(" ")}
