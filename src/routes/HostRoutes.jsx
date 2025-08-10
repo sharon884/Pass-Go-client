@@ -19,6 +19,8 @@ import HostWalletPage from "../pages/hostPages/HostWalletPage";
 import HostWallet from "../components/HostComponets/Wallet/HostWallet";
 import NotificationPage from "@/pages/generalPages/NotificationPage";
 import ChangePassword from "@/components/UserComponents/ChangePassword";
+import HostTermsAndConditions from "@/components/generalComponents/Terms&conditions/HostTerms&conditions";
+import HostTermsConditionsPage from "@/pages/hostPages/HostTerms&ConditionsPage";
 
 const HostRoutes = [
   <Route
@@ -44,7 +46,7 @@ const HostRoutes = [
     path="/host/change-password"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
-        <ChangePassword/>
+        <ChangePassword />
       </ProtectedRoute>
     }
   />,
@@ -88,7 +90,7 @@ const HostRoutes = [
     key="/become-host"
     path="/become-host"
     element={
-      <ProtectedRoute allowedRoles={["user","host"]}>
+      <ProtectedRoute allowedRoles={["user", "host"]}>
         <BecomeHostPage />
       </ProtectedRoute>
     }
@@ -112,8 +114,7 @@ const HostRoutes = [
     }
   />,
 
- 
-    <Route
+  <Route
     key="/host/wallet"
     path="/host/wallet"
     element={
@@ -124,14 +125,20 @@ const HostRoutes = [
   />,
 
   <Route
-  key="/host/notifications"
-  path="/host/notifications"
-  element={
-    <ProtectedRoute allowedRoles={["host"]}>
-      <NotificationPage />
-    </ProtectedRoute>
-  }
-/>,
+    key="/host/notifications"
+    path="/host/notifications"
+    element={
+      <ProtectedRoute allowedRoles={["host"]}>
+        <NotificationPage />
+      </ProtectedRoute>
+    }
+  />,
+
+  <Route
+    key="/Terms&Conditions"
+    path="/Terms&Conditions"
+    element={<HostTermsConditionsPage />}
+  />,
 ];
 
 export default HostRoutes;
