@@ -7,10 +7,8 @@ import ThemeSwitcher from "./components/generalComponents/ThemeSwitcher"
 import useGlobalSocketConnections from "./hooks/useGlobalSocketConnections"
 
 function App() {
-
   useAuthInitializer()
   useGlobalSocketConnections()
-
   return (
     <ThemeProvider>
       <div
@@ -23,11 +21,10 @@ function App() {
       >
         {/* Theme Switcher - Always visible */}
         <ThemeSwitcher />
-        <AppRoutes/>
+        <AppRoutes />
         <Toaster position="top-right" richColors />
       </div>
     </ThemeProvider>
   )
 }
-
 export default App

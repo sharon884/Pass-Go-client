@@ -129,7 +129,6 @@ export function ThemeProvider({ children }) {
 
   // SMOOTH THEME APPLICATION WITH ANIMATIONS
   useEffect(() => {
-    console.log("🎨 Applying theme:", currentTheme)
     setIsTransitioning(true)
 
     localStorage.setItem("passgo-theme", currentTheme)
@@ -192,17 +191,9 @@ export function ThemeProvider({ children }) {
     setTimeout(() => {
       setIsTransitioning(false)
     }, 300)
-
-    console.log("✅ Theme applied with smooth transition:", {
-      theme: currentTheme,
-      bodyClass: body.className,
-      background: theme.colors.appBg,
-      primaryBg: theme.colors.primaryBg,
-    })
   }, [currentTheme])
 
   const switchTheme = (themeName) => {
-    console.log("🔄 Switching to theme:", themeName)
     if (themes[themeName] && !isTransitioning) {
       setCurrentTheme(themeName)
     }
