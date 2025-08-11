@@ -154,7 +154,7 @@ const AdminSidebar = () => {
   // Memoized navigation items to prevent re-creation
   const navigationItems = useMemo(
     () => [
-      { to: "/admin-dashboard", icon: Home, label: "Dashboard" },
+      { to: "/admin/dashboard", icon: Home, label: "Dashboard" },
       { to: "/admin/profile", icon: User, label: "Profile" },
       { to: "/admin/verify-host-request", icon: Shield, label: "Verify Hosts" },
       { to: "/admin/events/approval", icon: CheckCircle, label: "Approve Events" },

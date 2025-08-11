@@ -108,14 +108,14 @@ function Login() {
       localStorage.setItem("role", role);
       console.log("login checkk", role)
       setSuccess(response.data.message);
-      // navigate(role === 'admin' ? "/admin-dashboard" : "/welcome");
+      // navigate(role === 'admin' ? "/admin/dashboard" : "/welcome");
       if (role === "user") {
         navigate("/welcome");
       // } else if (role === "host") {
       //   navigate("/welcome");
       // } 
        }else if (role === "admin") {
-        navigate("/admin-dashboard");
+        navigate("/admin/dashboard");
       }
     } catch (error) {
       console.log(error);

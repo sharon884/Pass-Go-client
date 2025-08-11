@@ -43,7 +43,7 @@ const GoogleAuthLogin = () => {
                 } else if (role === "host") {
                     navigate("/host");
                 } else if (role === "admin") {
-                    navigate("/admin-dashboard");
+                    navigate("/admin/dashboard");
                 } else {
                     console.log("Unknown role");
                 }

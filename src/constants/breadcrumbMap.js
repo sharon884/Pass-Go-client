@@ -41,7 +41,7 @@ const breadcrumbMap = {
   "/host/notifications": "Notifications",
 
   // Admin Routes
-  "/admin-dashboard": "Admin Dashboard",
+  "/admin/dashboard": "Admin Dashboard",
   "/admin": "Admin",
   "/admin/events": "Events",
   "/admin/events/approval": "Approve Events",
