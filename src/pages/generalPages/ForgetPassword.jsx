@@ -22,9 +22,9 @@ function ForgetPassword() {
     try {
       let endPoint = ""
       if (selectedRole === "user") {
-        endPoint = "/user/auth/forgot-password"
+        endPoint = "/user/auth/reset-password"
       } else if (selectedRole === "host") {
-        endPoint = "/host/auth/forgot-password"
+        endPoint = "/host/auth/reset-password"
       }
 
       const response = await api.post(endPoint, { email })

@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 function BecomeHostPage() {
     const { role } = useSelector((state) => state.auth);
       if (role === "host") {
-    return <Navigate to="/host-home-page" replace />;
+    return <Navigate to="/host" replace />;
   }
   return (
     <div>

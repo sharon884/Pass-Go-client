@@ -94,11 +94,11 @@ const AdminSidebar = () => {
     try {
       // Replace with your actual admin logout API call
       localStorage.clear()
-      navigate("/admin-login")
+      navigate("/admin/login")
     } catch (error) {
       console.error("Logout error:", error)
       localStorage.clear()
-      navigate("/admin-login")
+      navigate("/admin/login")
     } finally {
       setIsLoggingOut(false)
     }
@@ -154,11 +154,11 @@ const AdminSidebar = () => {
   // Memoized navigation items to prevent re-creation
   const navigationItems = useMemo(
     () => [
-      { to: "/admin-dashboard", icon: Home, label: "Dashboard" },
+      { to: "/admin/dashboard", icon: Home, label: "Dashboard" },
       { to: "/admin/profile", icon: User, label: "Profile" },
-      { to: "/admin/verify-host-request", icon: Shield, label: "Verify Hosts" },
+      { to: "/admin/hosts/pending", icon: Shield, label: "Verify Hosts" },
       { to: "/admin/events/approval", icon: CheckCircle, label: "Approve Events" },
-      { to: "/admin/event-listing", icon: BarChart3, label: "Reports" },
+      { to: "/admin/events", icon: BarChart3, label: "Reports" },
       { to: "/admin/wallet", icon: Wallet, label: "Wallet" },
       { to: "/admin/notifications", icon: Bell, label: "Notifications" },
       { to: "/admin/settings", icon: Settings, label: "Settings" },

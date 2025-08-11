@@ -19,12 +19,12 @@ const allowedRoles = ["admin"];
 
 const AdminRoutes = [
   // 🔓 Public Route
-  <Route key="/admin-login" path="/admin-login" element={<Login />} />,
+  <Route key="/admin/login" path="/admin/login" element={<Login />} />,
 
   // 🔐 Protected Routes
   <Route
-    key="/admin-dashboard"
-    path="/admin-dashboard"
+    key="/admin/dashboard"
+    path="/admin/dashboard"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <AdminDashboard />
@@ -41,8 +41,8 @@ const AdminRoutes = [
     }
   />,
   <Route
-    key="/admin/verify-host-request"
-    path="/admin/verify-host-request"
+    key="/admin/hosts/pending"
+    path="/admin/hosts/pending"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <HostPendingRequestPage />
@@ -60,8 +60,8 @@ const AdminRoutes = [
   />,
 
   
-  <Route key="/admin/event-lisiting"
-  path="/admin/event-listing"
+  <Route key="/admin/events"
+  path="/admin/events"
   element={
     <ProtectedRoute allowedRoles={allowedRoles}>
       <AdminEventListing/>

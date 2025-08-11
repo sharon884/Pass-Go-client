@@ -39,11 +39,11 @@ const GoogleAuthLogin = () => {
                 localStorage.setItem("role", role);
 
                 if (role === "user") {
-                    navigate("/user-home-page");
+                    navigate("/user/home");
                 } else if (role === "host") {
-                    navigate("/host-home-page");
+                    navigate("/host");
                 } else if (role === "admin") {
-                    navigate("/admin-dashboard");
+                    navigate("/admin/dashboard");
                 } else {
                     console.log("Unknown role");
                 }

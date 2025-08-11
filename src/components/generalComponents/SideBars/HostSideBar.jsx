@@ -142,7 +142,7 @@ const HostSidebar = () => {
 
   // Switch to user mode
   const handleSwitchToUser = useCallback(() => {
-    navigate("/user-home-page")
+    navigate("/user/home")
   }, [navigate])
 
   // Theme-based styling configuration
@@ -197,14 +197,14 @@ const HostSidebar = () => {
   // Navigation menu items configuration
   const navigationItems = useMemo(
     () => [
-      { to: "/host-home-page", icon: Home, label: "Home" },
+      { to: "/host", icon: Home, label: "Home" },
       { to: "/host/profile", icon: UserCircle, label: "Profile" },
-      { to: "/host/add-event", icon: Plus, label: "Add Event" },
+      { to: "/host/add", icon: Plus, label: "Add Event" },
       { to: "/host/events", icon: Calendar, label: "Manage Events" },
       { to: "/host/wallet", icon: Wallet, label: "Wallet" },
       { to: "/host/earnings", icon: DollarSign, label: "Earnings & Payout" },
       { to: "/host/notifications", icon: Bell, label: "Notifications" },
-      { to: "/host/terms&conditions", icon: FileText, label: "Terms & Conditions" },
+      { to: "/host/terms", icon: FileText, label: "Terms & Conditions" },
     ],
     [],
   )

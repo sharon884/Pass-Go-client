@@ -28,8 +28,8 @@ const allowedRoles = ["user", "host"];
 
 const UserRoutes = [
   <Route
-    key="/user-home-page"
-    path="/user-home-page"
+    key="/user/home"
+    path="/user/home"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <UserHomePage />
@@ -73,8 +73,8 @@ const UserRoutes = [
     }
   />,
   <Route
-    key="/user/edit-profile"
-    path="/user/edit-profile"
+    key="/user/profile/edit"
+    path="/user/profile/edit"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <EditUserProfilePage />
@@ -127,8 +127,8 @@ const UserRoutes = [
     }
   />,
   <Route
-    key="/search-results"
-    path="/search-results"
+    key="/user/search"
+    path="/user/search"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <UserSearchResult />
@@ -201,8 +201,8 @@ const UserRoutes = [
 />,
 
   <Route
-    key="/user/terms&conditions"
-    path="/user/terms&conditions"
+    key="/user/terms"
+    path="/user/terms"
     element={<UserTermsConditionsPage/>}
   />,
 ];
