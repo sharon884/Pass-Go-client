@@ -94,11 +94,11 @@ const AdminSidebar = () => {
     try {
       // Replace with your actual admin logout API call
       localStorage.clear()
-      navigate("/admin-login")
+      navigate("/admin/login")
     } catch (error) {
       console.error("Logout error:", error)
       localStorage.clear()
-      navigate("/admin-login")
+      navigate("/admin/login")
     } finally {
       setIsLoggingOut(false)
     }

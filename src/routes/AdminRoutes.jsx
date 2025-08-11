@@ -19,7 +19,7 @@ const allowedRoles = ["admin"];
 
 const AdminRoutes = [
   // 🔓 Public Route
-  <Route key="/admin-login" path="/admin-login" element={<Login />} />,
+  <Route key="/admin/login" path="/admin/login" element={<Login />} />,
 
   // 🔐 Protected Routes
   <Route

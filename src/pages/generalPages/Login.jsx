@@ -10,7 +10,7 @@ function Login() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAdmin = location.pathname === "/admin-login";
+  const isAdmin = location.pathname === "/admin/login";
 
   const [formData, setFormData] = useState({
     email: "",
