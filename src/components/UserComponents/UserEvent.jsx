@@ -16,7 +16,6 @@ const UserEvents = () => {
   const [loading, setLoading] = useState(true)
   const [hoveredCard, setHoveredCard] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState({})
-
   const { theme, currentTheme } = useTheme()
 
   // Fetch events
@@ -42,7 +41,7 @@ const UserEvents = () => {
       }
       setCurrentImageIndex(initialImageIndices)
     } catch (error) {
-      console.log("events fetching error", error)
+      // console.log("events fetching error", error) // Removed console.log as per previous request
       setEvents([])
       setTotalPages(1)
       setPage(1)
@@ -63,7 +62,7 @@ const UserEvents = () => {
           setGeolocationError(null)
         },
         (error) => {
-          console.error("Geolocation error:", error)
+          // console.error("Geolocation error:", error) // Removed console.log as per previous request
           setGeolocationError("Unable to retrieve your location. 'Nearest Events' sorting may not be available.")
           setUserLocation(null)
         },
@@ -191,7 +190,6 @@ const UserEvents = () => {
                 <option value="paid_stage_with_seats">🎭 Reserved Seating</option>
                 <option value="paid_stage_without_seats">💰 General Admission</option>
               </select>
-
               {/* Category */}
               <select
                 value={category}
@@ -212,7 +210,6 @@ const UserEvents = () => {
                 <option value="Fashion">👗 Fashion</option>
                 <option value="Motosports">🏎️ Motosports</option>
               </select>
-
               {/* Sort */}
               <select
                 value={sortBy}
@@ -235,14 +232,12 @@ const UserEvents = () => {
                 {userLocation && <option value="nearest">📍 Nearest Events</option>}
               </select>
             </div>
-
             <div className="text-xs sm:text-sm" style={{ color: styles.textSecondary }}>
               Showing {events.length} of {totalPages * 8} events
             </div>
           </div>
           {geolocationError && sortBy === "nearest" && <p className="mt-2 text-red-500 text-xs">{geolocationError}</p>}
         </div>
-
         {/* Grid */}
         {loading ? (
           <div className="flex justify-center items-center h-48">
@@ -257,7 +252,7 @@ const UserEvents = () => {
               events.map((event, index) => (
                 <div
                   key={event._id}
-                  className="magnetic-card-wrapper h-full"
+                  className="magnetic-card-wrapper h-full" // This component uses 'magnetic' classes
                   onMouseEnter={() => setHoveredCard(event._id)}
                   onMouseLeave={() => {
                     setHoveredCard(null)
@@ -267,14 +262,51 @@ const UserEvents = () => {
                 >
                   <Link
                     to={`/your-event/${event._id}`}
-                    className="magnetic-card h-full"
+                    className="magnetic-card" // This component uses 'magnetic' classes
                     style={{
                       background: styles.cardBg,
                       borderColor: styles.cardBorder,
-                      boxShadow: `0 4px 12px ${styles.shadowColor}`,
+                      boxShadow: `0 4px 15px rgba(0, 0, 0, 0.1)`, // Default shadow
                     }}
                     aria-label={`View details for ${getEventTitle(event)}`}
                   >
+                    {/* Magnetic Animation Effects - Added based on old setup */}
+                    <div className="magnetic-field">
+                      <div className="field-line field-line-1"></div>
+                      <div className="field-line field-line-2"></div>
+                      <div className="field-line field-line-3"></div>
+                      <div className="field-line field-line-4"></div>
+                    </div>
+                    <div className="floating-orbs">
+                      <div
+                        className="orb orb-1"
+                        style={{
+                          background: `radial-gradient(circle, ${styles.accentColor}, ${styles.secondaryAccent})`,
+                        }}
+                      ></div>
+                      <div
+                        className="orb orb-2"
+                        style={{
+                          background: `radial-gradient(circle, ${styles.accentColor}, ${styles.secondaryAccent})`,
+                        }}
+                      ></div>
+                      <div
+                        className="orb orb-3"
+                        style={{
+                          background: `radial-gradient(circle, ${styles.accentColor}, ${styles.secondaryAccent})`,
+                        }}
+                      ></div>
+                    </div>
+                    <div className="liquid-ripple">
+                      <div className="ripple ripple-1" style={{ borderColor: `${styles.accentColor}66` }}></div>
+                      <div className="ripple ripple-2" style={{ borderColor: `${styles.accentColor}66` }}></div>
+                      <div className="ripple ripple-3" style={{ borderColor: `${styles.accentColor}66` }}></div>
+                    </div>
+                    <div
+                      className="levitation-shadow"
+                      style={{ background: `radial-gradient(ellipse, ${styles.accentColor}33, transparent)` }}
+                    ></div>
+
                     {/* Image stack and indicators (unchanged animation) */}
                     <div className="image-container">
                       <div className="image-stack">
@@ -315,7 +347,6 @@ const UserEvents = () => {
                           </div>
                         )}
                       </div>
-
                       {Array.isArray(event.images) && event.images.length > 1 && (
                         <div className="image-indicators">
                           {event.images.map((_, imgIndex) => (
@@ -336,15 +367,17 @@ const UserEvents = () => {
                         </div>
                       )}
                     </div>
-
                     {/* Content details */}
                     <div className="card-content">
-                      <h3 className="card-title" style={{ color: styles.textPrimary }} title={getEventTitle(event)}>
+                      <h3
+                        className="card-title hover-text"
+                        style={{ color: styles.textPrimary }}
+                        title={getEventTitle(event)}
+                      >
                         {getEventTitle(event)}
                       </h3>
-
                       <div className="card-meta">
-                        <p className="card-date" style={{ color: styles.textSecondary }}>
+                        <p className="card-date hover-text" style={{ color: styles.textSecondary }}>
                           {event?.date ? formatDate(event.date) : "Date TBA"}
                         </p>
                         {event?.locationName && (
@@ -354,7 +387,6 @@ const UserEvents = () => {
                           </p>
                         )}
                       </div>
-
                       <span
                         className={`card-badge ${event?.eventType === "free" ? "badge-free" : "badge-paid"} mt-auto`}
                         style={{
@@ -377,7 +409,6 @@ const UserEvents = () => {
             )}
           </div>
         )}
-
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mt-10">
@@ -399,7 +430,6 @@ const UserEvents = () => {
               </svg>
               Previous
             </button>
-
             <div
               className="px-5 py-2.5 rounded-full border shadow-md"
               style={{
@@ -413,7 +443,6 @@ const UserEvents = () => {
                 <span style={{ color: styles.secondaryAccent }}>{totalPages}</span>
               </span>
             </div>
-
             <button
               onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
               disabled={page === totalPages}
@@ -434,7 +463,6 @@ const UserEvents = () => {
             </button>
           </div>
         )}
-
         {/* NOTE: use a plain <style> tag for Vite (not styled-jsx) */}
         <style>{`
           .line-clamp-2 {
@@ -443,36 +471,38 @@ const UserEvents = () => {
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-
           /* Subtle card reveal */
           .magnetic-card-wrapper {
-            animation: cardSlideIn 0.6s ease-out forwards;
+            animation: cardSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Updated duration */
             opacity: 0;
-            transform: translateY(16px);
+            transform: translateY(30px); /* Updated translateY */
           }
           @keyframes cardSlideIn {
             to { opacity: 1; transform: translateY(0); }
           }
-
           /* Card: consistent size; use content flow for details */
           .magnetic-card {
             position: relative;
-            display: flex;             /* was block */
-            flex-direction: column;    /* new: let image + content stack */
+            display: flex;
+            flex-direction: column;
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            height: 330px;             /* was 300px */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Updated transition */
+            height: 320px; /* Updated height */
             width: 100%;
-            margin: 0;
+            max-width: 280px; /* Added max-width */
+            margin: 0 auto; /* Centered */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Default shadow */
           }
-          .magnetic-card:hover { transform: translateY(-6px); }
-
+          .magnetic-card:hover {
+            transform: translateY(-15px) scale(1.03); /* Updated transform */
+            box-shadow: 0 25px 40px rgba(138, 43, 226, 0.2), 0 15px 25px rgba(30, 144, 255, 0.15), 0 5px 15px rgba(0, 0, 0, 0.1); /* Updated shadow */
+          }
           /* Image (unchanged animation, slight height tweak) */
           .image-container {
             position: relative;
-            height: 190px;             /* was 165px */
+            height: 160px; /* Updated height */
             overflow: hidden;
           }
           .image-stack { position: relative; width: 100%; height: 100%; }
@@ -483,7 +513,6 @@ const UserEvents = () => {
           }
           .image-layer.active { opacity: 1; transform: scale(1) rotate(0deg); }
           .event-image { width: 100%; height: 100%; object-fit: cover; transition: all 0.6s ease; }
-
           /* Indicators */
           .image-indicators {
             position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
@@ -491,33 +520,31 @@ const UserEvents = () => {
           }
           .indicator { width: 8px; height: 8px; border-radius: 50%; transition: all 0.3s ease; }
           .indicator.active { transform: scale(1.3); box-shadow: 0 0 10px currentColor; }
-
           /* Content layout to avoid hiding location and align badge */
           .card-content {
-            padding: 14px;
-            height: calc(330px - 190px);  /* was calc(300px - 165px) */
+            padding: 16px; /* Updated padding */
+            height: 160px; /* Updated height */
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            justify-content: space-between; /* Ensures badge stays at bottom */
           }
           .card-title {
             font-size: 16px;
             font-weight: 600;
-            line-height: 1.35;
-            margin-bottom: 2px;
+            line-height: 1.4; /* Updated line-height */
+            margin-bottom: 8px; /* Updated margin */
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            min-height: 48px;           /* was 44px */
+            /* min-height removed to match old setup */
           }
           .card-meta {
             display: flex;
             flex-direction: column;
             gap: 4px;
-            min-height: 40px;           /* was 36px */
+            /* min-height removed to match old setup */
           }
-
           /* Badge stays pinned to bottom */
           .card-badge {
             display: inline-block;
@@ -526,28 +553,295 @@ const UserEvents = () => {
             font-weight: 500;
             border-radius: 20px;
             align-self: flex-start;
-            margin-top: auto;           /* keeps badge at bottom */
+            margin-top: auto; /* keeps badge at bottom */
           }
-
           /* Single-line ellipsis for location */
-          .line-ellipsis-1 { 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
+          .line-ellipsis-1 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          /* Placeholder image background */
+          .placeholder-image {
+            background: #f3f4f6; /* Added background color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
 
-          /* Subtle reveal for each card (unchanged) */
-          .magnetic-card-wrapper {
-            animation: cardSlideIn 0.6s ease-out forwards;
-            opacity: 0; transform: translateY(16px);
+          /* MAGNETIC LEVITATION ANIMATION */
+          .magnetic-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
           }
-          @keyframes cardSlideIn { to { opacity: 1; transform: translateY(0); } }
+          .magnetic-card:hover .magnetic-field { /* Changed to :hover */
+            opacity: 1;
+          }
+          .field-line {
+            position: absolute;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 50%;
+            animation: magneticPulse 2s ease-in-out infinite;
+          }
+          .field-line-1 { top: 10%; left: 10%; right: 10%; bottom: 10%; animation-delay: 0s; }
+          .field-line-2 { top: 20%; left: 20%; right: 20%; bottom: 20%; animation-delay: 0.5s; }
+          .field-line-3 { top: 30%; left: 30%; right: 30%; bottom: 30%; animation-delay: 1s; }
+          .field-line-4 { top: 40%; left: 40%; right: 40%; bottom: 40%; animation-delay: 1.5s; }
+          @keyframes magneticPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+          }
+          .floating-orbs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+          }
+          .magnetic-card:hover .floating-orbs { /* Changed to :hover */
+            opacity: 1;
+          }
+          .orb {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px currentColor;
+            animation: orbFloat 3s ease-in-out infinite;
+          }
+          .orb-1 { top: 20%; left: 15%; animation-delay: 0s; }
+          .orb-2 { top: 60%; right: 20%; animation-delay: 1s; }
+          .orb-3 { bottom: 30%; left: 25%; animation-delay: 2s; }
+          @keyframes orbFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            33% { transform: translateY(-10px) scale(1.2); }
+            66% { transform: translateY(5px) scale(0.8); }
+          }
+          .liquid-ripple {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+          }
+          .magnetic-card:hover .liquid-ripple { /* Changed to :hover */
+            opacity: 1;
+          }
+          .ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid;
+            border-radius: 50%;
+            animation: liquidRipple 2.5s ease-out infinite;
+          }
+          .ripple-1 { animation-delay: 0s; }
+          .ripple-2 { animation-delay: 0.8s; }
+          .ripple-3 { animation-delay: 1.6s; }
+          @keyframes liquidRipple {
+            0% { width: 0; height: 0; opacity: 1; }
+            70% { width: 200px; height: 200px; opacity: 0.3; }
+            100% { width: 250px; height: 250px; opacity: 0; }
+          }
+          .levitation-shadow {
+            position: absolute;
+            bottom: -20px;
+            left: 10%;
+            right: 10%;
+            height: 20px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+          }
+          .magnetic-card:hover .levitation-shadow { /* Changed to :hover */
+            opacity: 1;
+            animation: shadowPulse 2s ease-in-out infinite;
+          }
+          @keyframes shadowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+          }
 
-          /* Mobile tweaks: scale proportionally */
+          /* CRYSTAL PRISM ANIMATION (Included for completeness, though not used by default in JSX) */
+          .crystal-card {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(5px);
+          }
+          .crystal-card:hover { /* Changed to :hover */
+            transform: rotateY(5deg) rotateX(2deg) scale(1.05);
+            box-shadow:
+              0 20px 40px rgba(138, 43, 226, 0.25),
+              0 10px 20px rgba(30, 144, 255, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          }
+          .crystal-facets {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+          }
+          .crystal-card:hover .crystal-facets { /* Changed to :hover */
+            opacity: 1;
+          }
+          .facet {
+            position: absolute;
+            animation: facetShimmer 3s ease-in-out infinite;
+          }
+          .facet-1 { top: 0; left: 0; right: 50%; bottom: 50%; animation-delay: 0s; }
+          .facet-2 { top: 0; left: 50%; right: 0; bottom: 50%; animation-delay: 0.7s; }
+          .facet-3 { top: 50%; left: 0; right: 50%; bottom: 0; animation-delay: 1.4s; }
+          .facet-4 { top: 50%; left: 50%; right: 0; bottom: 0; animation-delay: 2.1s; }
+          @keyframes facetShimmer {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+          }
+          .light-refraction {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+          }
+          .crystal-card:hover .light-refraction { /* Changed to :hover */
+            opacity: 1;
+          }
+          .light-beam {
+            position: absolute;
+            height: 2px;
+            animation: lightSweep 4s ease-in-out infinite;
+          }
+          .beam-1 { top: 30%; left: 0; right: 0; animation-delay: 0s; }
+          .beam-2 { top: 50%; left: 0; right: 0; transform: rotate(45deg); animation-delay: 1.3s; }
+          .beam-3 { top: 70%; left: 0; right: 0; transform: rotate(-45deg); animation-delay: 2.6s; }
+          @keyframes lightSweep {
+            0%, 100% { transform: translateX(-100%) scaleX(0); }
+            50% { transform: translateX(100%) scaleX(1); }
+          }
+          .crystal-sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+          }
+          .crystal-card:hover .crystal-sparkles { /* Changed to :hover */
+            opacity: 1;
+          }
+          .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: sparkleGlow 2s ease-in-out infinite;
+          }
+          .sparkle-1 { top: 15%; left: 20%; animation-delay: 0s; }
+          .sparkle-2 { top: 25%; right: 15%; animation-delay: 0.4s; }
+          .sparkle-3 { top: 60%; left: 30%; animation-delay: 0.8s; }
+          .sparkle-4 { bottom: 25%; right: 25%; animation-delay: 1.2s; }
+          .sparkle-5 { bottom: 15%; left: 15%; animation-delay: 1.6s; }
+          @keyframes sparkleGlow {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 1; box-shadow: 0 0 15px currentColor; }
+          }
+          .prism-reflection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            mix-blend-mode: overlay;
+          }
+          .crystal-card:hover .prism-reflection { /* Changed to :hover */
+            opacity: 1;
+            animation: prismShift 5s ease-in-out infinite;
+          }
+          @keyframes prismShift {
+            0%, 100% { transform: translateX(-10%) skewX(-5deg); }
+            50% { transform: translateX(10%) skewX(5deg); }
+          }
+
+          /* Common Image and Content Styles */
+          .magnetic-card:hover .event-image,
+          .crystal-card:hover .event-image { /* Changed to :hover */
+            transform: scale(1.05);
+            filter: brightness(1.1) contrast(1.05) saturate(1.2);
+          }
+
+          /* Enhanced Mobile optimizations */
           @media (max-width: 768px) {
-            .magnetic-card { height: 300px; }             /* was 280px */
-            .image-container { height: 165px; }           /* was 145px */
-            .card-content { height: calc(300px - 165px); padding: 12px; }
+            .magnetic-card,
+            .crystal-card {
+              max-width: 100%;
+              height: 300px; /* Updated height */
+            }
+            .image-container {
+              height: 145px; /* Updated height */
+            }
+            .card-content {
+              height: calc(300px - 145px); /* Updated height calculation */
+              padding: 12px;
+            }
+            /* Mobile animations - keep them active */
+            .magnetic-card:hover { /* Changed to :hover */
+              transform: translateY(-10px) scale(1.02);
+            }
+            .crystal-card:hover { /* Changed to :hover */
+              transform: rotateY(3deg) rotateX(1deg) scale(1.02);
+            }
+            /* Ensure mobile animations work */
+            .orb { width: 6px; height: 6px; }
+            .field-line { border-width: 1px; }
+            .sparkle { width: 3px; height: 3px; }
+            .light-beam { height: 1.5px; }
+          }
+          /* Touch devices - activate on touch */
+          @media (hover: none) and (pointer: coarse) {
+            .magnetic-card:active,
+            .crystal-card:active {
+              transform: scale(0.98);
+            }
+            .magnetic-card:active .magnetic-field,
+            .crystal-card:active .crystal-facets,
+            .crystal-card:active .light-refraction,
+            .crystal-card:active .crystal-sparkles,
+            .magnetic-card:active .floating-orbs,
+            .magnetic-card:active .liquid-ripple {
+              opacity: 1;
+            }
+          }
+          /* Text Hover Effects */
+          .hover-text {
+            transition: color 0.3s ease;
+          }
+          .magnetic-card:hover .hover-text,
+          .crystal-card:hover .hover-text {
+            color: ${currentTheme === "classic" ? "#8b5cf6" : "#a78bfa"} !important;
           }
         `}</style>
       </div>
