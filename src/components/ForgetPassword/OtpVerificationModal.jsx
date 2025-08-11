@@ -29,9 +29,9 @@ function OtpVerificationModal({ email, id, role, onClose, onVerified }) {
 
     let endPoint = ""
     if (role === "user") {
-      endPoint = "/user/auth/forgot-password/verify-otp"
+      endPoint = "/user/auth/reset-password/otp"
     } else if (role === "host") {
-      endPoint = "/host/auth/forgot-password/verify-otp"
+      endPoint = "/host/auth/reset-password/otp"
     }
 
     try {
@@ -53,9 +53,9 @@ function OtpVerificationModal({ email, id, role, onClose, onVerified }) {
     try {
       let endPoint = ""
       if (role === "user") {
-        endPoint = "/user/auth/forgot-password"
+        endPoint = "/user/auth/reset-password"
       } else if (role === "host") {
-        endPoint = "/host/auth/forgot-password"
+        endPoint = "/host/auth/reset-password"
       }
 
       await api.post(endPoint, { email })
