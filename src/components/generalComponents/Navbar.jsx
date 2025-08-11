@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-// Adjust these paths if your folder structure is different:
 import { logoutUser } from "../../services/user/userAuthServices"
 import { logOut } from "../../features/auth/authSlice"
 
@@ -54,15 +53,26 @@ const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  // Add animation styles for the ticket spinner (from your reference)
+  const ticketSpinStyles = `
+    @keyframes ticketSpin {
+      0%   { transform: translateY(-20px) rotate(0deg)   scale(0.5); opacity: 0; }
+      25%  { transform: translateY(-10px) rotate(90deg)  scale(0.7); opacity: 0.5; }
+      50%  { transform: translateY(0px)  rotate(180deg) scale(1);   opacity: 1; }
+      75%  { transform: translateY(2px)  rotate(270deg) scale(1.1); opacity: 1; }
+      100% { transform: translateY(0px)  rotate(360deg) scale(1);   opacity: 1; }
+    }
+    .ticket-spin-animation { animation: ticketSpin 2s ease-in-out infinite; }
+  `
+
   // Logout handler (same behavior as in UserSidebar)
   const handleLogout = async () => {
     if (isLoggingOut) return
     setIsLoggingOut(true)
     try {
       await logoutUser()
-    } catch (err) {
-      // Ignore network/API errors and proceed with local cleanup
-      // console.error("Logout error:", err)
+    } catch (_err) {
+      // proceed with local cleanup even if API fails
     } finally {
       localStorage.clear()
       dispatch(logOut())
@@ -74,10 +84,7 @@ const Navbar = () => {
 
   // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) setScrolled(true)
-      else setScrolled(false)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -88,56 +95,30 @@ const Navbar = () => {
         scrolled ? "bg-white/90 backdrop-blur-lg shadow-lg py-3" : "bg-gradient-to-r from-white to-[#FAFAFA] py-4"
       }`}
     >
+      {/* Inject spinner keyframes */}
+      <style dangerouslySetInnerHTML={{ __html: ticketSpinStyles }} />
+
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        {/* Logo / Brand with Animation */}
+        {/* Brand: Pass [spinning ticket] Go */}
         <Link to="/" className="flex items-center group">
-          {/* Animated Logo Icon */}
-          <div className="relative w-10 h-10 mr-2">
-            {/* Outer circle with pulse animation */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7454FD] to-[#00BFFF] animate-pulse"></div>
-            {/* Inner ticket icon */}
-            <div className="absolute inset-0.5 rounded-full bg-white flex items-center justify-center">
-              <svg
-                className="w-5 h-5 animate-bounce"
-                style={{ animationDuration: "2s", color: "#7454FD" }}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+          <h2 className="text-xl md:text-2xl font-bold relative flex items-center">
+            <span className="bg-gradient-to-r from-[#7454FD] to-[#00BFFF] bg-clip-text text-transparent">Pass</span>
+            <svg
+              className="w-5 h-5 md:w-6 md:h-6 mx-1 text-[#7454FD] ticket-spin-animation"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              >
-                <path d="M2 9a3 3 0 1 0 0 6v-6Z" />
-                <path d="M22 9a3 3 0 1 1 0 6v-6Z" />
-                <rect width="16" height="10" x="4" y="7" rx="2" />
-                <path d="M4 11h16" />
-              </svg>
-            </div>
-            {/* Rotating outer ring */}
-            <div
-              className="absolute inset-[-4px] rounded-full border-2 border-dashed opacity-30 animate-spin"
-              style={{ animationDuration: "10s", borderColor: "#7454FD" }}
-            ></div>
-          </div>
-          {/* Brand Name with Animation */}
-          <div className="relative">
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#7454FD] to-[#00BFFF] bg-clip-text text-transparent">
-              Pass
-            </span>
-            <span className="text-2xl font-bold relative">
-              Go
-              <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[#7454FD] to-[#00BFFF] animate-pulse"></span>
-            </span>
-            {/* Floating particles */}
-            <div
-              className="absolute -top-1 -right-2 w-2 h-2 rounded-full animate-ping opacity-70"
-              style={{ animationDuration: "1.5s", backgroundColor: "#7454FD" }}
-            ></div>
-            <div
-              className="absolute bottom-0 -left-1 w-1.5 h-1.5 rounded-full bg-[#00BFFF] animate-ping opacity-70"
-              style={{ animationDuration: "2s" }}
-            ></div>
-          </div>
+                strokeWidth="1.5"
+                d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+              />
+            </svg>
+            <span className="bg-gradient-to-r from-[#7454FD] to-[#00BFFF] bg-clip-text text-transparent">Go</span>
+          </h2>
         </Link>
 
         {/* Mobile Menu Button */}
@@ -147,8 +128,9 @@ const Navbar = () => {
           onClick={() => setMenuOpen(!menuOpen)}
           onMouseEnter={(e) => (e.target.style.color = "#7454FD")}
           onMouseLeave={(e) => (e.target.style.color = scrolled ? "#7454FD" : "#374151")}
+          aria-label="Toggle menu"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             {menuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -225,7 +207,7 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="flex items-center space-x-4">{/* ThemeToggle if needed */}</div>
+          <div className="flex items-center space-x-4">{/* Add ThemeToggle or extras if needed */}</div>
         </div>
 
         {/* Mobile Navigation Menu */}
