@@ -293,6 +293,7 @@ const HostSidebar = () => {
           <motion.div key={to} className="px-1.5 mb-0.5" variants={itemVariants}>
             <NavLink
               to={to}
+              end={to === "/host"}
               className={({ isActive }) =>
                 `flex items-center px-2.5 py-1.5 rounded-lg transition-all duration-200 text-xs group ${
                   isActive ? `text-white shadow-sm` : `${styles.textSecondary} ${styles.hoverBg} ${styles.hoverText}`
