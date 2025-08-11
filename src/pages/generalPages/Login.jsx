@@ -10,7 +10,7 @@ function Login() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAdmin = location.pathname === "/admin-login";
+  const isAdmin = location.pathname === "/admin/login";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -108,14 +108,14 @@ function Login() {
       localStorage.setItem("role", role);
       console.log("login checkk", role)
       setSuccess(response.data.message);
-      // navigate(role === 'admin' ? "/admin-dashboard" : "/welcome-page");
+      // navigate(role === 'admin' ? "/admin/dashboard" : "/welcome");
       if (role === "user") {
-        navigate("/welcome-page");
+        navigate("/welcome");
       // } else if (role === "host") {
-      //   navigate("/welcome-page");
+      //   navigate("/welcome");
       // } 
        }else if (role === "admin") {
-        navigate("/admin-dashboard");
+        navigate("/admin/dashboard");
       }
     } catch (error) {
       console.log(error);
@@ -336,7 +336,7 @@ function Login() {
                 <div className="text-sm">
                   {/* <a
                     href="#" */}
-                    <Link to="/forgot-password"   className="font-medium text-indigo-600 hover:text-indigo-500" >                  
+                    <Link to="/reset-password"   className="font-medium text-indigo-600 hover:text-indigo-500" >                  
                   {/* > */}
                     Forgot your password?
                   {/* </a> */}

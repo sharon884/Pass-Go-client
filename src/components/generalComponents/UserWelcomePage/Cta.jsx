@@ -112,7 +112,7 @@ function Cta() {
     } else if (hostStatus === "rejected") {
       setShowModal(true)
     } else if (hostStatus === "verified") {
-      navigate("/host-home-page")
+      navigate("/host")
     } else {
       navigate("/become-host")
     }
@@ -360,7 +360,7 @@ function Cta() {
                                 ? "0 10px 25px rgba(0, 0, 0, 0.05)"
                                 : `0 10px 25px ${theme.colors.glowColor}`,
                           }}
-                          onClick={() => navigate("/user-home-page")}
+                          onClick={() => navigate("/user/home")}
                         >
                           {/* Card Background Effect */}
                           <div

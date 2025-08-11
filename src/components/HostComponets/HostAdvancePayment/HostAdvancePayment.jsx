@@ -50,7 +50,7 @@ const HostAdvancePayment = () => {
 
             if (verifyRes.success) {
               toast.success("Advance Payment Successful!");
-              navigate("/host-home-page");
+              navigate("/host");
             } else {
               toast.error("Payment verification failed");
             }

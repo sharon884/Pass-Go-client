@@ -411,7 +411,7 @@ const HostProfile = () => {
                 <h4 className={`text-lg font-semibold ${styles.textPrimary} mb-4`}>Account Actions</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <button
-                    onClick={() => navigate("/host/edit-profile")}
+                    onClick={() => navigate("/host/profile/edit")}
                     className={`text-white py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center shadow-sm hover:shadow-md`}
                     style={{
                       background:
@@ -431,7 +431,7 @@ const HostProfile = () => {
                     Edit Profile
                   </button>
                   <button
-                    onClick={() => navigate("/host/change-password")}
+                    onClick={() => navigate("/host/password")}
                     className={`${styles.buttonSecondary} py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center shadow-sm hover:shadow-md`}
                     style={{
                       background: currentTheme === "classic" ? undefined : theme?.colors?.cardBg || "#374151",

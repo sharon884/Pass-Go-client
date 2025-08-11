@@ -56,7 +56,7 @@ function TicketInfoPage() {
                   <ol className="flex items-center space-x-2 text-sm">
                     <li>
                       <a
-                        href="/user-home-page"
+                        href="/user/home"
                         className={`${
                           currentTheme === "classic"
                             ? "text-gray-500 hover:text-gray-700"

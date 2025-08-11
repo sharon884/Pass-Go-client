@@ -7,7 +7,7 @@ const PublicRoute = ({ children }) => {
   const localAuth = localStorage.getItem("isAuthenticated") === "true";
 
   if (isAuthenticated || localAuth) {
-    return <Navigate to="/welcome-page" replace />; 
+    return <Navigate to="/welcome" replace />; 
   }
 
   return children;

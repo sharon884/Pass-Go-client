@@ -53,9 +53,9 @@ const OtpPage = () => {
 
     let endPoint = ""
     if (role === "user") {
-      endPoint = "/user/auth/verify-otp"
+      endPoint = "/user/auth/otp"
     } else if (role === "admin") {
-      endPoint = "/admin/auth/verify-otp"
+      endPoint = "/admin/auth/otp"
     } else {
       toast.error("Invalid role for OTP verification")
       return
@@ -86,7 +86,7 @@ const OtpPage = () => {
       )
 
       if (role === "user" || role === "host") {
-        navigate("/welcome-page")
+        navigate("/welcome")
       } else if (role === "admin") {
         navigate("/admin-home-page")
       }

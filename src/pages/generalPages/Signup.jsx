@@ -75,7 +75,7 @@ const Signup = () => {
 
       const userId = response.data.id;
 
-      navigate("/verify-otp", {
+      navigate("/otp", {
         state: {
           email,
           userId,

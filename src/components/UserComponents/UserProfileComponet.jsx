@@ -351,7 +351,7 @@ const UserProfile = () => {
               <div className={`mt-6 sm:mt-8 pt-6 border-t ${styles.cardBorder}`}>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
-                    onClick={() => navigate("/user/edit-profile")}
+                    onClick={() => navigate("/user/profile/edit")}
                     className={`flex-1 text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 flex items-center justify-center hover:shadow-lg`}
                     style={{
                       background:

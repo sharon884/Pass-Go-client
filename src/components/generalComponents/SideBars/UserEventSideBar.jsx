@@ -157,7 +157,7 @@ const UserSidebar = () => {
 
   // Memoized host switch handler
   const handleSwitchToHost = useCallback(() => {
-    navigate("/host-home-page")
+    navigate("/host")
   }, [navigate])
 
   // Memoized categories toggle
@@ -223,7 +223,7 @@ const UserSidebar = () => {
       { to: "/user/bookings", icon: Calendar, label: "My Bookings" },
       { to: "/user/wallet", icon: Wallet, label: "Wallet" },
       { to: "/user/notifications", icon: Bell, label: "Notifications" },
-      { to: "/user/terms&conditions", icon: FileText, label: "Terms & Conditions" },
+      { to: "/user/terms", icon: FileText, label: "Terms & Conditions" },
     ],
     [],
   )
@@ -286,7 +286,7 @@ const UserSidebar = () => {
         {/* Home Link */}
         <motion.div className="px-2 mb-1" variants={itemVariants}>
           <NavLink
-            to="/user-home-page"
+            to="/user/home"
             className={({ isActive }) =>
               `flex items-center px-3 py-2 rounded-lg transition-all duration-200 text-sm group ${
                 isActive ? `text-white shadow-sm` : `${styles.textSecondary} ${styles.hoverBg} ${styles.hoverText}`

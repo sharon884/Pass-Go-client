@@ -113,7 +113,7 @@ const BecomeHostForm = () => {
 
       if (result.success) {
         toast.success("OTP verified successfully! Your host request is being processed.")
-        navigate("/welcome-page");
+        navigate("/welcome");
       } else {
         toast.error(result.message || "Invalid OTP")
       }

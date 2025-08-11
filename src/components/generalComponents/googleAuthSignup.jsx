@@ -42,7 +42,7 @@ const GoogleAuthSignup = ({ onSignupSuccess }) => {
        
 
         if (user.role === "user") {
-          navigate("/user-home-page");
+          navigate("/user/home");
         } 
       } else {
         console.log("Signup failed:", response.data.message);

@@ -32,9 +32,9 @@ const GeneralRoutes = [
     }
   />,
 
-  <Route key="/verify-otp" path="/verify-otp" element={<OtpPage />} />,
-  <Route key="/forgot-password" path="/forgot-password" element={<ForgetPassword />} />,
-  <Route key="/welcome-page" path="/welcome-page" element={<WelcomPage />} />,
+  <Route key="/otp" path="/otp" element={<OtpPage />} />,
+  <Route key="/reset-password" path="/reset-password" element={<ForgetPassword />} />,
+  <Route key="/welcome" path="/welcome" element={<WelcomPage />} />,
   <Route key="404" path="*" element={<NotFound />} />,
 ];
 

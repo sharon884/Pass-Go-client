@@ -123,7 +123,7 @@ export default function NotFound() {
           </li>
           <li>
             <Link
-              to="/host-home-page"
+              to="/host"
               className="block rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-sky-400/70"
             >
               <p className="text-sm font-semibold text-gray-900">Become a Host</p>
