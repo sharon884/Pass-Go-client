@@ -127,8 +127,8 @@ const UserRoutes = [
     }
   />,
   <Route
-    key="/search-results"
-    path="/search-results"
+    key="/user/search"
+    path="/user/search"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <UserSearchResult />

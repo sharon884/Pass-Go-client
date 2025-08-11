@@ -51,7 +51,7 @@ const SearchBar = () => {
     setQuery("")
     setSuggestions([])
     setIsFocused(false)
-    navigate(`/search-results?query=${encodeURIComponent(eventTitle)}`)
+    navigate(`/user/search?query=${encodeURIComponent(eventTitle)}`)
   }
 
   const handleSubmit = (e) => {
