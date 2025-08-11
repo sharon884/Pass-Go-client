@@ -6,7 +6,6 @@ import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 
 const formatStatus = (status) => (status ? status.charAt(0).toUpperCase() + status.slice(1) : "Unknown")
-
 const formatDate = (dateString) => {
   if (!dateString) return "Date not available"
   const date = new Date(dateString)
@@ -17,7 +16,6 @@ const formatDate = (dateString) => {
     day: "numeric",
   })
 }
-
 const formatTime = (timeString) => {
   if (!timeString) return "Time not available"
   return timeString
@@ -74,19 +72,15 @@ const BookingsComponent = () => {
       }
     }
   }
-
   const styles = getThemeStyles()
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const { orders: fetchedOrders, tickets: fetchedTickets } = await getUserBookings()
-        console.log("✅ Received Orders:", fetchedOrders)
-        console.log("✅ Received Tickets:", fetchedTickets)
         setOrders(Array.isArray(fetchedOrders) ? fetchedOrders : [])
         setTickets(Array.isArray(fetchedTickets) ? fetchedTickets : [])
       } catch (error) {
-        console.error("❌ Booking Fetch Error:", error.message)
         toast.error(error.message || "Failed to fetch bookings")
         setOrders([])
         setTickets([])
@@ -129,7 +123,6 @@ const BookingsComponent = () => {
       }))
       allBookings = [...allBookings, ...ticketsWithType]
     }
-
     // Apply date filter
     return allBookings
       .filter((booking) => {
@@ -394,7 +387,7 @@ const BookingsComponent = () => {
             {filter === "all" && (
               <a
                 href="/events"
-                className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm ${styles.buttonPrimary} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
+                className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${styles.buttonPrimary} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
               >
                 Browse Events
               </a>
@@ -479,7 +472,7 @@ const BookingsComponent = () => {
                                   {booking.eventCategory || "Category not specified"}
                                 </span>
                                 <span
-                                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getBookingTypeColor(
+                                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getBookingTypeColor(
                                     booking.bookingType,
                                   )}`}
                                 >
@@ -613,7 +606,7 @@ const BookingsComponent = () => {
                           <p className={`text-sm ${styles.textMuted}`}>{booking.eventLocation}</p>
                           <div className="flex items-center space-x-2 mt-1">
                             <span
-                              className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getBookingTypeColor(
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getBookingTypeColor(
                                 booking.bookingType,
                               )}`}
                             >
@@ -712,12 +705,12 @@ const BookingsComponent = () => {
 
                     {/* Action Button */}
                     <div className="pt-2">
-                      <a
-                        href={`/booking/${booking._id}`}
+                      <button
+                        onClick={() => handleViewDetails(booking)}
                         className={`w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md ${styles.buttonSecondary} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors`}
                       >
                         View Details
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>

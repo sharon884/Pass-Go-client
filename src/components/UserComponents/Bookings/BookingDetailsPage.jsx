@@ -19,13 +19,38 @@ const BookingDetailsPage = () => {
   useEffect(() => {
     const fetchBookingDetails = async () => {
       try {
-        const { orders, tickets } = await getUserBookings()
+        const response = await getUserBookings()
+        console.log("=== DEBUGGING BOOKING DETAILS ===")
+        console.log("URL ID:", id)
+        console.log("Booking Type from state:", bookingType)
+        console.log("Full getUserBookings response:", response)
+
+        const { orders, tickets } = response
+        console.log("Orders array:", orders)
+        console.log("Tickets array:", tickets)
+        console.log("Orders length:", orders?.length || 0)
+        console.log("Tickets length:", tickets?.length || 0)
+
         let found = null
         if (bookingType === "order") {
-          found = orders.find((o) => o._id === id)
+          console.log("Searching in orders for ID:", id)
+          orders?.forEach((order, index) => {
+            console.log(`Order ${index} ID:`, order._id, "Type:", typeof order._id)
+          })
+          found = orders?.find((o) => o._id === id)
         } else if (bookingType === "ticket") {
-          found = tickets.find((t) => t._id === id)
+          console.log("Searching in tickets for ID:", id)
+          tickets?.forEach((ticket, index) => {
+            console.log(`Ticket ${index} ID:`, ticket._id, "Type:", typeof ticket._id)
+          })
+          found = tickets?.find((t) => t._id === id)
+        } else {
+          console.log("Invalid bookingType:", bookingType)
         }
+
+        console.log("Found booking:", found)
+        console.log("=== END DEBUGGING ===")
+
         setBooking(found)
       } catch (error) {
         console.error("Failed to fetch booking:", error)
@@ -41,7 +66,6 @@ const BookingDetailsPage = () => {
     if (!booking || cancelling) return
     const confirmCancel = window.confirm("Are you sure you want to cancel this ticket?")
     if (!confirmCancel) return
-
     setCancelling(true)
     try {
       if (bookingType === "ticket") {
@@ -65,7 +89,6 @@ const BookingDetailsPage = () => {
   const handleDownloadTicket = async (idx) => {
     const element = document.getElementById(`ticket-${idx}`)
     if (!element) return
-
     try {
       const canvas = await html2canvas(element, {
         scale: 2,
@@ -89,7 +112,6 @@ const BookingDetailsPage = () => {
   const handleShareTicket = async (idx) => {
     const element = document.getElementById(`ticket-${idx}`)
     if (!element) return
-
     try {
       const canvas = await html2canvas(element, {
         scale: 2,
