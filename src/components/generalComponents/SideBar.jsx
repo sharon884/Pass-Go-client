@@ -156,7 +156,7 @@ const AdminSidebar = () => {
     () => [
       { to: "/admin/dashboard", icon: Home, label: "Dashboard" },
       { to: "/admin/profile", icon: User, label: "Profile" },
-      { to: "/admin/verify-host-request", icon: Shield, label: "Verify Hosts" },
+      { to: "/admin/hosts/pending", icon: Shield, label: "Verify Hosts" },
       { to: "/admin/events/approval", icon: CheckCircle, label: "Approve Events" },
       { to: "/admin/event-listing", icon: BarChart3, label: "Reports" },
       { to: "/admin/wallet", icon: Wallet, label: "Wallet" },
