@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext" // Adjusted path based on your App.jsx import
 import { Sun, Moon } from "lucide-react"
 
 function ThemeSwitcher() {
@@ -39,7 +39,8 @@ function ThemeSwitcher() {
   }
 
   return (
-    <div className="fixed top-4 right-4 z-50">
+    // Changed 'top-4' to 'top-20' to move it further down
+    <div className="fixed top-20 right-4 z-50">
       <div className="relative">
         {/* Theme Switcher Button */}
         <button
