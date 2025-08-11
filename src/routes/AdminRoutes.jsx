@@ -60,7 +60,7 @@ const AdminRoutes = [
   />,
 
   
-  <Route key="/admin/event-lisiting"
+  <Route key="/admin/events"
   path="/admin/events"
   element={
     <ProtectedRoute allowedRoles={allowedRoles}>
