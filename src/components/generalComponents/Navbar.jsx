@@ -1,34 +1,89 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
-// import ThemeToggle from "./ThemeToggle"
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+// Adjust these paths if your folder structure is different:
+import { logoutUser } from "../../services/user/userAuthServices"
+import { logOut } from "../../features/auth/authSlice"
 
+// Desktop Navigation Link Component
+const NavLink = ({ to, children }) => (
+  <Link
+    to={to}
+    className="relative px-4 py-2 text-gray-700 font-medium text-sm transition-colors group"
+    onMouseEnter={(e) => {
+      e.target.style.color = "#7454FD"
+    }}
+    onMouseLeave={(e) => {
+      e.target.style.color = "#374151"
+    }}
+  >
+    {children}
+    <span
+      className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r group-hover:w-full transition-all duration-300"
+      style={{ backgroundImage: "linear-gradient(to right, #7454FD, #00BFFF)" }}
+    ></span>
+  </Link>
+)
+
+// Mobile Navigation Link Component
+const MobileNavLink = ({ to, children, onClick }) => (
+  <Link
+    to={to}
+    onClick={onClick}
+    className="w-full text-center py-3 text-gray-700 font-medium text-lg border-b border-gray-100 transition-colors"
+    onMouseEnter={(e) => {
+      e.target.style.color = "#7454FD"
+    }}
+    onMouseLeave={(e) => {
+      e.target.style.color = "#374151"
+    }}
+  >
+    {children}
+  </Link>
+)
 
 const Navbar = () => {
-  const isAuthenticated =localStorage.getItem("isAuthenticated")
-  const role = localStorage.getItem("role");
+  const isAuthenticated = localStorage.getItem("isAuthenticated")
+  const role = localStorage.getItem("role")
+
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  // Logout handler (same behavior as in UserSidebar)
+  const handleLogout = async () => {
+    if (isLoggingOut) return
+    setIsLoggingOut(true)
+    try {
+      await logoutUser()
+    } catch (err) {
+      // Ignore network/API errors and proceed with local cleanup
+      // console.error("Logout error:", err)
+    } finally {
+      localStorage.clear()
+      dispatch(logOut())
+      setMenuOpen(false)
+      // navigate("/login")
+      setIsLoggingOut(false)
+    }
+  }
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
+      if (window.scrollY > 20) setScrolled(true)
+      else setScrolled(false)
     }
-
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
     <nav
-   
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-white/90 backdrop-blur-lg shadow-lg py-3" : "bg-gradient-to-r from-white to-[#FAFAFA] py-4"
       }`}
@@ -40,7 +95,6 @@ const Navbar = () => {
           <div className="relative w-10 h-10 mr-2">
             {/* Outer circle with pulse animation */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#7454FD] to-[#00BFFF] animate-pulse"></div>
-
             {/* Inner ticket icon */}
             <div className="absolute inset-0.5 rounded-full bg-white flex items-center justify-center">
               <svg
@@ -59,14 +113,12 @@ const Navbar = () => {
                 <path d="M4 11h16" />
               </svg>
             </div>
-
             {/* Rotating outer ring */}
             <div
               className="absolute inset-[-4px] rounded-full border-2 border-dashed opacity-30 animate-spin"
               style={{ animationDuration: "10s", borderColor: "#7454FD" }}
             ></div>
           </div>
-
           {/* Brand Name with Animation */}
           <div className="relative">
             <span className="text-2xl font-bold bg-gradient-to-r from-[#7454FD] to-[#00BFFF] bg-clip-text text-transparent">
@@ -74,11 +126,8 @@ const Navbar = () => {
             </span>
             <span className="text-2xl font-bold relative">
               Go
-              <span 
-                className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[#7454FD] to-[#00BFFF] animate-pulse"
-              ></span>
+              <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[#7454FD] to-[#00BFFF] animate-pulse"></span>
             </span>
-
             {/* Floating particles */}
             <div
               className="absolute -top-1 -right-2 w-2 h-2 rounded-full animate-ping opacity-70"
@@ -96,8 +145,8 @@ const Navbar = () => {
           className="lg:hidden text-gray-700 transition-colors"
           style={{ color: scrolled ? "#7454FD" : "#374151" }}
           onClick={() => setMenuOpen(!menuOpen)}
-          onMouseEnter={(e) => e.target.style.color = "#7454FD"}
-          onMouseLeave={(e) => e.target.style.color = scrolled ? "#7454FD" : "#374151"}
+          onMouseEnter={(e) => (e.target.style.color = "#7454FD")}
+          onMouseLeave={(e) => (e.target.style.color = scrolled ? "#7454FD" : "#374151")}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {menuOpen ? (
@@ -109,7 +158,7 @@ const Navbar = () => {
         </button>
 
         {/* Desktop Navigation Links */}
-        <div className={`hidden lg:flex items-center gap-1`}>
+        <div className="hidden lg:flex items-center gap-1">
           <NavLink to="/welcome-page">Home</NavLink>
           <NavLink to="/about">About Us</NavLink>
           <NavLink to="/contact">Contact</NavLink>
@@ -138,10 +187,7 @@ const Navbar = () => {
                 <Link
                   to="/login"
                   className="px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-300"
-                  style={{ 
-                    borderColor: "#7454FD", 
-                    color: "#7454FD"
-                  }}
+                  style={{ borderColor: "#7454FD", color: "#7454FD" }}
                   onMouseEnter={(e) => {
                     e.target.style.backgroundColor = "#7454FD0D"
                   }}
@@ -154,29 +200,32 @@ const Navbar = () => {
                 <Link
                   to="/signup"
                   className="px-4 py-2 rounded-lg bg-gradient-to-r text-white transition-all duration-300 shadow-md hover:shadow-lg font-medium text-sm"
-                  style={{ 
-                    backgroundImage: `linear-gradient(to right, #7454FD, #00BFFF)`
-                  }}
+                  style={{ backgroundImage: "linear-gradient(to right, #7454FD, #00BFFF)" }}
                   onMouseEnter={(e) => {
-                    e.target.style.backgroundImage = `linear-gradient(to right, #6366f1, #0ea5e9)`
+                    e.target.style.backgroundImage = "linear-gradient(to right, #6366f1, #0ea5e9)"
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.backgroundImage = `linear-gradient(to right, #7454FD, #00BFFF)`
+                    e.target.style.backgroundImage = "linear-gradient(to right, #7454FD, #00BFFF)"
                   }}
                 >
                   Sign Up
                 </Link>
               </>
             ) : (
-              <button className="px-4 py-2 rounded-lg border border-red-400 text-red-500 hover:bg-red-50 transition-colors font-medium text-sm">
-                Logout
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="px-4 py-2 rounded-lg border border-red-400 text-red-500 hover:bg-red-50 transition-colors font-medium text-sm disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center"
+              >
+                {isLoggingOut && (
+                  <span className="mr-2 inline-block h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                )}
+                {isLoggingOut ? "Logging out..." : "Logout"}
               </button>
             )}
           </div>
-          <div className="flex items-center space-x-4">
-{/* 
-          <ThemeToggle/> */}
-          </div>
+
+          <div className="flex items-center space-x-4">{/* ThemeToggle if needed */}</div>
         </div>
 
         {/* Mobile Navigation Menu */}
@@ -231,10 +280,7 @@ const Navbar = () => {
                     to="/login"
                     onClick={() => setMenuOpen(false)}
                     className="w-full px-4 py-3 rounded-lg border font-medium text-center transition-all duration-300"
-                    style={{ 
-                      borderColor: "#7454FD", 
-                      color: "#7454FD"
-                    }}
+                    style={{ borderColor: "#7454FD", color: "#7454FD" }}
                     onMouseEnter={(e) => {
                       e.target.style.backgroundColor = "#7454FD0D"
                     }}
@@ -248,22 +294,27 @@ const Navbar = () => {
                     to="/signup"
                     onClick={() => setMenuOpen(false)}
                     className="w-full px-4 py-3 rounded-lg text-white transition-all duration-300 shadow-md hover:shadow-lg font-medium text-center"
-                    style={{ 
-                      backgroundImage: `linear-gradient(to right, #7454FD, #00BFFF)`
-                    }}
+                    style={{ backgroundImage: "linear-gradient(to right, #7454FD, #00BFFF)" }}
                     onMouseEnter={(e) => {
-                      e.target.style.backgroundImage = `linear-gradient(to right, #6366f1, #0ea5e9)`
+                      e.target.style.backgroundImage = "linear-gradient(to right, #6366f1, #0ea5e9)"
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.backgroundImage = `linear-gradient(to right, #7454FD, #00BFFF)`
+                      e.target.style.backgroundImage = "linear-gradient(to right, #7454FD, #00BFFF)"
                     }}
                   >
                     Sign Up
                   </Link>
                 </>
               ) : (
-                <button className="w-full px-4 py-3 rounded-lg border border-red-400 text-red-500 hover:bg-red-50 transition-colors font-medium">
-                  Logout
+                <button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="w-full px-4 py-3 rounded-lg border border-red-400 text-red-500 hover:bg-red-50 transition-colors font-medium inline-flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isLoggingOut && (
+                    <span className="mr-2 inline-block h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  )}
+                  {isLoggingOut ? "Logging out..." : "Logout"}
                 </button>
               )}
             </div>
@@ -273,42 +324,5 @@ const Navbar = () => {
     </nav>
   )
 }
-
-// Desktop Navigation Link Component
-const NavLink = ({ to, children }) => (
-  <Link
-    to={to}
-    className="relative px-4 py-2 text-gray-700 font-medium text-sm transition-colors group"
-    onMouseEnter={(e) => {
-      e.target.style.color = "#7454FD"
-    }}
-    onMouseLeave={(e) => {
-      e.target.style.color = "#374151"
-    }}
-  >
-    {children}
-    <span 
-      className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r group-hover:w-full transition-all duration-300"
-      style={{ backgroundImage: `linear-gradient(to right, #7454FD, #00BFFF)` }}
-    ></span>
-  </Link>
-)
-
-// Mobile Navigation Link Component
-const MobileNavLink = ({ to, children, onClick }) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    className="w-full text-center py-3 text-gray-700 font-medium text-lg border-b border-gray-100 transition-colors"
-    onMouseEnter={(e) => {
-      e.target.style.color = "#7454FD"
-    }}
-    onMouseLeave={(e) => {
-      e.target.style.color = "#374151"
-    }}
-  >
-    {children}
-  </Link>
-)
 
 export default Navbar
