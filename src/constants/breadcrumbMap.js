@@ -3,9 +3,9 @@ const breadcrumbMap = {
   "/": "Home",
   "/login": "Login",
   "/signup": "Signup",
-  "/verify-otp": "Verify OTP",
-  "/forgot-password": "Forgot Password",
-  "/welcome-page": "Welcome",
+  "/otp": "Verify OTP",
+  "/reset-password": "Forgot Password",
+  "/welcome": "Welcome",
 
   // User Routes
   "/user/home": "User Home",
