@@ -157,7 +157,7 @@ const UserSidebar = () => {
 
   // Memoized host switch handler
   const handleSwitchToHost = useCallback(() => {
-    navigate("/host-home-page")
+    navigate("/host")
   }, [navigate])
 
   // Memoized categories toggle

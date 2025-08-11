@@ -41,7 +41,7 @@ const GoogleAuthLogin = () => {
                 if (role === "user") {
                     navigate("/user-home-page");
                 } else if (role === "host") {
-                    navigate("/host-home-page");
+                    navigate("/host");
                 } else if (role === "admin") {
                     navigate("/admin-dashboard");
                 } else {

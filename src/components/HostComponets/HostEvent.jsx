@@ -396,7 +396,7 @@ const HostEvents = () => {
         {events.length > 0 && (
           <div className="mt-6 text-center">
             <button
-              onClick={() => navigate("/host/add-event")}
+              onClick={() => navigate("/host/add")}
               className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-colors inline-flex items-center shadow-sm hover:shadow-md"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
