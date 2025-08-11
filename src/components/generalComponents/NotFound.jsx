@@ -1,4 +1,4 @@
-
+"use client"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 
@@ -13,7 +13,7 @@ export default function NotFound() {
     if (!el) return
     const onMove = (e) => {
       const rect = el.getBoundingClientRect()
-      const x = (e.clientX - rect.left) / rect.width - 0.5 // -0.5..0.5
+      const x = (e.clientX - rect.left) / rect.width - 0.5
       const y = (e.clientY - rect.top) / rect.height - 0.5
       el.style.setProperty("--mx", x.toFixed(3))
       el.style.setProperty("--my", y.toFixed(3))
@@ -21,6 +21,14 @@ export default function NotFound() {
     el.addEventListener("mousemove", onMove)
     return () => el.removeEventListener("mousemove", onMove)
   }, [])
+
+  const safeGoBack = () => {
+    if (window.history.length > 1 && document.referrer !== "") {
+      navigate(-1)
+    } else {
+      navigate("/")
+    }
+  }
 
   const onSearch = (e) => {
     e.preventDefault()
@@ -34,6 +42,24 @@ export default function NotFound() {
       className="relative min-h-screen w-full overflow-hidden bg-[#0b1020] text-white"
       aria-label="Page not found"
     >
+      {/* Floating Back Button */}
+      <button
+        onClick={safeGoBack}
+        className="group fixed left-4 top-4 z-20 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-sky-400/70"
+        aria-label="Go back to the previous page"
+      >
+        <svg
+          className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span>Back</span>
+      </button>
+
       {/* Animated background layers */}
       <div className="pointer-events-none absolute inset-0 notfound-bg" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 stars stars--1" aria-hidden="true" />
@@ -118,7 +144,7 @@ export default function NotFound() {
             Explore Events
           </Link>
           <button
-            onClick={() => navigate(-1)}
+            onClick={safeGoBack}
             className="rounded-xl border border-white/10 px-4 py-2.5 text-sm text-slate-200 transition hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-sky-400/70"
           >
             Go Back
@@ -221,10 +247,7 @@ export default function NotFound() {
           0%,100%{ transform: translate3d(calc(var(--mx,0)*8px), calc(var(--my,0)*8px),0) translateY(0); }
           50%{ transform: translate3d(calc(var(--mx,0)*8px), calc(var(--my,0)*8px),0) translateY(-10px); }
         }
-        .shine{
-          position: relative;
-          overflow: hidden;
-        }
+        .shine{ position: relative; overflow: hidden; }
         .shine::after{
           content: "";
           position: absolute;
