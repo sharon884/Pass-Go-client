@@ -52,7 +52,7 @@ const breadcrumbMap = {
   "/admin/events/summary/:eventId": "Booking Summary",
   "/admin/users": "User List",
   "/admin/hosts": "Host List",
-  "/admin/verify-host-request": "Verify Hosts",
+  "/admin/hosts/pending": "Verify Hosts",
   "/admin/transactions": "Transaction Logs",
   "/admin/refunds": "Refund Logs",
   "/admin/wallet": "Admin Wallet",

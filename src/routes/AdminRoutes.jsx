@@ -41,8 +41,8 @@ const AdminRoutes = [
     }
   />,
   <Route
-    key="/admin/verify-host-request"
-    path="/admin/verify-host-request"
+    key="/admin/hosts/pending"
+    path="/admin/hosts/pending"
     element={
       <ProtectedRoute allowedRoles={allowedRoles}>
         <HostPendingRequestPage />
