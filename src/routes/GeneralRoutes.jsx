@@ -7,6 +7,7 @@ import OtpPage from "../pages/generalPages/OTP";
 import ForgetPassword from "../pages/generalPages/ForgetPassword";
 import WelcomPage from "../pages/generalPages/WelcomPage";
 import PublicRoute from "../components/auth/PublicRoute"; 
+import NotFound from "@/components/generalComponents/NotFound";
 
 const GeneralRoutes = [
   <Route key="/" path="/" element={<LandingPage />} />,
@@ -34,6 +35,7 @@ const GeneralRoutes = [
   <Route key="/verify-otp" path="/verify-otp" element={<OtpPage />} />,
   <Route key="/forgot-password" path="/forgot-password" element={<ForgetPassword />} />,
   <Route key="/welcome-page" path="/welcome-page" element={<WelcomPage />} />,
+  <Route key="404" path="*" element={<NotFound />} />,
 ];
 
 export default GeneralRoutes;
