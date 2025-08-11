@@ -1,20 +1,40 @@
 "use client"
-
 import { useState } from "react"
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext"
+import { Sun, Moon } from "lucide-react"
 
 function ThemeSwitcher() {
-  const { currentTheme, themes, switchTheme } = useTheme()
+  const { currentTheme, themes, switchTheme, isTransitioning } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
 
   const getThemePreview = (themeName) => {
     const theme = themes[themeName]
     return (
       <div className="flex space-x-1">
-        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.colors.particle1 }}></div>
-        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.colors.particle2 }}></div>
-        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.colors.particle3 }}></div>
+        <div
+          className="w-3 h-3 rounded-full transition-all duration-300"
+          style={{ backgroundColor: theme.colors.particle1 }}
+        ></div>
+        <div
+          className="w-3 h-3 rounded-full transition-all duration-300"
+          style={{ backgroundColor: theme.colors.particle2 }}
+        ></div>
+        <div
+          className="w-3 h-3 rounded-full transition-all duration-300"
+          style={{ backgroundColor: theme.colors.particle3 }}
+        ></div>
       </div>
+    )
+  }
+
+  const getThemeIcon = () => {
+    return currentTheme === "dark" ? (
+      <Moon
+        className="w-5 h-5 transition-all duration-300"
+        style={{ color: themes[currentTheme].colors.primaryText }}
+      />
+    ) : (
+      <Sun className="w-5 h-5 transition-all duration-300" style={{ color: themes[currentTheme].colors.primaryText }} />
     )
   }
 
@@ -24,27 +44,21 @@ function ThemeSwitcher() {
         {/* Theme Switcher Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-3 rounded-full backdrop-blur-sm border transition-all duration-300 hover:scale-105 shadow-lg"
+          disabled={isTransitioning}
+          className="p-3 rounded-full backdrop-blur-sm border transition-all duration-300 hover:scale-105 shadow-lg disabled:opacity-50"
           style={{
             backgroundColor: themes[currentTheme].colors.cardBg,
             borderColor: themes[currentTheme].colors.borderColor,
             boxShadow: `0 10px 25px ${themes[currentTheme].colors.glowColor}`,
           }}
         >
-          <svg className="w-6 h-6" fill="none" stroke={themes[currentTheme].colors.primaryText} viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v6a2 2 0 002 2h4a2 2 0 002-2V5z"
-            />
-          </svg>
+          {getThemeIcon()}
         </button>
 
         {/* Theme Options Dropdown */}
         {isOpen && (
           <div
-            className="absolute top-full right-0 mt-2 w-64 rounded-2xl backdrop-blur-lg border shadow-2xl overflow-hidden"
+            className="absolute top-full right-0 mt-2 w-64 rounded-2xl backdrop-blur-lg border shadow-2xl overflow-hidden transition-all duration-300 animate-in slide-in-from-top-2"
             style={{
               backgroundColor: themes[currentTheme].colors.cardBg,
               borderColor: themes[currentTheme].colors.borderColor,
@@ -52,10 +66,12 @@ function ThemeSwitcher() {
             }}
           >
             <div className="p-4">
-              <h3 className="text-lg font-semibold mb-4" style={{ color: themes[currentTheme].colors.primaryText }}>
+              <h3
+                className="text-lg font-semibold mb-4 transition-colors duration-300"
+                style={{ color: themes[currentTheme].colors.primaryText }}
+              >
                 Choose Theme
               </h3>
-
               <div className="space-y-3">
                 {Object.entries(themes).map(([key, theme]) => (
                   <button
@@ -64,7 +80,8 @@ function ThemeSwitcher() {
                       switchTheme(key)
                       setIsOpen(false)
                     }}
-                    className={`w-full p-3 rounded-xl border transition-all duration-300 hover:scale-105 ${
+                    disabled={isTransitioning}
+                    className={`w-full p-3 rounded-xl border transition-all duration-300 hover:scale-105 disabled:opacity-50 ${
                       currentTheme === key ? "ring-2" : ""
                     }`}
                     style={{
@@ -77,19 +94,37 @@ function ThemeSwitcher() {
                     }}
                   >
                     <div className="flex items-center justify-between">
-                      <div>
+                      <div className="flex items-center space-x-3">
                         <div
-                          className="font-medium text-left"
-                          style={{ color: themes[currentTheme].colors.primaryText }}
+                          className="flex items-center justify-center w-8 h-8 rounded-full bg-opacity-20 transition-all duration-300"
+                          style={{ backgroundColor: theme.colors.particle1 }}
                         >
-                          {theme.name}
+                          {key === "dark" ? (
+                            <Moon
+                              className="w-4 h-4 transition-colors duration-300"
+                              style={{ color: theme.colors.primaryText }}
+                            />
+                          ) : (
+                            <Sun
+                              className="w-4 h-4 transition-colors duration-300"
+                              style={{ color: theme.colors.primaryText }}
+                            />
+                          )}
                         </div>
-                        <div
-                          className="text-sm text-left mt-1"
-                          style={{ color: themes[currentTheme].colors.secondaryText }}
-                        >
-                          {key === "electric" && "Bright electric blue energy"}
-                          {key === "classic" && "Classic purple elegance"}
+                        <div>
+                          <div
+                            className="font-medium text-left transition-colors duration-300"
+                            style={{ color: themes[currentTheme].colors.primaryText }}
+                          >
+                            {theme.name}
+                          </div>
+                          <div
+                            className="text-sm text-left mt-1 transition-colors duration-300"
+                            style={{ color: themes[currentTheme].colors.secondaryText }}
+                          >
+                            {key === "dark" && "Dark theme with subtle grays"}
+                            {key === "classic" && "Classic purple elegance"}
+                          </div>
                         </div>
                       </div>
                       {getThemePreview(key)}

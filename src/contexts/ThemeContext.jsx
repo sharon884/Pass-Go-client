@@ -1,59 +1,62 @@
 "use client"
-
 import { createContext, useContext, useState, useEffect } from "react"
 
 // Define your two completely independent color themes
 const themes = {
-electric: {
-  name: "Neon Green Dark",
-  colors: {
-    // Backgrounds
-    primaryBg: "#000000", // pure black base
-    secondaryBg: "rgba(0, 255, 132, 0.08)", // neon green light overlay
-    cardBg: "rgba(255, 255, 255, 0.04)",
+  dark: {
+    name: "Dark Mode",
+    colors: {
+      // Backgrounds
+      primaryBg: "#0a0a0a",
+      secondaryBg: "rgba(255, 255, 255, 0.05)",
+      cardBg: "rgba(255, 255, 255, 0.08)",
 
-    // Text
-    primaryText: "#e5ffe5", // off-white green tint
-    secondaryText: "#a1fca1",
-    accentText: "#00ff84", // exact neon green
+      // Text - Better contrast for dark theme
+      primaryText: "#ffffff",
+      secondaryText: "#d1d5db", // lighter gray for better visibility
+      accentText: "#f9fafb",
 
-    // Accents & Buttons
-    primaryAccent: "linear-gradient(to right, #00ff84, #00ffaa)",
-    secondaryAccent: "linear-gradient(to right, #00ffaa, #66ffc2)",
-    glowColor: "rgba(0, 255, 132, 0.3)",
+      // Input specific colors
+      inputBg: "rgba(255, 255, 255, 0.1)",
+      inputText: "#ffffff",
+      inputPlaceholder: "#9ca3af",
+      inputBorder: "rgba(255, 255, 255, 0.2)",
+      inputFocus: "rgba(255, 255, 255, 0.3)",
 
-    // Particles & Effects
-    particle1: "#00ff84",
-    particle2: "#00ffaa",
-    particle3: "#66ffc2",
-    particle4: "#00cc66",
+      // Accents & Buttons
+      primaryAccent: "linear-gradient(to right, #374151, #4b5563)",
+      secondaryAccent: "linear-gradient(to right, #4b5563, #6b7280)",
+      glowColor: "rgba(255, 255, 255, 0.1)",
 
-    // Borders
-    borderColor: "rgba(0, 255, 132, 0.12)",
-    borderHover: "rgba(0, 255, 132, 0.3)",
+      // Particles & Effects
+      particle1: "#374151",
+      particle2: "#4b5563",
+      particle3: "#6b7280",
+      particle4: "#9ca3af",
 
-    // Geometric shapes
-    shape1: "rgba(0, 255, 132, 0.05)",
-    shape2: "rgba(0, 204, 102, 0.06)",
-    shape3: "rgba(0, 153, 76, 0.07)",
+      // Borders
+      borderColor: "rgba(255, 255, 255, 0.1)",
+      borderHover: "rgba(255, 255, 255, 0.2)",
 
-    // App specific
-    appBg: "#000000", // full dark
-    toasterBg: "rgba(0, 255, 132, 0.05)",
+      // Geometric shapes
+      shape1: "rgba(255, 255, 255, 0.03)",
+      shape2: "rgba(255, 255, 255, 0.05)",
+      shape3: "rgba(255, 255, 255, 0.02)",
 
-    // Stats component if used
-    statsMainBg: "#000000",
-    statsOverlayBg: "rgba(0, 255, 132, 0.03)",
-    statsCardBg: "rgba(255, 255, 255, 0.06)",
-    statsIconBg: "linear-gradient(to right, #00ff84, #00ffaa)",
-    statsTextGradient: "linear-gradient(to right, #00ff84, #00ffaa)",
-    statsBlurOrb1: "rgba(0, 255, 132, 0.1)",
-    statsBlurOrb2: "rgba(0, 204, 102, 0.1)",
+      // App specific
+      appBg: "#0a0a0a",
+      toasterBg: "rgba(0, 0, 0, 0.9)",
+
+      // Stats component
+      statsMainBg: "#0a0a0a",
+      statsOverlayBg: "rgba(255, 255, 255, 0.02)",
+      statsCardBg: "rgba(255, 255, 255, 0.08)",
+      statsIconBg: "linear-gradient(to right, #374151, #4b5563)",
+      statsTextGradient: "linear-gradient(to right, #f4f4f5, #e5e7eb)",
+      statsBlurOrb1: "rgba(255, 255, 255, 0.05)",
+      statsBlurOrb2: "rgba(255, 255, 255, 0.03)",
+    },
   },
-},
-
-
-
   classic: {
     name: "Clean White",
     colors: {
@@ -66,6 +69,13 @@ electric: {
       primaryText: "#1f2937",
       secondaryText: "#6b7280",
       accentText: "#7c3aed",
+
+      // Input specific colors
+      inputBg: "#ffffff",
+      inputText: "#1f2937",
+      inputPlaceholder: "#9ca3af",
+      inputBorder: "rgba(147, 51, 234, 0.2)",
+      inputFocus: "rgba(147, 51, 234, 0.4)",
 
       // Accents & Buttons - ONLY PURPLE
       primaryAccent: "linear-gradient(to right, #7c3aed, #8b5cf6)",
@@ -106,7 +116,8 @@ electric: {
 const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
-  const [currentTheme, setCurrentTheme] = useState("electric")
+  const [currentTheme, setCurrentTheme] = useState("dark")
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   // Load theme from localStorage on mount
   useEffect(() => {
@@ -116,14 +127,19 @@ export function ThemeProvider({ children }) {
     }
   }, [])
 
-  // AGGRESSIVE THEME APPLICATION
+  // SMOOTH THEME APPLICATION WITH ANIMATIONS
   useEffect(() => {
     console.log("🎨 Applying theme:", currentTheme)
-    localStorage.setItem("passgo-theme", currentTheme)
+    setIsTransitioning(true)
 
+    localStorage.setItem("passgo-theme", currentTheme)
     const theme = themes[currentTheme]
     const root = document.documentElement
     const body = document.body
+
+    // Add transition classes for smooth animation
+    body.style.transition = "background-color 0.3s ease, color 0.3s ease"
+    root.style.transition = "all 0.3s ease"
 
     // CLEAR ALL EXISTING THEME CLASSES
     body.className = body.className.replace(/theme-\w+/g, "")
@@ -131,25 +147,53 @@ export function ThemeProvider({ children }) {
     // ADD NEW THEME CLASS
     body.classList.add(`theme-${currentTheme}`)
 
-    // FORCE CLEAR ALL EXISTING CSS VARIABLES
-    for (let i = root.style.length - 1; i >= 0; i--) {
-      const prop = root.style[i]
-      if (prop.startsWith("--color-")) {
-        root.style.removeProperty(prop)
-      }
-    }
-
-    // APPLY CSS VARIABLES
+    // APPLY CSS VARIABLES WITH SMOOTH TRANSITION
     Object.entries(theme.colors).forEach(([key, value]) => {
       root.style.setProperty(`--color-${key}`, value)
     })
 
-    // FORCE BODY STYLES WITH IMPORTANT
-    body.style.setProperty("background", theme.colors.appBg, "important")
-    body.style.setProperty("background-color", theme.colors.appBg, "important")
-    body.style.setProperty("color", theme.colors.primaryText, "important")
+    // APPLY BODY STYLES WITH SMOOTH TRANSITION
+    body.style.setProperty("background-color", theme.colors.appBg)
+    body.style.setProperty("color", theme.colors.primaryText)
 
-    console.log("✅ Theme applied:", {
+    // Add global input styles
+    const inputStyles = `
+      input, textarea, select {
+        background-color: ${theme.colors.inputBg} !important;
+        color: ${theme.colors.inputText} !important;
+        border-color: ${theme.colors.inputBorder} !important;
+        transition: all 0.3s ease !important;
+      }
+      input::placeholder, textarea::placeholder {
+        color: ${theme.colors.inputPlaceholder} !important;
+      }
+      input:focus, textarea:focus, select:focus {
+        border-color: ${theme.colors.inputFocus} !important;
+        box-shadow: 0 0 0 2px ${theme.colors.glowColor} !important;
+      }
+      * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+      }
+    `
+
+    // Remove existing theme styles
+    const existingStyle = document.getElementById("theme-styles")
+    if (existingStyle) {
+      existingStyle.remove()
+    }
+
+    // Add new theme styles
+    const styleElement = document.createElement("style")
+    styleElement.id = "theme-styles"
+    styleElement.textContent = inputStyles
+    document.head.appendChild(styleElement)
+
+    // Reset transition state after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false)
+    }, 300)
+
+    console.log("✅ Theme applied with smooth transition:", {
       theme: currentTheme,
       bodyClass: body.className,
       background: theme.colors.appBg,
@@ -159,7 +203,7 @@ export function ThemeProvider({ children }) {
 
   const switchTheme = (themeName) => {
     console.log("🔄 Switching to theme:", themeName)
-    if (themes[themeName]) {
+    if (themes[themeName] && !isTransitioning) {
       setCurrentTheme(themeName)
     }
   }
@@ -169,6 +213,7 @@ export function ThemeProvider({ children }) {
     theme: themes[currentTheme],
     themes,
     switchTheme,
+    isTransitioning,
   }
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
