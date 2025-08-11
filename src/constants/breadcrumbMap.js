@@ -45,7 +45,7 @@ const breadcrumbMap = {
   "/admin": "Admin",
   "/admin/events": "Events",
   "/admin/events/approval": "Approve Events",
-  "/admin/event-listing": "Event Listing",
+  "/admin/events": "Event Listing",
   "/admin/event-summary": "Event Summary",
   "/admin/event-management": "Event Management",
   "/admin/event-management/details/:eventId": "Event Info",
