@@ -112,7 +112,7 @@ function Cta() {
     } else if (hostStatus === "rejected") {
       setShowModal(true)
     } else if (hostStatus === "verified") {
-      navigate("/host-home-page")
+      navigate("/host")
     } else {
       navigate("/become-host")
     }

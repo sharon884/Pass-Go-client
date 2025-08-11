@@ -24,8 +24,8 @@ import HostTermsConditionsPage from "@/pages/hostPages/HostTerms&ConditionsPage"
 
 const HostRoutes = [
   <Route
-    key="/host-home-page"
-    path="/host-home-page"
+    key="/host"
+    path="/host"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
         <HostHomePage />
@@ -33,8 +33,8 @@ const HostRoutes = [
     }
   />,
   <Route
-    key="/host/add-event"
-    path="/host/add-event"
+    key="/host/add"
+    path="/host/add"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
         <HostAddEventPage />
@@ -42,8 +42,8 @@ const HostRoutes = [
     }
   />,
   <Route
-    key="/host/change-password"
-    path="/host/change-password"
+    key="/host/password"
+    path="/host/password"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
         <ChangePassword />
@@ -60,8 +60,8 @@ const HostRoutes = [
     }
   />,
   <Route
-    key="/host/edit-profile"
-    path="/host/edit-profile"
+    key="/host/profile/edit"
+    path="/host/profile/edit"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
         <EditHostProfilePage />
@@ -135,8 +135,8 @@ const HostRoutes = [
   />,
 
   <Route
-    key="/host/terms&conditions"
-    path="/host/terms&conditions"
+    key="/host/terms"
+    path="/host/terms"
     element={<HostTermsConditionsPage />}
   />,
 ];

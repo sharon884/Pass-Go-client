@@ -24,12 +24,12 @@ const breadcrumbMap = {
   "/user/event/:eventId/success": "Booking Success",
 
   // Host Routes
-  "/host-home-page": "Host Home",
+  "/host": "Host Home",
   "/host": "Host",
   "/host/profile": "Host Profile",
-  "/host/edit-profile": "Edit Host Profile",
+  "/host/profile/edit": "Edit Host Profile",
   "/host/events": "Event Management",
-  "/host/add-event": "Add Event",
+  "/host/add": "Add Event",
   "/host/events/edit/:eventId": "Edit Event",
   "/host/wallet": "Host Wallet",
   "/host/earnings": "Earnings",
