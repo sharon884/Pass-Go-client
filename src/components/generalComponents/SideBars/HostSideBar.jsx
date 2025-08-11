@@ -231,35 +231,38 @@ const HostSidebar = () => {
         ) : host ? (
           <div className="flex flex-col items-center text-center">
             <div className="relative mb-1.5">
-              <DefaultAvatar name={host.name} size={36} />
-            </div>
-            {/* Host name with inline verification badge */}
-            <div className="flex items-center justify-center gap-1 mb-0.5">
-              <h2 className={`text-xs font-semibold ${styles.textPrimary} truncate`}>{host.name || "Host"}</h2>
-              {/* Verification Badge - Shows when host is verified and active */}
-              {host.hostVerificationStatus === "verified" && host.is_active === true && (
-                <div
-                  className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
-                  style={{
-                    background: "linear-gradient(135deg, #1DA1F2 0%, #0084FF 100%)",
-                    minWidth: "14px",
-                    minHeight: "14px",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                    boxShadow: "0 2px 4px rgba(29, 161, 242, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+              {host.profile_image ? (
+                <img
+                  src={host.profile_image || "/placeholder.svg"}
+                  alt={host.name || "Host"}
+                  className="w-9 h-9 rounded-full object-cover shadow-sm"
+                  onError={(e) => {
+                    // Fallback to default avatar if image fails to load
+                    e.target.style.display = "none"
+                    e.target.nextSibling.style.display = "flex"
                   }}
-                  title="Verified Host"
-                >
-                  <svg
-                    className="w-2 h-2 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    style={{ filter: "drop-shadow(0 0.5px 0.5px rgba(0,0,0,0.1))" }}
-                  >
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                />
+              ) : null}
+              {!host.profile_image && <DefaultAvatar name={host.name} size={36} />}
+              {/* Hidden fallback avatar for image load errors */}
+              {host.profile_image && (
+                <div style={{ display: "none" }}>
+                  <DefaultAvatar name={host.name} size={36} />
+                </div>
+              )}
+              {host.hostVerificationStatus === "verified" && host.is_active === true && (
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
               )}
             </div>
+            <h2 className={`text-xs font-semibold ${styles.textPrimary} truncate`}>{host.name || "Host"}</h2>
             <p className={`text-xs ${styles.textMuted}`}>Host Dashboard</p>
           </div>
         ) : (

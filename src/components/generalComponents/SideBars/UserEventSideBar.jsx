@@ -245,8 +245,19 @@ const UserSidebar = () => {
         ) : user ? (
           <div className="flex flex-col items-center text-center">
             <div className="relative mb-1.5">
-              {/* Always use default avatar - no external images */}
-              <DefaultAvatar name={user.name} size={36} />
+              {user.profile_image ? (
+                <img
+                  src={user.profile_image || "/placeholder.svg"}
+                  alt={user.name || "User"}
+                  className="w-9 h-9 rounded-full object-cover shadow-sm"
+                  onError={(e) => {
+                    e.target.style.display = "none"
+                    e.target.nextSibling.style.display = "block"
+                  }}
+                />
+              ) : (
+                <DefaultAvatar name={user.name} size={36} />
+              )}
               {/* Instagram-style Verification Badge */}
               {user.isVerified && (
                 <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
