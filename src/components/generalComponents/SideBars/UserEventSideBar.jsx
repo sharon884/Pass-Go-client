@@ -223,7 +223,7 @@ const UserSidebar = () => {
       { to: "/user/bookings", icon: Calendar, label: "My Bookings" },
       { to: "/user/wallet", icon: Wallet, label: "Wallet" },
       { to: "/user/notifications", icon: Bell, label: "Notifications" },
-      { to: "/user/terms&conditions", icon: FileText, label: "Terms & Conditions" },
+      { to: "/user/terms", icon: FileText, label: "Terms & Conditions" },
     ],
     [],
   )
