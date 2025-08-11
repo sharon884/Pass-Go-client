@@ -20,7 +20,7 @@ import {
 } from "lucide-react"
 
 // Default Avatar Component with modern color palette
-const DefaultAvatar = ({ name, size = 48 }) => {
+const DefaultAvatar = ({ name, size = 36 }) => {
   const initials = useMemo(() => {
     if (!name) return "H"
     return name
@@ -211,7 +211,7 @@ const HostSidebar = () => {
 
   return (
     <motion.div
-      className={`h-screen w-52 lg:w-56 shadow-lg border-r ${styles.borderColor} flex flex-col ${styles.sidebarBg}`}
+      className={`h-screen w-44 lg:w-48 shadow-lg border-r ${styles.borderColor} flex flex-col ${styles.sidebarBg}`}
       style={{
         background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.primaryBg || "#111827",
       }}
@@ -220,37 +220,37 @@ const HostSidebar = () => {
       animate="visible"
     >
       {/* Host Profile Section */}
-      <motion.div className={`p-2 border-b ${styles.borderColor}`} variants={itemVariants}>
+      <motion.div className={`p-1.5 border-b ${styles.borderColor}`} variants={itemVariants}>
         {isLoading ? (
           <div className="flex flex-col items-center text-center">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 flex items-center justify-center mb-2 animate-pulse">
-              <User className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 flex items-center justify-center mb-1.5 animate-pulse">
+              <User className="w-5 h-5 text-white" />
             </div>
             <p className={`${styles.textMuted} text-xs`}>Loading...</p>
           </div>
         ) : host ? (
           <div className="flex flex-col items-center text-center">
-            <div className="relative mb-2">
-              <DefaultAvatar name={host.name} size={48} />
+            <div className="relative mb-1.5">
+              <DefaultAvatar name={host.name} size={36} />
             </div>
             {/* Host name with inline verification badge */}
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <h2 className={`text-sm font-semibold ${styles.textPrimary} truncate`}>{host.name || "Host"}</h2>
+            <div className="flex items-center justify-center gap-1 mb-0.5">
+              <h2 className={`text-xs font-semibold ${styles.textPrimary} truncate`}>{host.name || "Host"}</h2>
               {/* Verification Badge - Shows when host is verified and active */}
               {host.hostVerificationStatus === "verified" && host.is_active === true && (
                 <div
-                  className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
+                  className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm"
                   style={{
                     background: "linear-gradient(135deg, #1DA1F2 0%, #0084FF 100%)",
-                    minWidth: "16px",
-                    minHeight: "16px",
+                    minWidth: "14px",
+                    minHeight: "14px",
                     border: "1px solid rgba(255, 255, 255, 0.2)",
                     boxShadow: "0 2px 4px rgba(29, 161, 242, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
                   }}
                   title="Verified Host"
                 >
                   <svg
-                    className="w-2.5 h-2.5 text-white"
+                    className="w-2 h-2 text-white"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     style={{ filter: "drop-shadow(0 0.5px 0.5px rgba(0,0,0,0.1))" }}
@@ -264,8 +264,8 @@ const HostSidebar = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center text-center">
-            <DefaultAvatar name="Host" size={48} />
-            <p className={`${styles.textMuted} text-xs mt-2`}>Guest Host</p>
+            <DefaultAvatar name="Host" size={36} />
+            <p className={`${styles.textMuted} text-xs mt-1.5`}>Guest Host</p>
           </div>
         )}
       </motion.div>
@@ -278,29 +278,29 @@ const HostSidebar = () => {
         animate="visible"
       >
         {/* Switch to User Mode Button */}
-        <motion.div className="px-2 mb-0.5" variants={itemVariants}>
+        <motion.div className="px-1.5 mb-0.5" variants={itemVariants}>
           <button
             onClick={handleSwitchToUser}
-            className={`w-full flex items-center px-3 py-2 rounded-lg transition-all duration-200 text-sm ${styles.userButtonColor} ${styles.userButtonHover} group`}
+            className={`w-full flex items-center px-2.5 py-1.5 rounded-lg transition-all duration-200 text-xs ${styles.userButtonColor} ${styles.userButtonHover} group`}
           >
-            <UserCheck className="w-4 h-4 mr-2 flex-shrink-0" />
+            <UserCheck className="w-3.5 h-3.5 mr-2 flex-shrink-0" />
             <span className="font-medium truncate">Switch to User Mode</span>
           </button>
         </motion.div>
 
         {/* Navigation Menu Items */}
         {navigationItems.map(({ to, icon: Icon, label }) => (
-          <motion.div key={to} className="px-2 mb-0.5" variants={itemVariants}>
+          <motion.div key={to} className="px-1.5 mb-0.5" variants={itemVariants}>
             <NavLink
               to={to}
               className={({ isActive }) =>
-                `flex items-center px-3 py-2 rounded-lg transition-all duration-200 text-sm group ${
+                `flex items-center px-2.5 py-1.5 rounded-lg transition-all duration-200 text-xs group ${
                   isActive ? `text-white shadow-sm` : `${styles.textSecondary} ${styles.hoverBg} ${styles.hoverText}`
                 }`
               }
               style={({ isActive }) => getActiveStyle(isActive)}
             >
-              <Icon className="w-4 h-4 mr-2 flex-shrink-0" />
+              <Icon className="w-3.5 h-3.5 mr-2 flex-shrink-0" />
               <span className="font-medium truncate">{label}</span>
             </NavLink>
           </motion.div>
@@ -310,22 +310,22 @@ const HostSidebar = () => {
       {/* Footer Section - Fixed at bottom */}
       <motion.div className={`border-t ${styles.borderColor} mt-auto`} variants={itemVariants}>
         {/* Logout Button */}
-        <div className="px-2 py-1">
+        <div className="px-1.5 py-1">
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className={`w-full flex items-center justify-center px-3 py-2 rounded-lg transition-all duration-200 text-sm ${styles.logoutColor} ${styles.logoutHover} disabled:opacity-50 disabled:cursor-not-allowed group`}
+            className={`w-full flex items-center justify-center px-2.5 py-1.5 rounded-lg transition-all duration-200 text-xs ${styles.logoutColor} ${styles.logoutHover} disabled:opacity-50 disabled:cursor-not-allowed group`}
           >
             {isLoggingOut ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
+              <div className="animate-spin rounded-full h-3.5 w-3.5 border-2 border-current border-t-transparent mr-2"></div>
             ) : (
-              <LogOut className="w-4 h-4 mr-2 flex-shrink-0" />
+              <LogOut className="w-3.5 h-3.5 mr-2 flex-shrink-0" />
             )}
             <span className="font-medium truncate">{isLoggingOut ? "Logging out..." : "Logout"}</span>
           </button>
         </div>
         {/* Copyright Footer */}
-        <div className="px-2 pb-2 text-center">
+        <div className="px-1.5 pb-1.5 text-center">
           <p className={`text-xs ${styles.copyrightColor}`}>© 2025 PassGo</p>
         </div>
       </motion.div>
