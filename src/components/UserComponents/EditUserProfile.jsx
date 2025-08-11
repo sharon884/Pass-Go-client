@@ -78,7 +78,7 @@ const EditUserProfile = () => {
     try {
       await updateUserProfile(formData)
       toast.success("Profile updated successfully");
-       navigate("/user-home-page")
+       navigate("/user/home")
     } catch (error) {
       toast.error(error.message || "Profile updation failed")
     } finally {

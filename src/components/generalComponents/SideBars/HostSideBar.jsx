@@ -142,7 +142,7 @@ const HostSidebar = () => {
 
   // Switch to user mode
   const handleSwitchToUser = useCallback(() => {
-    navigate("/user-home-page")
+    navigate("/user/home")
   }, [navigate])
 
   // Theme-based styling configuration

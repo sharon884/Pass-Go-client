@@ -360,7 +360,7 @@ function Cta() {
                                 ? "0 10px 25px rgba(0, 0, 0, 0.05)"
                                 : `0 10px 25px ${theme.colors.glowColor}`,
                           }}
-                          onClick={() => navigate("/user-home-page")}
+                          onClick={() => navigate("/user/home")}
                         >
                           {/* Card Background Effect */}
                           <div

@@ -8,10 +8,10 @@ const breadcrumbMap = {
   "/welcome-page": "Welcome",
 
   // User Routes
-  "/user-home-page": "User Home",
+  "/user/home": "User Home",
   "/user": "User", // ⬅️ Add this for root grouping
   "/user/profile": "Profile",
-  "/user/edit-profile": "Edit Profile",
+  "/user/profile/edit": "Edit Profile",
   "/user/bookings": "My Bookings",
   "/user/wallet": "My Wallet",
   "/user/notifications": "Notifications",

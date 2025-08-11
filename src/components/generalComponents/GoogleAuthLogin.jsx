@@ -39,7 +39,7 @@ const GoogleAuthLogin = () => {
                 localStorage.setItem("role", role);
 
                 if (role === "user") {
-                    navigate("/user-home-page");
+                    navigate("/user/home");
                 } else if (role === "host") {
                     navigate("/host");
                 } else if (role === "admin") {

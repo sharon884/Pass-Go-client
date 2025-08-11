@@ -231,7 +231,7 @@ function Welcome() {
             <button
               className={buttonStyles.primary.className}
               style={buttonStyles.primary.style}
-              onClick={() => navigate("/user-home-page")}
+              onClick={() => navigate("/user/home")}
             >
               <span className="relative z-10 font-bold">Get Started</span>
             </button>
