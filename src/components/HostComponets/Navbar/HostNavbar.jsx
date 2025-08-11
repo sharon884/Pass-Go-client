@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { getDetailsForSidebar } from "../../../services/host/hostProfileServices"
 import { useNavigate } from "react-router-dom"
-import { Bell } from "lucide-react"
+import NotificationBell from "../../Notifications/NotificationBell"
 
 const HostNavbar = () => {
   const [host, setHost] = useState(null)
@@ -95,34 +95,34 @@ const HostNavbar = () => {
 
       {/* Right Side Items */}
       <div className="flex items-center space-x-4">
-        {/* Notification */}
-        <div className="cursor-pointer relative group">
-          <Bell className="h-6 w-6 text-gray-600 group-hover:text-purple-600 transition-colors" />
-          <span className="sr-only">Notifications</span>
-          <div className="absolute -top-1 -right-1 h-4 w-4 bg-purple-600 rounded-full flex items-center justify-center text-[10px] text-white font-bold">
-            0
-          </div>
-        </div>
+        <NotificationBell />
 
-        {/* Host Profile */}
+        {/* Host Profile - Enhanced with better fallback */}
         {host && host.profile_image ? (
           <img
             src={host.profile_image || "/placeholder.svg"}
             alt="host"
             className="h-9 w-9 rounded-full object-cover border-2 border-purple-200 cursor-pointer hover:border-purple-500 transition-all"
             onClick={() => navigate("/host/profile")}
+            onError={(e) => {
+              e.target.style.display = "none"
+              e.target.nextSibling.style.display = "flex"
+            }}
           />
-        ) : (
-          <div
-            className="h-9 w-9 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-medium cursor-pointer hover:shadow-md transition-all"
-            onClick={() => navigate("/host/profile")}
-          >
-            {host && host.name ? host.name.charAt(0).toUpperCase() : "H"}
-          </div>
-        )}
+        ) : null}
+
+        {/* Default Avatar - Always rendered but hidden when profile image exists */}
+        <div
+          className={`h-9 w-9 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-medium cursor-pointer hover:shadow-md transition-all ${
+            host && host.profile_image ? "hidden" : "flex"
+          }`}
+          onClick={() => navigate("/host/profile")}
+        >
+          {host && host.name ? host.name.charAt(0).toUpperCase() : "H"}
+        </div>
       </div>
     </nav>
   )
 }
 
-export default HostNavbar;
+export default HostNavbar
