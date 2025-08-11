@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Bell } from "lucide-react";
-import { fetchNotifications } from "../../services/notificationService";
+import { fetchNotifications } from "../../services/general/notificationService";
 import NotificationPanel from "./NotificationPanel";
 
 function NotificationBell() {
