@@ -25,11 +25,11 @@ Built with **React.js** as part of a full MERN stack app, Pass-Go enables users 
 ## Tech Stack
 
 - React.js  
-- Redux (if applicable)  
+- Redux 
 - React Router  
 - Socket.IO (real-time communication)  
 - Tailwind CSS / CSS modules / Shadcn UI (component library)  
-- Payment gateway integration (e.g., Razorpay, Stripe)  
+- Payment gateway integration (e.g. Razorpay)  
 - Redis (for caching and real-time seat locking)  
 - Cloudinary (for image and media management)
 
