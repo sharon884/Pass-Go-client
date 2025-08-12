@@ -1,6 +1,8 @@
-# Pass-Go - Digital Event Ticketing Platform (Frontend)
+# Pass-Go - Digital Event Ticketing Platform (Frontend) [Beta Version]
 
-This is the **frontend** client application for **Pass-Go**, a digital event ticket selling platform designed to help small event organizers grow their events digitally.
+This is the **frontend** client application for **Pass-Go**, a digital event ticket selling platform designed to help small event organizers grow their events digitally.  
+
+> **Status:** Beta version — currently implementing CI/CD pipelines and Dockerization for both frontend and backend.
 
 Built with **React.js** as part of a full MERN stack app, Pass-Go enables users to:
 
@@ -29,9 +31,11 @@ Built with **React.js** as part of a full MERN stack app, Pass-Go enables users 
 - React Router  
 - Socket.IO (real-time communication)  
 - Tailwind CSS / CSS modules / Shadcn UI (component library)  
-- Payment gateway integration (e.g. Razorpay)  
+- Payment gateway integration (e.g., Razorpay)  
 - Redis (for caching and real-time seat locking)  
-- Cloudinary (for image and media management)
+- Cloudinary (for image and media management)  
+- **Docker** (in-progress for containerization)  
+- **GitHub Actions** (in-progress for CI/CD automation)
 
 ## Getting Started
 
