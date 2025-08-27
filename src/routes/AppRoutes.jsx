@@ -6,12 +6,13 @@ import HostRoutes from "./HostRoutes";
 import AdminRoutes from "./AdminRoutes";
 
 function AppRoutes() {
+  console.log("inital comit");
   return (
     <Routes>
       {GeneralRoutes}
       {UserRoutes}
       {HostRoutes}
-      {AdminRoutes}
+      {AdminRoutes} 
     </Routes>
   );
 }
