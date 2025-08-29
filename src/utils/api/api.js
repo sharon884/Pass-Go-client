@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 const API_BASE_URL =import.meta.env.VITE_BACKEND_URL;
+console.log("hai for deployment checking ");
 
 const api = axios.create({
   baseURL: API_BASE_URL ,
