@@ -53,7 +53,7 @@ const OtpPage = () => {
 
     let endPoint = ""
     if (role === "user") {
-      endPoint = "/user/auth/otp"
+      endPoint = "/user/auth/verify-otp"
     } else if (role === "admin") {
       endPoint = "/admin/auth/otp"
     } else {
