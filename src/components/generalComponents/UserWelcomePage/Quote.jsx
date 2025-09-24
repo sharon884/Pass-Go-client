@@ -1,6 +1,6 @@
 "use client"
 
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 import { useState, useEffect } from "react"
 
 function Quote() {
@@ -20,7 +20,7 @@ function Quote() {
   const [currentQuote, setCurrentQuote] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
-  const { theme, currentTheme } = useTheme()
+  // const { theme, currentTheme } = useTheme()
 
   useEffect(() => {
     if (isPaused) return
