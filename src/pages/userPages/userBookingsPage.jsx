@@ -4,29 +4,19 @@ import BookingsComponent from "../../components/UserComponents/Bookings/Bookings
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import Footer from "../../components/generalComponents/Footer"
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
 
 function UserBookingsPage() {
   // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        mainBg: "bg-gray-50",
-        contentBg: "bg-white",
-        borderColor: "border-gray-200",
-        headerBg: "bg-white",
-        headerShadow: "shadow-sm",
-      }
-    } else {
-      return {
-        mainBg: theme?.colors?.primaryBg || "bg-gray-900",
-        contentBg: theme?.colors?.secondaryBg || "bg-gray-800",
-        borderColor: "border-gray-700",
-        headerBg: theme?.colors?.secondaryBg || "bg-gray-800",
-        headerShadow: "shadow-lg",
-      }
+    // Force classic white theme styles
+    return {
+      mainBg: "bg-gray-50",
+      contentBg: "bg-white",
+      borderColor: "border-gray-200",
+      headerBg: "bg-white",
+      headerShadow: "shadow-sm",
     }
   }
 
@@ -36,16 +26,15 @@ function UserBookingsPage() {
     <div
       className="flex flex-col min-h-screen"
       style={{
-        background: currentTheme === "classic" ? "#f9fafb" : theme?.colors?.primaryBg || "#111827",
+        background: "#f9fafb",
       }}
     >
       {/* User Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
-        <Breadcrumb />
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{
-            background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+            background: "#ffffff",
             animation: "slideInDown 0.6s ease-out",
           }}
         >
@@ -118,7 +107,7 @@ function UserBookingsPage() {
               <div
                 className={`rounded-lg shadow-sm ${styles.borderColor} border min-h-[calc(100vh-200px)]`}
                 style={{
-                  background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+                  background: "#ffffff",
                   animation: "fadeInUp 0.6s ease-out",
                   animationDelay: "0.4s",
                   animationFillMode: "both",
@@ -135,7 +124,7 @@ function UserBookingsPage() {
       <div
         className={`border-t flex-shrink-0 ${styles.borderColor}`}
         style={{
-          background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+          background: "#ffffff",
           animation: "fadeInUp 0.6s ease-out",
           animationDelay: "0.6s",
           animationFillMode: "both",
@@ -226,17 +215,17 @@ function UserBookingsPage() {
         }
 
         ::-webkit-scrollbar-track {
-          background: ${currentTheme === "classic" ? "#f1f5f9" : "#374151"};
+          background: #f1f5f9;
           border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb {
-          background: ${currentTheme === "classic" ? "#cbd5e1" : "#6b7280"};
+          background: #cbd5e1;
           border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-          background: ${currentTheme === "classic" ? "#94a3b8" : "#9ca3af"};
+          background: #94a3b8;
         }
 
         /* Smooth transitions */

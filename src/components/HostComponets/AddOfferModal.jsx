@@ -13,32 +13,18 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
 
   // Theme-based styling
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        modalBg: "bg-white",
-        overlayBg: "bg-black bg-opacity-50",
-        textPrimary: "text-gray-900",
-        textSecondary: "text-gray-700",
-        textMuted: "text-gray-500",
-        borderColor: "border-gray-200",
-        inputBg: "bg-white",
-        inputBorder: "border-gray-300",
-        inputFocus: "focus:border-blue-500 focus:ring-blue-500",
-        buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300",
-      }
-    } else {
-      return {
-        modalBg: theme?.colors?.cardBg || "bg-gray-800",
-        overlayBg: "bg-black bg-opacity-70",
-        textPrimary: "text-white",
-        textSecondary: "text-gray-200",
-        textMuted: "text-gray-400",
-        borderColor: "border-gray-600",
-        inputBg: theme?.colors?.inputBg || "bg-gray-700",
-        inputBorder: "border-gray-500",
-        inputFocus: "focus:border-blue-400 focus:ring-blue-400",
-        buttonSecondary: "bg-gray-600 hover:bg-gray-500 text-gray-200 border-gray-500",
-      }
+    // Force classic white theme only
+    return {
+      modalBg: "bg-white",
+      overlayBg: "bg-black bg-opacity-50",
+      textPrimary: "text-gray-900",
+      textSecondary: "text-gray-700",
+      textMuted: "text-gray-500",
+      borderColor: "border-gray-200",
+      inputBg: "bg-white",
+      inputBorder: "border-gray-300",
+      inputFocus: "focus:border-blue-500 focus:ring-blue-500",
+      buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300",
     }
   }
 
@@ -81,7 +67,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
       <div
         className={`${styles.modalBg} rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-100`}
         style={{
-          background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.cardBg || "#1f2937",
+          background: "#ffffff",
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -107,7 +93,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
             <button
               onClick={handleClose}
               disabled={isSubmitting}
-              className={`${styles.textMuted} hover:${styles.textPrimary} text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors disabled:opacity-50`}
+              className={`${styles.textMuted} hover:${styles.textPrimary} text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors disabled:opacity-50`}
               aria-label="Close modal"
             >
               ×
@@ -127,7 +113,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                 onChange={(e) => setDiscountType(e.target.value)}
                 className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                 style={{
-                  background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
+                  background: "#ffffff",
                 }}
                 disabled={isSubmitting}
               >
@@ -151,7 +137,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                   onChange={(e) => setValue(e.target.value)}
                   className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                   style={{
-                    background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
+                    background: "#ffffff",
                   }}
                   placeholder={discountType === "percentage" ? "e.g. 10 (for 10% off)" : "e.g. 100 (for ₹100 off)"}
                   required
@@ -179,7 +165,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                 min={new Date().toISOString().split("T")[0]}
                 className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                 style={{
-                  background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
+                  background: "#ffffff",
                 }}
                 required
                 disabled={isSubmitting}
@@ -200,7 +186,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                 onChange={(e) => setMinTickets(e.target.value)}
                 className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                 style={{
-                  background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
+                  background: "#ffffff",
                 }}
                 placeholder="e.g. 2 (minimum tickets to apply offer)"
                 disabled={isSubmitting}

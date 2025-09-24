@@ -7,8 +7,6 @@ import { store } from "./app/store.js"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import "./App.css"
 import "leaflet/dist/leaflet.css";
-import { BreadcrumbProvider  } from "./contexts/BreadcrumbContext";
-import BreadcrumbUpdater from "./components/ui/Breadcrumb/BreadcrumbUpdater"
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
@@ -20,10 +18,8 @@ createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <GoogleOAuthProvider clientId={clientId}>
       <Provider store={store}>
-        <BreadcrumbProvider> 
-        <BreadcrumbUpdater/>
+        {/* Breadcrumbs removed per cleanup: render app directly */}
         <App />
-        </BreadcrumbProvider>
 
       </Provider>
     </GoogleOAuthProvider>

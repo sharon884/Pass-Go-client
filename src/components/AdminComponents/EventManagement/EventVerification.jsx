@@ -17,34 +17,19 @@ const EventVerificationAdmin = () => {
 
   // Theme-based styling
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        containerBg: "bg-white",
-        cardBg: "bg-white",
-        textPrimary: "text-gray-900",
-        textSecondary: "text-gray-700",
-        textMuted: "text-gray-500",
-        borderColor: "border-gray-200",
-        inputBg: "bg-white",
-        inputBorder: "border-gray-300",
-        inputFocus: "focus:border-indigo-500 focus:ring-indigo-500",
-        buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700",
-        linkColor: "text-indigo-600 hover:text-indigo-800",
-      }
-    } else {
-      return {
-        containerBg: theme?.colors?.secondaryBg || "bg-gray-800",
-        cardBg: theme?.colors?.cardBg || "bg-gray-700",
-        textPrimary: "text-white",
-        textSecondary: "text-gray-200",
-        textMuted: "text-gray-400",
-        borderColor: "border-gray-600",
-        inputBg: theme?.colors?.inputBg || "bg-gray-600",
-        inputBorder: "border-gray-500",
-        inputFocus: "focus:border-blue-400 focus:ring-blue-400",
-        buttonSecondary: "bg-gray-600 hover:bg-gray-500 text-gray-200",
-        linkColor: "text-blue-400 hover:text-blue-300",
-      }
+    // Force classic white theme styles only
+    return {
+      containerBg: "bg-white",
+      cardBg: "bg-white",
+      textPrimary: "text-gray-900",
+      textSecondary: "text-gray-700",
+      textMuted: "text-gray-500",
+      borderColor: "border-gray-200",
+      inputBg: "bg-white",
+      inputBorder: "border-gray-300",
+      inputFocus: "focus:border-indigo-500 focus:ring-indigo-500",
+      buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700",
+      linkColor: "text-indigo-600 hover:text-indigo-800",
     }
   }
   const styles = getThemeStyles()
@@ -119,7 +104,7 @@ const EventVerificationAdmin = () => {
     <div
       className={`p-4 sm:p-6 relative ${styles.containerBg}`}
       style={{
-        background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+        background: "#ffffff",
       }}
     >
       <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 ${styles.textPrimary}`}>Pending Event Approvals</h2>
@@ -139,7 +124,7 @@ const EventVerificationAdmin = () => {
               key={event._id}
               className={`border ${styles.borderColor} p-4 sm:p-6 rounded-lg shadow-sm ${styles.cardBg}`}
               style={{
-                background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.cardBg || "#374151",
+                background: "#ffffff",
               }}
             >
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4">
@@ -189,34 +174,34 @@ const EventVerificationAdmin = () => {
                   )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
                     {event.tickets?.VIP && (
-                      <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                      <div className="p-2 rounded bg-opacity-50 bg-gray-100">
                         <strong className={styles.textPrimary}>VIP:</strong> ₹{event.tickets.VIP.price} ×{" "}
                         {event.tickets.VIP.quantity}
                       </div>
                     )}
                     {event.tickets?.general && (
-                      <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                      <div className="p-2 rounded bg-opacity-50 bg-gray-100">
                         <strong className={styles.textPrimary}>General:</strong> ₹{event.tickets.general.price} ×{" "}
                         {event.tickets.general.quantity}
                       </div>
                     )}
                     {event.host?.name && (
-                      <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                      <div className="p-2 rounded bg-opacity-50 bg-gray-100">
                         <strong className={styles.textPrimary}>Host:</strong> {event.host.name}
                       </div>
                     )}
                     {event.businessInfo?.email && (
-                      <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                      <div className="p-2 rounded bg-opacity-50 bg-gray-100">
                         <strong className={styles.textPrimary}>Email:</strong> {event.businessInfo.email}
                       </div>
                     )}
                     {event.businessInfo?.organization_name && (
-                      <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                      <div className="p-2 rounded bg-opacity-50 bg-gray-100">
                         <strong className={styles.textPrimary}>Org:</strong> {event.businessInfo.organization_name}
                       </div>
                     )}
                     {event.businessInfo?.mobile && (
-                      <div className="p-2 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                      <div className="p-2 rounded bg-opacity-50 bg-gray-100">
                         <strong className={styles.textPrimary}>Phone:</strong> {event.businessInfo.mobile}
                       </div>
                     )}

@@ -22,34 +22,19 @@ const FetchPendingHostRequests = () => {
 
   // Theme-based styling
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        containerBg: "bg-white",
-        cardBg: "bg-white",
-        textPrimary: "text-gray-900",
-        textSecondary: "text-gray-700",
-        textMuted: "text-gray-500",
-        borderColor: "border-gray-200",
-        inputBg: "bg-white",
-        inputBorder: "border-gray-300",
-        inputFocus: "focus:border-indigo-500 focus:ring-indigo-500",
-        buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700",
-        linkColor: "text-indigo-600 hover:text-indigo-800",
-      }
-    } else {
-      return {
-        containerBg: theme?.colors?.secondaryBg || "bg-gray-800",
-        cardBg: theme?.colors?.cardBg || "bg-gray-700",
-        textPrimary: "text-white",
-        textSecondary: "text-gray-200",
-        textMuted: "text-gray-400",
-        borderColor: "border-gray-600",
-        inputBg: theme?.colors?.inputBg || "bg-gray-600",
-        inputBorder: "border-gray-500",
-        inputFocus: "focus:border-blue-400 focus:ring-blue-400",
-        buttonSecondary: "bg-gray-600 hover:bg-gray-500 text-gray-200",
-        linkColor: "text-blue-400 hover:text-blue-300",
-      }
+    // Force classic white theme styles only
+    return {
+      containerBg: "bg-white",
+      cardBg: "bg-white",
+      textPrimary: "text-gray-900",
+      textSecondary: "text-gray-700",
+      textMuted: "text-gray-500",
+      borderColor: "border-gray-200",
+      inputBg: "bg-white",
+      inputBorder: "border-gray-300",
+      inputFocus: "focus:border-indigo-500 focus:ring-indigo-500",
+      buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700",
+      linkColor: "text-indigo-600 hover:text-indigo-800",
     }
   }
 
@@ -106,7 +91,7 @@ const FetchPendingHostRequests = () => {
     <div
       className={`p-4 sm:p-6 relative ${styles.containerBg}`}
       style={{
-        background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+        background: "#ffffff",
       }}
     >
       <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 ${styles.textPrimary}`}>Pending Host Requests</h2>
@@ -127,7 +112,7 @@ const FetchPendingHostRequests = () => {
               key={host._id}
               className={`border ${styles.borderColor} p-4 sm:p-6 rounded-lg shadow-sm ${styles.cardBg}`}
               style={{
-                background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.cardBg || "#374151",
+                background: "#ffffff",
               }}
             >
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4">
@@ -148,7 +133,7 @@ const FetchPendingHostRequests = () => {
                   <img
                     src={host.panImage || "/placeholder.svg"}
                     alt="PAN Card"
-                    className="w-40 h-24 sm:w-48 sm:h-28 object-cover rounded-lg shadow-md cursor-pointer hover:opacity-80 transition-opacity border border-gray-200 dark:border-gray-600"
+                    className="w-40 h-24 sm:w-48 sm:h-28 object-cover rounded-lg shadow-md cursor-pointer hover:opacity-80 transition-opacity border border-gray-200"
                     onClick={() => setSelectedImage(host.panImage)}
                   />
                 </div>
@@ -167,21 +152,21 @@ const FetchPendingHostRequests = () => {
               {expandedHost === host._id && (
                 <div className={`mt-4 sm:mt-6 text-sm space-y-3 sm:space-y-4 ${styles.textSecondary}`}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    <div className="p-3 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                    <div className="p-3 rounded bg-opacity-50 bg-gray-100">
                       <strong className={styles.textPrimary}>Name:</strong> {host.name}
                     </div>
-                    <div className="p-3 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                    <div className="p-3 rounded bg-opacity-50 bg-gray-100">
                       <strong className={styles.textPrimary}>Mobile:</strong> {host.mobile}
                     </div>
-                    <div className="p-3 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                    <div className="p-3 rounded bg-opacity-50 bg-gray-100">
                       <strong className={styles.textPrimary}>Email:</strong> {host.email || "N/A"}
                     </div>
-                    <div className="p-3 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600">
+                    <div className="p-3 rounded bg-opacity-50 bg-gray-100">
                       <strong className={styles.textPrimary}>Requested At:</strong>{" "}
                       {new Date(host.verifyRequestedAt).toLocaleString()}
                     </div>
                     {host.address && (
-                      <div className="p-3 rounded bg-opacity-50 bg-gray-100 dark:bg-gray-600 sm:col-span-2">
+                      <div className="p-3 rounded bg-opacity-50 bg-gray-100 sm:col-span-2">
                         <strong className={styles.textPrimary}>Address:</strong> {host.address}
                       </div>
                     )}
@@ -269,8 +254,6 @@ const FetchPendingHostRequests = () => {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onSubmit={submitRejection}
-        currentTheme={currentTheme}
-        theme={theme}
       />
     </div>
   )

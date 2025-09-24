@@ -29,41 +29,23 @@ const HostEventAnalytics = () => {
 
   // Enhanced theme styles with gradients and animations
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        mainBg: "bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50",
-        cardBg: "bg-white/80 backdrop-blur-sm",
-        textPrimary: "text-slate-900",
-        textSecondary: "text-slate-700",
-        textMuted: "text-slate-500",
-        borderColor: "border-slate-200/60",
-        hoverBg: "hover:bg-slate-50/80",
-        accentBg: "bg-gradient-to-r from-blue-50 to-indigo-50",
-        successBg: "bg-gradient-to-r from-emerald-50 to-green-50",
-        warningBg: "bg-gradient-to-r from-amber-50 to-yellow-50",
-        dangerBg: "bg-gradient-to-r from-red-50 to-rose-50",
-        primaryGradient: "bg-gradient-to-r from-blue-600 to-indigo-600",
-        successGradient: "bg-gradient-to-r from-emerald-500 to-green-500",
-        warningGradient: "bg-gradient-to-r from-amber-500 to-yellow-500",
-      };
-    } else {
-      return {
-        mainBg: "bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900",
-        cardBg: "bg-slate-800/80 backdrop-blur-sm",
-        textPrimary: "text-white",
-        textSecondary: "text-slate-200",
-        textMuted: "text-slate-400",
-        borderColor: "border-slate-700/60",
-        hoverBg: "hover:bg-slate-700/80",
-        accentBg: "bg-gradient-to-r from-slate-800 to-purple-800",
-        successBg: "bg-gradient-to-r from-emerald-900 to-green-900",
-        warningBg: "bg-gradient-to-r from-amber-900 to-yellow-900",
-        dangerBg: "bg-gradient-to-r from-red-900 to-rose-900",
-        primaryGradient: "bg-gradient-to-r from-purple-600 to-indigo-600",
-        successGradient: "bg-gradient-to-r from-emerald-600 to-green-600",
-        warningGradient: "bg-gradient-to-r from-amber-600 to-yellow-600",
-      };
-    }
+    // Force classic white theme styles (remove dark theme references)
+    return {
+      mainBg: "bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50",
+      cardBg: "bg-white/80 backdrop-blur-sm",
+      textPrimary: "text-slate-900",
+      textSecondary: "text-slate-700",
+      textMuted: "text-slate-500",
+      borderColor: "border-slate-200/60",
+      hoverBg: "hover:bg-slate-50/80",
+      accentBg: "bg-gradient-to-r from-blue-50 to-indigo-50",
+      successBg: "bg-gradient-to-r from-emerald-50 to-green-50",
+      warningBg: "bg-gradient-to-r from-amber-50 to-yellow-50",
+      dangerBg: "bg-gradient-to-r from-red-50 to-rose-50",
+      primaryGradient: "bg-gradient-to-r from-blue-600 to-indigo-600",
+      successGradient: "bg-gradient-to-r from-emerald-500 to-green-500",
+      warningGradient: "bg-gradient-to-r from-amber-500 to-yellow-500",
+    };
   };
 
   const styles = getThemeStyles();
@@ -323,7 +305,7 @@ const HostEventAnalytics = () => {
           </div>
 
           {/* Enhanced Tab Navigation */}
-          <div className="flex gap-2 p-2 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+          <div className="flex gap-2 p-2 bg-slate-100 rounded-2xl">
             {[
               { id: "overview", label: "Overview", icon: "📊" },
               { id: "analytics", label: "Analytics", icon: "📈" },
@@ -336,7 +318,7 @@ const HostEventAnalytics = () => {
                           ${
                             activeTab === tab.id
                               ? `${styles.primaryGradient} text-white shadow-lg transform scale-105`
-                              : `${styles.textMuted} hover:bg-white/50 dark:hover:bg-slate-700/50`
+                              : `${styles.textMuted} hover:bg-white/50`
                           }`}
               >
                 <span>{tab.icon}</span>
@@ -357,28 +339,28 @@ const HostEventAnalytics = () => {
               value: "6",
               icon: "🎫",
               color: "from-blue-500 to-cyan-500",
-              bg: "bg-blue-50 dark:bg-blue-900/20",
+              bg: "bg-blue-50",
             },
             {
               label: "Total Revenue",
               value: "₹625.4",
               icon: "💰",
               color: "from-emerald-500 to-green-500",
-              bg: "bg-emerald-50 dark:bg-emerald-900/20",
+              bg: "bg-emerald-50",
             },
             {
               label: "VIP Tickets",
               value: "5",
               icon: "⭐",
               color: "from-purple-500 to-pink-500",
-              bg: "bg-purple-50 dark:bg-purple-900/20",
+              bg: "bg-purple-50",
             },
             {
               label: "General Tickets",
               value: "1",
               icon: "👥",
               color: "from-orange-500 to-red-500",
-              bg: "bg-orange-50 dark:bg-orange-900/20",
+              bg: "bg-orange-50",
             },
           ].map((metric, index) => (
             <div
@@ -450,8 +432,8 @@ const HostEventAnalytics = () => {
                                transform transition-all duration-500 hover:scale-105 hover:shadow-xl
                                bg-gradient-to-br ${
                                  isVip
-                                   ? "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20"
-                                   : "from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20"
+                                  ? "from-purple-50 to-pink-50"
+                                  : "from-orange-50 to-red-50"
                                }
                                group cursor-pointer`}
                     style={{ animationDelay: `${index * 200}ms` }}
@@ -497,7 +479,7 @@ const HostEventAnalytics = () => {
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="8"
-                          className="text-gray-200 dark:text-gray-700"
+                          className="text-gray-200"
                         />
                         <circle
                           cx="60"
@@ -587,7 +569,7 @@ const HostEventAnalytics = () => {
             Sales Calendar
             {selectedDate && (
               <span
-                className={`text-lg ${styles.textMuted} ml-4 px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-xl`}
+                className={`text-lg ${styles.textMuted} ml-4 px-4 py-2 bg-green-100 rounded-xl`}
               >
                 {selectedDate.toLocaleDateString("en-US", {
                   month: "long",
@@ -693,7 +675,7 @@ const HostEventAnalytics = () => {
                 } else if (isSelected) {
                   buttonClass += ` bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg`;
                 } else if (salesCount > 0) {
-                  buttonClass += ` bg-gradient-to-r from-orange-200 to-yellow-200 dark:from-orange-800 dark:to-yellow-800 hover:from-orange-300 hover:to-yellow-300`;
+                  buttonClass += ` bg-gradient-to-r from-orange-200 to-yellow-200 hover:from-orange-300 hover:to-yellow-300`;
                 } else {
                   buttonClass += ` ${styles.cardBg} border ${styles.borderColor} ${styles.hoverBg}`;
                 }
@@ -724,7 +706,7 @@ const HostEventAnalytics = () => {
           </div>
 
           {/* Enhanced Legend */}
-          <div className="flex items-center justify-center gap-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-center gap-6 pt-6 border-t border-gray-200">
             {[
               { label: "Today", color: "from-green-500 to-emerald-500" },
               { label: "Sales Day", color: "from-orange-400 to-yellow-400" },
@@ -760,7 +742,7 @@ const HostEventAnalytics = () => {
 
           {offer ? (
             <div
-              className={`${styles.successBg} border-2 border-green-200 dark:border-green-700 rounded-2xl p-8
+              className={`${styles.successBg} border-2 border-green-200 rounded-2xl p-8
                            transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
             >
               <div className="flex items-start justify-between">
@@ -859,7 +841,7 @@ const HostEventAnalytics = () => {
             </div>
           ) : (
             <div
-              className={`${styles.warningBg} border-2 border-yellow-200 dark:border-yellow-700 rounded-2xl p-8
+              className={`${styles.warningBg} border-2 border-yellow-200 rounded-2xl p-8
                            transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl`}
             >
               <div className="text-center">

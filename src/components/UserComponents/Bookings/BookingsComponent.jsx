@@ -40,36 +40,20 @@ const BookingsComponent = () => {
 
   // Theme-based styling
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        mainBg: "bg-gray-50",
-        containerBg: "bg-white",
-        cardBg: "bg-white",
-        textPrimary: "text-gray-900",
-        textSecondary: "text-gray-700",
-        textMuted: "text-gray-500",
-        borderColor: "border-gray-200",
-        hoverBg: "hover:bg-gray-50",
-        tabActiveBg: "border-indigo-500 text-indigo-600",
-        tabInactiveBg: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
-        buttonPrimary: "bg-indigo-600 hover:bg-indigo-700 text-white",
-        buttonSecondary: "bg-indigo-100 hover:bg-indigo-200 text-indigo-700",
-      }
-    } else {
-      return {
-        mainBg: theme?.colors?.primaryBg || "bg-gray-900",
-        containerBg: theme?.colors?.secondaryBg || "bg-gray-800",
-        cardBg: theme?.colors?.cardBg || "bg-gray-700",
-        textPrimary: "text-white",
-        textSecondary: "text-gray-200",
-        textMuted: "text-gray-400",
-        borderColor: "border-gray-600",
-        hoverBg: "hover:bg-gray-600",
-        tabActiveBg: "border-blue-400 text-blue-400",
-        tabInactiveBg: "border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-500",
-        buttonPrimary: "bg-blue-600 hover:bg-blue-700 text-white",
-        buttonSecondary: "bg-blue-100 hover:bg-blue-200 text-blue-700",
-      }
+    // Force classic white theme only
+    return {
+      mainBg: "bg-gray-50",
+      containerBg: "bg-white",
+      cardBg: "bg-white",
+      textPrimary: "text-gray-900",
+      textSecondary: "text-gray-700",
+      textMuted: "text-gray-500",
+      borderColor: "border-gray-200",
+      hoverBg: "hover:bg-gray-50",
+      tabActiveBg: "border-indigo-500 text-indigo-600",
+      tabInactiveBg: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+      buttonPrimary: "bg-indigo-600 hover:bg-indigo-700 text-white",
+      buttonSecondary: "bg-indigo-100 hover:bg-indigo-200 text-indigo-700",
     }
   }
   const styles = getThemeStyles()

@@ -4,7 +4,6 @@ import Footer from "../../components/generalComponents/Footer"
 import HostProfile from "../../components/HostComponets/HostProfileComponet"
 import HostSidebar from "../../components/generalComponents/SideBars/HostSideBar"
 import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar"
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
 
 function HostHomePage() {
   // const { currentTheme, theme } = useTheme()
@@ -36,16 +35,15 @@ function HostHomePage() {
     <div
       className="flex flex-col min-h-screen"
       style={{
-        background: currentTheme === "classic" ? "#f9fafb" : theme?.colors?.primaryBg || "#111827",
+        background: "#f9fafb",
       }}
     >
       {/* Host Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
-        <Breadcrumb />
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{
-            background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+            background: "#ffffff",
             animation: "slideInDown 0.6s ease-out",
           }}
         >
@@ -97,12 +95,12 @@ function HostHomePage() {
               }}
               className={`p-2 rounded-lg shadow-lg border ${styles.borderColor} transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               style={{
-                background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+                background: "#ffffff",
                 animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
               }}
             >
               <svg
-                className={`w-6 h-6 ${currentTheme === "classic" ? "text-gray-900" : "text-white"}`}
+                className={`w-6 h-6 text-gray-900`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -118,7 +116,7 @@ function HostHomePage() {
               <div
                 className={`rounded-lg shadow-sm ${styles.borderColor} border min-h-[calc(100vh-200px)]`}
                 style={{
-                  background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+                  background: "#ffffff",
                   animation: "fadeInUp 0.6s ease-out",
                   animationDelay: "0.4s",
                   animationFillMode: "both",
@@ -135,7 +133,7 @@ function HostHomePage() {
       <div
         className={`border-t flex-shrink-0 ${styles.borderColor}`}
         style={{
-          background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+          background: "#ffffff",
           animation: "fadeInUp 0.6s ease-out",
           animationDelay: "0.6s",
           animationFillMode: "both",
@@ -152,13 +150,13 @@ function HostHomePage() {
         }}
         className={`fixed bottom-6 right-6 p-3 rounded-full shadow-lg border ${styles.borderColor} transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500 z-50`}
         style={{
-          background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+          background: "#ffffff",
           display: "none",
           animation: "bounceIn 0.5s ease-out",
         }}
       >
         <svg
-          className={`w-6 h-6 ${currentTheme === "classic" ? "text-gray-900" : "text-white"}`}
+          className={`w-6 h-6 text-gray-900`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -225,21 +223,13 @@ function HostHomePage() {
           width: 8px;
         }
         ::-webkit-scrollbar-track {
-          background: ${currentTheme === "classic" ? "#f1f5f9" : "#374151"};
+          background: #f1f5f9;
           border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: ${currentTheme === "classic" ? "#cbd5e1" : "#6b7280"};
-          border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: ${currentTheme === "classic" ? "#94a3b8" : "#9ca3af"};
         }
 
-        /* Smooth transitions */
-        * {
-          transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity,
-            box-shadow, transform, filter, backdrop-filter;
+        ::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 4px;
           transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
           transition-duration: 150ms;
         }
@@ -247,7 +237,7 @@ function HostHomePage() {
         /* Focus styles for accessibility */
         button:focus,
         a:focus {
-          outline: 2px solid ${currentTheme === "classic" ? "#6366f1" : "#60a5fa"};
+          outline: 2px solid #6366f1;
           outline-offset: 2px;
         }
 
