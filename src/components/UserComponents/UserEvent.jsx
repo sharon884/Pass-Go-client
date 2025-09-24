@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { fetchApproveEvents } from "../../services/user/userEventServices"
-import { useTheme } from "../../contexts/ThemeContext"
+// import { useTheme } from "../../contexts/ThemeContext"
 
 const UserEvents = () => {
   const [events, setEvents] = useState([])
@@ -16,7 +16,7 @@ const UserEvents = () => {
   const [loading, setLoading] = useState(true)
   const [hoveredCard, setHoveredCard] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState({})
-  const { theme, currentTheme } = useTheme()
+  // const { theme, currentTheme } = useTheme()
 
   // Fetch events
   const fetchEvents = async (
