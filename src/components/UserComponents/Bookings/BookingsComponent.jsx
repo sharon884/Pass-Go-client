@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { getUserBookings } from "../../../services/user/userBookingsServices"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
 
@@ -27,7 +27,7 @@ const BookingsComponent = () => {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("all") // all, orders, tickets
   const [filter, setFilter] = useState("all") // all, upcoming, past, cancelled
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
   const navigate = useNavigate()
 
   const handleViewDetails = (booking) => {

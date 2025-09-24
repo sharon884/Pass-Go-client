@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { useTheme } from "../../contexts/ThemeContext";
+// import { useTheme } from "../../contexts/ThemeContext";
 import { getHostEventBookings } from "../../services/host/hostAnalyticsServices";
 import {
   addOffer,
@@ -23,7 +23,7 @@ const HostEventAnalytics = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
   const [animatedCards, setAnimatedCards] = useState({});
-  const { currentTheme, theme } = useTheme();
+  // const { currentTheme, theme } = useTheme();
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const navigate = useNavigate();
 

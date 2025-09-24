@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useTheme } from "../../contexts/ThemeContext"
+// import { useTheme } from "../../contexts/ThemeContext"
 
 const AddOfferModal = ({ onClose, onSubmit }) => {
   const [discountType, setDiscountType] = useState("percentage")
@@ -9,7 +9,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
   const [expiryDate, setExpiryDate] = useState("")
   const [minTickets, setMinTickets] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

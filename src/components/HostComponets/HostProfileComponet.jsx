@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useState } from "react"
 import { useEffect } from "react"
-import { useTheme } from "../../contexts/ThemeContext"
+// import { useTheme } from "../../contexts/ThemeContext"
 import { getUserProfile } from "../../services/user/userProfileServices.js"
 
 const HostProfile = () => {
   const [host, setHost] = useState(null)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {
