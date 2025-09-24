@@ -4,12 +4,12 @@ import "./App.css"
 import { Toaster } from "sonner"
 import AppRoutes from "./routes/AppRoutes"
 import useAuthInitializer from "./hooks/useAuthInitializer"
-import { ThemeProvider, useTheme } from "./contexts/ThemeContext"
-import ThemeSwitcher from "./components/generalComponents/ThemeSwitcher"
+// import { ThemeProvider, useTheme } from "./contexts/ThemeContext"
+// import ThemeSwitcher from "./components/generalComponents/ThemeSwitcher"
 import useGlobalSocketConnections from "./hooks/useGlobalSocketConnections"
 
 function ToasterWrapper() {
-  const { currentTheme } = useTheme()
+  // const { currentTheme } = useTheme()
 
   return (
     <Toaster
