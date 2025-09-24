@@ -7,7 +7,7 @@ import {
   approveHostRequest,
   rejectHostVerifyRequest,
 } from "../../../services/admin/hostMangementServices"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 import RejectionModal from "./RejectionModal"
 
 const FetchPendingHostRequests = () => {
@@ -18,7 +18,7 @@ const FetchPendingHostRequests = () => {
   const [selectedUser, setSelectedUser] = useState(null)
   const [expandedHost, setExpandedHost] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

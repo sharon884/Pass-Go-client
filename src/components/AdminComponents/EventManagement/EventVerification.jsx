@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { approveEvent, rejectEvent } from "../../../services/admin/eventmanagement"
 import { fetchEvents } from "../../../services/general/EventAnalytics"
 import { toast } from "sonner"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 
 const EventVerificationAdmin = () => {
   const [pendingEvents, setPendingEvents] = useState([])
@@ -13,7 +13,7 @@ const EventVerificationAdmin = () => {
   const [rejectionReason, setRejectionReason] = useState({})
   const [expandedEvent, setExpandedEvent] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {
