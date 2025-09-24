@@ -1,12 +1,12 @@
 "use client"
-import { useTheme } from "../../contexts/ThemeContext"
+// import { useTheme } from "../../contexts/ThemeContext"
 import TicketInfo from "../../components/UserComponents/FreeTicket/TicketInfo"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import Footer from "../../components/generalComponents/Footer"
 
 function TicketInfoPage() {
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {
