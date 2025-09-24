@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 
 function UserStories() {
-  const { theme } = useTheme()
+  // const { theme } = useTheme()
 
   const stories = [
     {
