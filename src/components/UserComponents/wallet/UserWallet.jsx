@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react"
 import { fetchUserWallet } from "../../../services/user/userWalletServices"
 import ThemedTable from "../../ui/ThemedTable"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 
 const UserWallet = () => {
   const [wallet, setWallet] = useState(null)
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
-  const { theme, currentTheme } = useTheme()
+  // const { theme, currentTheme } = useTheme()
 
   // Enhanced theme-based styling with success colors
   const getThemeStyles = () => {

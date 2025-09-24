@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useSearchParams, Link } from "react-router-dom" // Import Link
 import { searchEvents } from "../../../services/user/userEventServices"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 
 const SearchResultsPage = () => {
   const [params] = useSearchParams()
@@ -13,7 +13,7 @@ const SearchResultsPage = () => {
   const [hoveredCard, setHoveredCard] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState({})
   const [animationType, setAnimationType] = useState("magnetic") // Toggle between animations
-  const { theme, currentTheme } = useTheme()
+  // const { theme, currentTheme } = useTheme()
 
   // Theme-based styles (copied from UserEvents for consistency)
   const getThemeStyles = () => {

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { socket } from "../../utils/socket/socket"
 import { fetchApprovedEventsById } from "../../services/user/userEventServices"
-import { useTheme } from "../../contexts/ThemeContext"
+// import { useTheme } from "../../contexts/ThemeContext"
 import EventDistanceMap from "./EventDistanceMap"
 
 const EventDetails = () => {
@@ -14,7 +14,7 @@ const EventDetails = () => {
   const [offer, setOffer] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const navigate = useNavigate()
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   // Theme-based styling - Keeping as is
   const getThemeStyles = () => {
