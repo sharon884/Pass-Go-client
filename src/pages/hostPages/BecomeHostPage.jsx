@@ -2,12 +2,12 @@
 import BecomeHostForm from "../../components/HostComponets/BecomeHost/BecomeHostForm"
 import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
-import { useTheme } from "../../contexts/ThemeContext"
+// import { useTheme } from "../../contexts/ThemeContext"
 import Footer from "../../components/generalComponents/Footer"
 
 function BecomeHostPage() {
   const { role } = useSelector((state) => state.auth)
-  const { currentTheme, theme } = useTheme()
+  // const { currentTheme, theme } = useTheme()
 
   if (role === "host") {
     return <Navigate to="/host" replace />
