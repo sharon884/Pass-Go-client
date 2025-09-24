@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext"
 import { getHostRequestStatus } from "../../../services/host/hostProfileServices" // Import getHostRequestStatus
 
 function Cta() {
@@ -12,7 +12,7 @@ function Cta() {
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [isScrollPaused, setIsScrollPaused] = useState(false)
-  const { theme, currentTheme } = useTheme()
+  // const { theme, currentTheme } = useTheme()
   const navigate = useNavigate()
 
   useEffect(() => {
