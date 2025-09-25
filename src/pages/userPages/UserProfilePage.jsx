@@ -4,7 +4,7 @@ import UserProfile from "../../components/UserComponents/UserProfileComponet"
 import Footer from "../../components/generalComponents/Footer"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
+
 
 function UserProfilePage() {
   const { currentTheme, theme } = useTheme()
