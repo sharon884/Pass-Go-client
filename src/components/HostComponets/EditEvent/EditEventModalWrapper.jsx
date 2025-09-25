@@ -33,7 +33,7 @@ const EditEventModalWrapper = () => {
 
   const { handleSubmit, getValues, reset } = methods;
 
-  // 1. FETCH EXISTING EVENT DATA
+  //  FETCH EXISTING EVENT DATA
   useEffect(() => {
     const fetchEventData = async () => {
       try {
@@ -53,14 +53,16 @@ const EditEventModalWrapper = () => {
             },
           };
 
-          // 3. POPULATE THE FORM
+      
           reset(transformedData);
         } else {
           toast.error("Failed to fetch event details.");
           navigate("/host/dashboard");
         }
       } catch (error) {
-        // ... (error handling remains the same)
+         toast.error("An error occurred while fetching event data.");
+        console.error("Fetch error:", error);
+        navigate("/host/events");
       } finally {
         setIsLoading(false);
       }
@@ -68,7 +70,7 @@ const EditEventModalWrapper = () => {
     fetchEventData();
   }, [eventId, reset, navigate]);
 
-  // 4. REUSE YOUR STEP COMPONENTS
+ 
   const steps = [
     { label: "Event Details", component: <EventDetailsForm /> },
     { label: "Ticket Info", component: <TicketDetailsForm /> },
@@ -79,9 +81,9 @@ const EditEventModalWrapper = () => {
     },
   ];
 
-  // 5. ONSUBMIT HANDLER FOR UPDATING
+  //  ONSUBMIT HANDLER FOR UPDATING
   const onSubmit = async (formData) => {
-    // The GeoJSON transformation is the same as in your AddEvent component
+    
     const { location: locationName, coordinates, ...rest } = formData;
     const geoJsonLocation = {
       type: "Point",
@@ -111,7 +113,7 @@ const EditEventModalWrapper = () => {
     }
   };
 
-  // The handleNext logic is identical to your original component
+  // The handleNext logic is identical to  original component
   const { trigger } = methods;
   const handleNext = async () => {
     let fieldsToValidate = [];
