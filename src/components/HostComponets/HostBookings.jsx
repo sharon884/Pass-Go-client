@@ -206,7 +206,7 @@ const HostEventAnalytics = () => {
           <div className="flex space-x-2">
            
              <button
-                onClick={() => navigate(`/host/edit-event/${eventId}`)} 
+                onClick={() => navigate(`/host/events-edit/${eventId}`)} 
                 className={`px-4 py-2 rounded-lg font-semibold text-sm ${currentTheme.buttonPrimary}`}
               >
                 Edit Event
