@@ -4,7 +4,7 @@ import EventDetails from "../../components/UserComponents/EventDetails"
 import Footer from "../../components/generalComponents/Footer"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
+
 
 function UserEventDetailPage() {
   const { currentTheme, theme } = useTheme()
