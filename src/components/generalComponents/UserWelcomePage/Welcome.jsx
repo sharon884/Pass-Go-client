@@ -98,7 +98,7 @@ function Welcome() {
           <strong>Current Theme:</strong> {currentTheme}
         </div>
         <div>
-          <strong>Primary BG:</strong> {theme.colors.primaryBg}
+          <strong>Primaryyyyyyyy BG:</strong> {theme.colors.primaryBg}
         </div>
         <div>
           <strong>App BG:</strong> {theme.colors.appBg}
