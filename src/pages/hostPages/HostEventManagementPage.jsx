@@ -39,7 +39,7 @@ function HostEventManagementPage() {
     >
       {/* Host Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
-        <Breadcrumb />
+   
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{
