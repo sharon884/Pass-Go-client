@@ -4,7 +4,7 @@ import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEven
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import UserWallet from "../../components/UserComponents/wallet/UserWallet"
 import Footer from "../../components/generalComponents/Footer"
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
+
 
 function UserWalletPage() {
   const { currentTheme, theme } = useTheme()
