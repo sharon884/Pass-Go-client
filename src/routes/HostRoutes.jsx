@@ -11,7 +11,6 @@ import ChangePasswordHost from "../components/HostComponets/ChangePasswordHost";
 import HostProfilePage from "../pages/hostPages/HostProfilePage";
 import EditHostProfilePage from "../pages/hostPages/EditHostProfilePage";
 import HostEventManagementPage from "../pages/hostPages/HostEventManagementPage";
-import EditEventPage from "../pages/hostPages/EditEventPage";
 import BecomeHostPage from "../pages/hostPages/BecomeHostPage";
 import HostAdvancePaymentPage from "../pages/hostPages/HostAdvancePaymentPage";
 import HostEventAnalytics from "../components/HostComponets/HostBookings";
