@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import { fetchApproveEvents } from "../../services/user/userEventServices"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 
 const CategoryEvents = () => {
   const { categoryName } = useParams()
@@ -12,7 +12,7 @@ const CategoryEvents = () => {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [animationType, setAnimationType] = useState("magnetic") // Toggle between animations
-  // const { theme, currentTheme } = useTheme()
+  const { theme, currentTheme } = useTheme()
 
   useEffect(() => {
     const fetchCategoryEvents = async () => {

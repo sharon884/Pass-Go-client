@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback, useMemo } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { getUserProfile } from "../../../services/user/userProfileServices"
 import { logoutUser } from "../../../services/user/userAuthServices"
-// import { useTheme } from "../../../contexts/ThemeContext"
+import { useTheme } from "../../../contexts/ThemeContext"
 import { motion } from "framer-motion"
 import { logOut } from "../../../features/auth/authSlice"
 import { useDispatch } from "react-redux"
@@ -70,7 +70,7 @@ const UserSidebar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  // const { theme, currentTheme } = useTheme()
+  const { theme, currentTheme } = useTheme()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

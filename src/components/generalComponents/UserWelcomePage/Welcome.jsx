@@ -1,13 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-// import { useTheme } from "../../../contexts/ThemeContext"
+import { useTheme } from "../../../contexts/ThemeContext"
 
 function Welcome() {
   const [isVisible, setIsVisible] = useState(false)
   const [textVisible, setTextVisible] = useState(false)
   const [particlesVisible, setParticlesVisible] = useState(false)
-  // const { theme, currentTheme } = useTheme()
+  const { theme, currentTheme } = useTheme()
   const navigate = useNavigate()
 
   useEffect(() => {

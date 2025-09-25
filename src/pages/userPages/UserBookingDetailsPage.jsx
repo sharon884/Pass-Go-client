@@ -1,12 +1,12 @@
 "use client"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import BookingDetailsPage from "../../components/UserComponents/Bookings/BookingDetailsPage"
 import Footer from "../../components/generalComponents/Footer"
 
 function UserBookingDetailsPage() {
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

@@ -6,10 +6,10 @@ import UserStories from '../../components/generalComponents/UserWelcomePage/User
 import Stats from '../../components/generalComponents/UserWelcomePage/Stats'
 import Footer from '../../components/generalComponents/Footer'
 import SearchBar from '../../components/UserComponents/Search/UserSearchBar'
-// import { useTheme } from '../../contexts/ThemeContext'
+import { useTheme } from '../../contexts/ThemeContext'
 
 function WelcomPage() {
-  // const { theme } = useTheme() // Get current theme
+  const { theme } = useTheme() // Get current theme
   
   // Add console log to debug
   // React.useEffect(() => {

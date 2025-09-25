@@ -1,5 +1,5 @@
 "use client"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
 import UserSidebar from "../../components/generalComponents/SideBars/UserEventSideBar"
 import UserWallet from "../../components/UserComponents/wallet/UserWallet"
@@ -7,7 +7,7 @@ import Footer from "../../components/generalComponents/Footer"
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
 
 function UserWalletPage() {
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

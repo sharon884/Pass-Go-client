@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback, useMemo } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { getDetailsForSidebar } from "../../../services/user/userProfileServices"
 import { logoutHost } from "../../../services/host/hostAuthServices"
-// import { useTheme } from "../../../contexts/ThemeContext"
+import { useTheme } from "../../../contexts/ThemeContext"
 import { motion } from "framer-motion"
 import {
   Home,
@@ -61,7 +61,7 @@ const HostSidebar = () => {
   const [host, setHost] = useState(null)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  // const { theme, currentTheme } = useTheme()
+  const { theme, currentTheme } = useTheme()
   const navigate = useNavigate()
 
   // Framer Motion variants

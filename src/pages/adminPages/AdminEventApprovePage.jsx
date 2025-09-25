@@ -1,12 +1,12 @@
 "use client"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import Footer from "../../components/generalComponents/Footer"
 import AdminNavbar from "../../components/AdminComponents/Navbar"
 import EventVerificationAdmin from "../../components/AdminComponents/EventManagement/EventVerification"
 import AdminSidebar from "../../components/generalComponents/SideBar"
 
 function AdminEventApprovePage() {
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

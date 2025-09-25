@@ -1,5 +1,5 @@
 "use client"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import EventDetails from "../../components/UserComponents/EventDetails"
 import Footer from "../../components/generalComponents/Footer"
 import UserEventPageNavbar from "../../components/UserComponents/Navbar/UserEventPageNavbar"
@@ -7,7 +7,7 @@ import UserSidebar from "../../components/generalComponents/SideBars/UserEventSi
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
 
 function UserEventDetailPage() {
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

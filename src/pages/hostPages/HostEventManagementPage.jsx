@@ -1,5 +1,5 @@
 "use client"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import HostEvents from "../../components/HostComponets/HostEvent"
 import Footer from "../../components/generalComponents/Footer"
 import HostSidebar from "../../components/generalComponents/SideBars/HostSideBar"
@@ -7,7 +7,7 @@ import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar"
 import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
 
 function HostEventManagementPage() {
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

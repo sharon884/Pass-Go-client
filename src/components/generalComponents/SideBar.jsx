@@ -2,7 +2,7 @@
 import { useState, useCallback, useMemo } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import { motion } from "framer-motion"
 import { Home, User, LogOut, Shield, CheckCircle, BarChart3, Wallet, Bell, Settings, FileText } from "lucide-react"
 
@@ -47,7 +47,7 @@ const DefaultAvatar = ({ name, size = 48 }) => {
 const AdminSidebar = () => {
   const { name, role } = useSelector((state) => state.auth.user)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
-  // const { theme, currentTheme } = useTheme()
+  const { theme, currentTheme } = useTheme()
   const navigate = useNavigate()
 
   // Framer Motion variants

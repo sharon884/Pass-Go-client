@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getUserProfile } from "../../services/user/userProfileServices"
-// import { useTheme } from "../../contexts/ThemeContext"
+import { useTheme } from "../../contexts/ThemeContext"
 import { toast } from "sonner"
 
 const UserProfile = () => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

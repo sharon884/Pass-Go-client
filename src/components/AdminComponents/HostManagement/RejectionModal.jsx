@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-// import { useTheme } from "../../../contexts/ThemeContext"
+import { useTheme } from "../../../contexts/ThemeContext"
 
 const RejectionModal = ({ isOpen, onClose, onSubmit }) => {
   const [reason, setReason] = useState("")
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling
   const getThemeStyles = () => {

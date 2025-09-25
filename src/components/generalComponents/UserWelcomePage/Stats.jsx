@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-// import { useTheme } from "../../../contexts/ThemeContext"
+import { useTheme } from "../../../contexts/ThemeContext"
 
 function Stats() {
-  // const { theme } = useTheme()
+  const { theme } = useTheme()
   const [counters, setCounters] = useState({
     users: 0,
     events: 0,

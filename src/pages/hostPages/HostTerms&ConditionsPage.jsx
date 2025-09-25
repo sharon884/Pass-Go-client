@@ -1,12 +1,12 @@
 "use client"
-// import { useTheme } from "@/contexts/ThemeContext"
+import { useTheme } from "@/contexts/ThemeContext"
 import Footer from "@/components/generalComponents/Footer"
 import HostSidebar from "@/components/generalComponents/SideBars/HostSideBar"
 import HostTermsAndConditions from "@/components/generalComponents/Terms&conditions/HostTerms&conditions"
 import HostNavbar from "@/components/HostComponets/Navbar/HostNavbar"
 
 function HostTermsConditionsPage() {
-  // const { currentTheme, theme } = useTheme()
+  const { currentTheme, theme } = useTheme()
 
   // Theme-based styling (mirrors your HostHomePage)
   const getThemeStyles = () => {
