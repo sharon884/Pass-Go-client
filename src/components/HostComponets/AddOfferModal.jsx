@@ -3,51 +3,94 @@
 import { useState } from "react"
 import { useTheme } from "../../contexts/ThemeContext"
 
+// Helper to get today's date in YYYY-MM-DD format for input 'min' attribute
+const getTodayDateString = () => new Date().toISOString().split("T")[0];
+
 const AddOfferModal = ({ onClose, onSubmit }) => {
   const [discountType, setDiscountType] = useState("percentage")
   const [value, setValue] = useState("")
   const [expiryDate, setExpiryDate] = useState("")
   const [minTickets, setMinTickets] = useState("")
+  
+  // State to hold validation errors
+  const [errors, setErrors] = useState({}) 
+  
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { currentTheme, theme } = useTheme()
 
-  // Theme-based styling
+  // Theme-based styling (rest of your logic preserved)
   const getThemeStyles = () => {
     if (currentTheme === "classic") {
-      return {
-        modalBg: "bg-white",
-        overlayBg: "bg-black bg-opacity-50",
-        textPrimary: "text-gray-900",
-        textSecondary: "text-gray-700",
-        textMuted: "text-gray-500",
-        borderColor: "border-gray-200",
-        inputBg: "bg-white",
-        inputBorder: "border-gray-300",
-        inputFocus: "focus:border-blue-500 focus:ring-blue-500",
-        buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300",
-      }
-    } else {
-      return {
-        modalBg: theme?.colors?.cardBg || "bg-gray-800",
-        overlayBg: "bg-black bg-opacity-70",
-        textPrimary: "text-white",
-        textSecondary: "text-gray-200",
-        textMuted: "text-gray-400",
-        borderColor: "border-gray-600",
-        inputBg: theme?.colors?.inputBg || "bg-gray-700",
-        inputBorder: "border-gray-500",
-        inputFocus: "focus:border-blue-400 focus:ring-blue-400",
-        buttonSecondary: "bg-gray-600 hover:bg-gray-500 text-gray-200 border-gray-500",
-      }
-    }
+      return {
+        modalBg: "bg-white",
+        overlayBg: "bg-black bg-opacity-50",
+        textPrimary: "text-gray-900",
+        textSecondary: "text-gray-700",
+        textMuted: "text-gray-500",
+        borderColor: "border-gray-200",
+        inputBg: "bg-white",
+        inputBorder: "border-gray-300",
+        inputFocus: "focus:border-blue-500 focus:ring-blue-500",
+        buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300",
+      }
+    } else {
+      return {
+        modalBg: theme?.colors?.cardBg || "bg-gray-800",
+        overlayBg: "bg-black bg-opacity-70",
+        textPrimary: "text-white",
+        textSecondary: "text-gray-200",
+        textMuted: "text-gray-400",
+        borderColor: "border-gray-600",
+        inputBg: theme?.colors?.inputBg || "bg-gray-700",
+        inputBorder: "border-gray-500",
+        inputFocus: "focus:border-blue-400 focus:ring-blue-400",
+        buttonSecondary: "bg-gray-600 hover:bg-gray-500 text-gray-200 border-gray-500",
+      }
+    }
   }
 
   const styles = getThemeStyles()
+  
+  // Validation Logic (Kept as requested)
+  const validate = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    // 1. Discount Value
+    const numValue = Number(value);
+    if (!value || isNaN(numValue) || numValue <= 0) {
+        newErrors.value = "Discount value is required and must be greater than 0.";
+        isValid = false;
+    } else if (discountType === "percentage" && (numValue > 100 || numValue < 1)) {
+        newErrors.value = "Percentage must be between 1% and 100%.";
+        isValid = false;
+    }
+
+    // 2. Expiry Date
+    if (!expiryDate) {
+        newErrors.expiryDate = "Expiry date is required.";
+        isValid = false;
+    } else if (new Date(expiryDate) < new Date(getTodayDateString())) {
+         newErrors.expiryDate = "Expiry date must be today or a future date.";
+         isValid = false;
+    }
+
+    // 3. Min Tickets (if provided)
+    const numMinTickets = Number(minTickets);
+    if (minTickets && (!Number.isInteger(numMinTickets) || numMinTickets < 1)) {
+        newErrors.minTickets = "Minimum tickets must be a positive whole number.";
+        isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!value || !expiryDate) {
-      alert("Please fill all required fields")
+    
+    if (!validate()) {
       return
     }
 
@@ -57,7 +100,8 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
         discountType,
         value: Number(value),
         expiryDate,
-        miniiTickets: minTickets ? Number(minTickets) : undefined,
+        // REVERTED: Using 'miniiTickets' to ensure compatibility with your backend
+        miniiTickets: minTickets ? Number(minTickets) : undefined, 
       }
       await onSubmit(offerData)
     } catch (error) {
@@ -75,15 +119,19 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
 
   return (
     <div
+      // Outer Wrapper / Backdrop. Has z-50
       className={`fixed inset-0 z-50 ${styles.overlayBg} flex items-center justify-center p-4`}
       onClick={handleClose}
     >
       <div
-        className={`${styles.modalBg} rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-100`}
+        // FIX: Added 'relative' and 'z-50' to the modal content. 
+        // This forces the modal content to stack above the z-50 backdrop, 
+        // resolving the visibility issue you described.
+        className={`relative z-50 ${styles.modalBg} rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-100`}
         style={{
           background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.cardBg || "#1f2937",
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()} // Stop click event from propagating to the backdrop
       >
         <div className="p-6">
           {/* Header */}
@@ -124,7 +172,7 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
               <select
                 id="discountType"
                 value={discountType}
-                onChange={(e) => setDiscountType(e.target.value)}
+                onChange={(e) => {setDiscountType(e.target.value); setErrors({...errors, value: undefined})}}
                 className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                 style={{
                   background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
@@ -148,8 +196,8 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                   min="1"
                   max={discountType === "percentage" ? "100" : undefined}
                   value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
+                  onChange={(e) => {setValue(e.target.value); setErrors({...errors, value: undefined})}}
+                  className={`w-full px-4 py-3 border ${errors.value ? 'border-red-500' : styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                   style={{
                     background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
                   }}
@@ -161,6 +209,8 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                   {discountType === "percentage" ? "%" : "₹"}
                 </div>
               </div>
+              {/* Display inline error */}
+              {errors.value && <p className="text-xs text-red-500 mt-1">{errors.value}</p>}
               {discountType === "percentage" && (
                 <p className={`text-xs ${styles.textMuted} mt-1`}>Enter a value between 1-100</p>
               )}
@@ -175,15 +225,17 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                 id="expiryDate"
                 type="date"
                 value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
-                min={new Date().toISOString().split("T")[0]}
-                className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
+                onChange={(e) => {setExpiryDate(e.target.value); setErrors({...errors, expiryDate: undefined})}}
+                min={getTodayDateString()} // Ensures selection is today or future
+                className={`w-full px-4 py-3 border ${errors.expiryDate ? 'border-red-500' : styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                 style={{
                   background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
                 }}
                 required
                 disabled={isSubmitting}
               />
+              {/* Display inline error */}
+              {errors.expiryDate && <p className="text-xs text-red-500 mt-1">{errors.expiryDate}</p>}
               <p className={`text-xs ${styles.textMuted} mt-1`}>Offer will expire at the end of this date</p>
             </div>
 
@@ -196,15 +248,18 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
                 id="minTickets"
                 type="number"
                 min="1"
+                step="1" // Ensure integer input
                 value={minTickets}
-                onChange={(e) => setMinTickets(e.target.value)}
-                className={`w-full px-4 py-3 border ${styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
+                onChange={(e) => {setMinTickets(e.target.value); setErrors({...errors, minTickets: undefined})}}
+                className={`w-full px-4 py-3 border ${errors.minTickets ? 'border-red-500' : styles.inputBorder} ${styles.inputBg} ${styles.textPrimary} rounded-lg ${styles.inputFocus} focus:outline-none focus:ring-2 transition-colors`}
                 style={{
                   background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.inputBg || "#374151",
                 }}
                 placeholder="e.g. 2 (minimum tickets to apply offer)"
                 disabled={isSubmitting}
               />
+              {/* Display inline error */}
+              {errors.minTickets && <p className="text-xs text-red-500 mt-1">{errors.minTickets}</p>}
               <p className={`text-xs ${styles.textMuted} mt-1`}>Leave empty if no minimum ticket requirement</p>
             </div>
 
@@ -220,7 +275,8 @@ const AddOfferModal = ({ onClose, onSubmit }) => {
               </button>
               <button
                 type="submit"
-                disabled={isSubmitting || !value || !expiryDate}
+                // Disable button if submitting, if any errors exist, or if required fields are empty
+                disabled={isSubmitting || Object.keys(errors).length > 0 || !value || !expiryDate} 
                 className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium transform hover:scale-105 active:scale-95"
               >
                 {isSubmitting ? (
