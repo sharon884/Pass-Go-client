@@ -21,6 +21,7 @@ import NotificationPage from "@/pages/generalPages/NotificationPage";
 import ChangePassword from "@/components/UserComponents/ChangePassword";
 import HostTermsAndConditions from "@/components/generalComponents/Terms&conditions/HostTerms&conditions";
 import HostTermsConditionsPage from "@/pages/hostPages/HostTerms&ConditionsPage";
+import HostEditEventPage from "@/pages/hostPages/HostEditEventPage";
 
 const HostRoutes = [
   <Route
@@ -82,7 +83,7 @@ const HostRoutes = [
     path="/host/events-edit/:eventId"
     element={
       <ProtectedRoute allowedRoles={["host"]}>
-        <EditEventPage />
+        <HostEditEventPage/>
       </ProtectedRoute>
     }
   />,
