@@ -13,6 +13,7 @@ import AdminWallet from "../components/AdminComponents/wallet/AdminWallet";
 import AdminEventListing from "@/components/AdminComponents/EventManagement/AdminEventListing";
 import AdminEventDetails from "@/components/AdminComponents/EventManagement/AdminEventDetails";
 import NotificationPage from "@/pages/generalPages/NotificationPage";
+import AdminCancelRequestsPage from "@/pages/adminPages/AdminCancelRequestsPage";
 
 // Admin-only access
 const allowedRoles = ["admin"];
@@ -88,6 +89,16 @@ const AdminRoutes = [
     </ProtectedRoute>
   }
   />,
+
+  <Route
+  key="/admin/event/cancel/requests"
+  path="/admin/event/cancel/requests"
+  element={
+    <ProtectedRoute allowedRoles={allowedRoles}>
+      <AdminCancelRequestsPage/>
+    </ProtectedRoute>
+  }
+  />
   
 ];
 
