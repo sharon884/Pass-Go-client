@@ -161,7 +161,7 @@ const AdminSidebar = () => {
       { to: "/admin/events", icon: BarChart3, label: "Reports" },
       { to: "/admin/wallet", icon: Wallet, label: "Wallet" },
       { to: "/admin/notifications", icon: Bell, label: "Notifications" },
-      { to: "/admin/settings", icon: Settings, label: "Settings" },
+      { to: "/admin/settings", icon: Shield, label: "Event cacelation requests" },
       { to: "/admin/terms", icon: FileText, label: "Terms & Conditions" },
     ],
     [],
