@@ -103,7 +103,7 @@ const PaymentSuccess = () => {
                 View My Bookings
               </button>
               <button
-                onClick={() => navigate(`/events`)}
+                onClick={() => navigate(`/user/home`)}
                 className="w-full text-indigo-600 bg-transparent border border-indigo-300 hover:bg-indigo-50 py-3 px-6 rounded-lg font-medium transition-colors"
               >
                 Explore More Events
@@ -137,7 +137,7 @@ const PaymentSuccess = () => {
               </div>
             </div>
             <button
-              onClick={() => navigate(`/Event/${eventId}/Select-Seat-Counts`)}
+              onClick={() => navigate(`/user/home`)}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-medium transition-colors shadow-md"
             >
               Return to Booking
