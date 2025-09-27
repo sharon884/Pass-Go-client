@@ -21,10 +21,44 @@ const SeatSelectionComponent = () => {
 
   const [, forceUpdate] = useState(0)
 
-  const unlockseats = useUnlockOnLeave(eventId, selectedSeats, seatLockedConfirmed)
+//  const unlockSeatsHandler = useUnlockOnLeave(eventId, selectedSeats, seatLockedConfirmed);
 
+
+//   useSeatSocket(eventId, seats, setSeats)
+
+//   useEffect(() => {
+//     const fetchSeats = async () => {useEffect(() => {
+//   return () => {
+//     unlockSeats(eventId, selectedSeats);
+//   }
+// }, [eventId, selectedSeats]);
+
+//       try {
+//         const seatData = await getAllSeatsForEvent(eventId)
+//         setSeats(seatData)
+//       } catch (error) {
+//         toast.error(error.message || "Error loading seats")
+//       } finally {
+//         setLoading(false)
+//       }
+//     }
+//     fetchSeats()
+//   }, [eventId])
+
+//   useEffect(() => {
+//     return () => {
+//       unlockSeats(eventId, selectedSeats)
+//     }
+//   }, [eventId, selectedSeats])
+
+//   useInterval(() => forceUpdate((n) => n + 1), 1000)
+  // ✅ Hook handles unlocking automatically on leave/unmount/refresh
+  const unlockSeatsHandler = useUnlockOnLeave(eventId, selectedSeats, seatLockedConfirmed)
+
+  // Socket connection for real-time seat updates
   useSeatSocket(eventId, seats, setSeats)
 
+  // Fetch seats on component mount
   useEffect(() => {
     const fetchSeats = async () => {
       try {
@@ -39,12 +73,7 @@ const SeatSelectionComponent = () => {
     fetchSeats()
   }, [eventId])
 
-  useEffect(() => {
-    return () => {
-      unlockSeats(eventId, selectedSeats)
-    }
-  }, [eventId, selectedSeats])
-
+  // Force re-render every second for lock timers
   useInterval(() => forceUpdate((n) => n + 1), 1000)
 
   const handleConfirmSelection = async () => {
@@ -76,10 +105,8 @@ const SeatSelectionComponent = () => {
   }
 
   const handleCancelSelection = () => {
-    if (selectedSeats.length > 0) {
-      unlockSeats(eventId, selectedSeats)
-    }
-    navigate(-1)
+    unlockSeatsHandler() 
+  navigate(-1)
   }
 
   const handleSeatClick = (seatId) => {

@@ -92,22 +92,7 @@ function Welcome() {
 
   return (
     <>
-      {/* DEBUG PANEL */}
-      <div className="fixed top-20 left-4 z-50 bg-black/90 text-white p-3 rounded-lg text-xs font-mono">
-        <div>
-          <strong>Current Theme:</strong> {currentTheme}
-        </div>
-        <div>
-          <strong>Primary BG:</strong> {theme.colors.primaryBg}
-        </div>
-        <div>
-          <strong>App BG:</strong> {theme.colors.appBg}
-        </div>
-        <div>
-          <strong>Body Class:</strong> {document.body.className}
-        </div>
-      </div>
-
+    
       <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={containerStyle}>
         {/* Conditional geometric patterns based on theme */}
         {currentTheme === "electric" && (

@@ -42,9 +42,16 @@ const AdminCancellationRequests = () => {
 
   return (
     <div className="admin-cancellation-page">
-      <h2>Pending Event Cancellation Requests</h2>
+       <h1 className="text-4xl font-extrabold text-blue-600 mb-6 underline underline-offset-4 decoration-2 decoration-blue-400">
+    Event Cancellation Requests
+  </h1>
 
-      {requests.length === 0 && <p>No pending requests found.</p>}
+   {requests.length === 0 && (
+    <h3 className="text-red-500 text-lg font-medium">
+      No pending requests found.
+    </h3>
+  )}
+
 
       <div className="request-list">
         {requests.map((req) => (
@@ -148,7 +155,7 @@ const AdminCancellationRequests = () => {
                   <b>⚠️ Cancellation Rule:</b>
                 </p>
                 <ul>
-                  <li>75% of ticket amount will be refunded to users</li>
+                  <li>100% of ticket amount will be refunded to users</li>
                   <li>25% retained by admin</li>
                   <li>Free tickets will be deleted</li>
                   <li>Event will be marked as cancelled</li>

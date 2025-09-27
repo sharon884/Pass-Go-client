@@ -32,7 +32,7 @@ export const requestedOtp = async (formData ) => {
 
 export const verifyHostOtp = async (mobile, otp ) => {
     try {
-        const response = await api.post("/host/auth/otp", {
+        const response = await api.post("/host/auth/verify-otp", {
             mobile,
             otp,
         });

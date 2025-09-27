@@ -91,14 +91,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-4xl flex flex-col md:flex-row bg-gray-800 rounded-xl shadow-2xl overflow-hidden border border-gray-700">
-        {/* Left side - Illustration */}
-        <div className="w-full md:w-5/12 bg-gradient-to-br from-gray-900 to-black p-8 flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-green-400/5"></div>
-          <div className="text-center relative z-10">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-4xl flex flex-col md:flex-row bg-white rounded-xl shadow-xl overflow-hidden">
+        {/* Left side - Illustration - Updated to Indigo theme */}
+        <div className="w-full md:w-5/12 bg-indigo-600 p-8 flex items-center justify-center">
+          <div className="text-center">
             <svg
-              className="w-32 h-32 mx-auto text-green-400"
+              className="w-32 h-32 mx-auto text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -112,33 +111,23 @@ const Signup = () => {
               ></path>
             </svg>
             <h2 className="mt-6 text-3xl font-bold text-white">PassGo</h2>
-            <p className="mt-2 text-gray-300">
+            <p className="mt-2 text-white text-opacity-80">
               Your gateway to amazing events and unforgettable experiences
             </p>
-            <div className="mt-4 flex justify-center space-x-2">
-              <span className="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full border border-green-500/30">
-                Music
-              </span>
-              <span className="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full border border-green-500/30">
-                Sports
-              </span>
-              <span className="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full border border-green-500/30">
-                Arts
-              </span>
-            </div>
+            {/* Removed extra tag spans to simplify and match Login design */}
           </div>
         </div>
 
-        {/* Right side - Form */}
-        <div className="w-full md:w-7/12 p-8 bg-gray-800">
+        {/* Right side - Form - Updated to light theme */}
+        <div className="w-full md:w-7/12 p-8 bg-white">
           <div className="max-w-md mx-auto">
-            <h2 className="text-2xl font-bold text-white mb-8 text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
               Create your Pass-Go Account
             </h2>
 
-            {/* Error and Success Messages */}
+            {/* Error and Success Messages - Updated colors */}
             {error && (
-              <div className="mb-4 bg-red-900/50 text-red-300 p-3 rounded-lg flex items-center border border-red-800">
+              <div className="mb-4 bg-red-50 text-red-700 p-3 rounded-lg flex items-center">
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="currentColor"
@@ -156,7 +145,7 @@ const Signup = () => {
             )}
 
             {success && (
-              <div className="mb-4 bg-green-900/50 text-green-300 p-3 rounded-lg flex items-center border border-green-700">
+              <div className="mb-4 bg-green-50 text-green-700 p-3 rounded-lg flex items-center">
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="currentColor"
@@ -176,7 +165,7 @@ const Signup = () => {
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="name"
                 >
                   Full Name
@@ -187,12 +176,15 @@ const Signup = () => {
                   id="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  // Updated classes for light theme
+                  className={`w-full px-3 py-2 border ${
+                    validationErrors.name ? "border-red-500" : "border-gray-300"
+                  } rounded-md shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition-colors`}
                   placeholder="John Doe"
                   required
                 />
                 {validationErrors.name && (
-                  <p className="text-sm text-red-400 mt-1">
+                  <p className="text-sm text-red-600 mt-1">
                     {validationErrors.name}
                   </p>
                 )}
@@ -200,7 +192,7 @@ const Signup = () => {
 
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="email"
                 >
                   Email Address
@@ -211,12 +203,15 @@ const Signup = () => {
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  // Updated classes for light theme
+                  className={`w-full px-3 py-2 border ${
+                    validationErrors.email ? "border-red-500" : "border-gray-300"
+                  } rounded-md shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition-colors`}
                   placeholder="you@example.com"
                   required
                 />
                 {validationErrors.email && (
-                  <p className="text-sm text-red-400 mt-1">
+                  <p className="text-sm text-red-600 mt-1">
                     {validationErrors.email}
                   </p>
                 )}
@@ -224,7 +219,7 @@ const Signup = () => {
 
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="password"
                 >
                   Password
@@ -236,18 +231,24 @@ const Signup = () => {
                     id="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    // Updated classes for light theme
+                    className={`w-full px-3 py-2 border ${
+                      validationErrors.password
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded-md shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition-colors`}
                     placeholder="••••••••"
                     required
                   />
                   {validationErrors.password && (
-                    <p className="text-sm text-red-400 mt-1">
+                    <p className="text-sm text-red-600 mt-1">
                       {validationErrors.password}
                     </p>
                   )}
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-green-400 focus:outline-none transition-colors"
+                    // Updated icon color for light theme
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-500 focus:outline-none transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -285,7 +286,7 @@ const Signup = () => {
 
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="confirmPassword"
                 >
                   Confirm Password
@@ -297,18 +298,24 @@ const Signup = () => {
                     id="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    // Updated classes for light theme
+                    className={`w-full px-3 py-2 border ${
+                      validationErrors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded-md shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition-colors`}
                     placeholder="••••••••"
                     required
                   />
                   {validationErrors.confirmPassword && (
-                    <p className="text-sm text-red-400 mt-1">
+                    <p className="text-sm text-red-600 mt-1">
                       {validationErrors.confirmPassword}
                     </p>
                   )}
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-green-400 focus:outline-none transition-colors"
+                    // Updated icon color for light theme
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-indigo-500 focus:outline-none transition-colors"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -346,7 +353,7 @@ const Signup = () => {
 
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="mobile"
                 >
                   Mobile Number
@@ -357,23 +364,28 @@ const Signup = () => {
                   id="mobile"
                   value={formData.mobile}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  // Updated classes for light theme
+                  className={`w-full px-3 py-2 border ${
+                    validationErrors.mobile
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } rounded-md shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition-colors`}
                   placeholder="+1 (555) 123-4567"
                   required
                 />
                 {validationErrors.mobile && (
-                  <p className="text-sm text-red-400 mt-1">
+                  <p className="text-sm text-red-600 mt-1">
                     {validationErrors.mobile}
                   </p>
                 )}
               </div>
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-300 mb-1"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="referralCode"
                 >
                   Referral Code{" "}
-                  <span className="text-gray-400 text-xs">(Optional)</span>
+                  <span className="text-gray-500 text-xs">(Optional)</span>
                 </label>
                 <input
                   type="text"
@@ -381,18 +393,18 @@ const Signup = () => {
                   id="referralCode"
                   value={formData.referralCode}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                  // Updated classes for light theme
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition-colors`}
                   placeholder="Enter referral code"
                 />
                 {validationErrors.referralCode && (
-                  <p className="text-sm text-red-400 mt-1">
+                  <p className="text-sm text-red-600 mt-1">
                     {validationErrors.referralCode}
                   </p>
                 )}
               </div>
 
-              {/* 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="role">
                   Role
                 </label>
@@ -410,7 +422,8 @@ const Signup = () => {
 
               <button
                 type="submit"
-                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-green-500 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 focus:ring-offset-gray-800 transition-all duration-200 transform hover:scale-[1.02]"
+                // Updated button classes to Indigo theme
+                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
               >
                 Create Account
               </button>
@@ -418,30 +431,31 @@ const Signup = () => {
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-600"></div>
+                <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-800 text-gray-400">or</span>
+                <span className="px-2 bg-white text-gray-500">or</span>
               </div>
             </div>
 
             <GoogleAuthSignup onSignupSuccess={handleSignupGoogle} />
 
-            <p className="mt-4 text-center text-sm text-gray-400">
+            <p className="mt-4 text-center text-sm text-gray-600">
               Already have an account?{" "}
               <a
                 href="/login"
-                className="text-green-400 hover:text-green-300 font-medium transition-colors"
+                // Updated link color
+                className="text-indigo-600 hover:text-indigo-500 font-medium transition-colors"
               >
                 Log in
               </a>
             </p>
 
-            {/* Social Media Icons */}
+            {/* Social Media Icons - Updated icon colors */}
             <div className="flex justify-center space-x-4 mt-8">
               <a
                 href="#"
-                className="text-gray-500 hover:text-green-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-indigo-500 transition-colors duration-200"
               >
                 <span className="sr-only">Instagram</span>
                 <svg
@@ -460,7 +474,7 @@ const Signup = () => {
 
               <a
                 href="#"
-                className="text-gray-500 hover:text-green-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-indigo-500 transition-colors duration-200"
               >
                 <span className="sr-only">Twitter</span>
                 <svg
@@ -475,7 +489,7 @@ const Signup = () => {
 
               <a
                 href="#"
-                className="text-gray-500 hover:text-green-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-indigo-500 transition-colors duration-200"
               >
                 <span className="sr-only">Facebook</span>
                 <svg

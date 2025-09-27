@@ -4,7 +4,7 @@ import HostProfile from "../../components/HostComponets/HostProfileComponet"
 import Footer from "../../components/generalComponents/Footer"
 import HostSidebar from "../../components/generalComponents/SideBars/HostSideBar"
 import HostNavbar from "../../components/HostComponets/Navbar/HostNavbar"
-import Breadcrumb from "@/components/ui/Breadcrumb/Breadcrumb"
+
 
 function HostProfilePage() {
   const { currentTheme, theme } = useTheme()
@@ -41,7 +41,7 @@ function HostProfilePage() {
     >
       {/* Host Navbar - Fixed at top */}
       <div className="flex-shrink-0 z-10">
-        <Breadcrumb />
+   
         <header
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{

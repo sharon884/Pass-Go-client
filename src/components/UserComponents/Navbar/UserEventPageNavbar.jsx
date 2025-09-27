@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { getDetailsForSidebar } from "../../../services/user/userProfileServices"
 import SearchBar from "../Search/UserSearchBar"
 import { useNavigate } from "react-router-dom"
-import { Bell, Heart } from "lucide-react" // Importing icons for notifications and wishlist
+import NotificationBell from "@/components/Notifications/NotificationBell"
 
 const UserEventPageNavbar = () => {
   const [user, setUser] = useState(null)
@@ -95,22 +95,23 @@ const UserEventPageNavbar = () => {
       {/* Right Side Items */}
       <div className="flex items-center space-x-4">
         {/* Wishlist */}
-        <div className="cursor-pointer relative group">
+        {/* <div className="cursor-pointer relative group">
           <Heart className="h-6 w-6 text-gray-600 group-hover:text-purple-600 transition-colors" />
           <span className="sr-only">Wishlist</span>
           <div className="absolute -top-1 -right-1 h-4 w-4 bg-purple-600 rounded-full flex items-center justify-center text-[10px] text-white font-bold">
             0
           </div>
-        </div>
+        </div> */}
 
         {/* Notification */}
-        <div className="cursor-pointer relative group">
+        {/* <div className="cursor-pointer relative group">
           <Bell className="h-6 w-6 text-gray-600 group-hover:text-purple-600 transition-colors" />
           <span className="sr-only">Notifications</span>
           <div className="absolute -top-1 -right-1 h-4 w-4 bg-purple-600 rounded-full flex items-center justify-center text-[10px] text-white font-bold">
             0
           </div>
-        </div>
+        </div> */}
+        <NotificationBell/>
 
         {/* User Profile */}
         {user && user.profile_image ? (

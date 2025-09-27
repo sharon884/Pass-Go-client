@@ -5,7 +5,6 @@ import Footer from "../../components/generalComponents/Footer"
 import AdminNavbar from "../../components/AdminComponents/Navbar"
 import FetchPendingHostRequests from "../../components/AdminComponents/HostManagement/PendingHostRequests"
 import AdminSidebar from "../../components/generalComponents/SideBar"
-import AdminAnalyticsDashboard from "@/components/AdminComponents/PlatformAnalytics/AdminPlatformAnalyticsDashboard"
 
 function HostPendingRequestPage() {
   const { currentTheme, theme } = useTheme()
@@ -61,7 +60,7 @@ function HostPendingRequestPage() {
               >
                 <FetchPendingHostRequests />
               </div>
-              <AdminAnalyticsDashboard/>
+          
             </div>
           </div>
         </div>
