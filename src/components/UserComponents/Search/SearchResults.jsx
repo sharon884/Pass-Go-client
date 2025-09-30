@@ -1,9 +1,11 @@
+// File: SearchResults.jsx
+
 "use client"
 
 import { useEffect, useState } from "react"
 import { useSearchParams, Link } from "react-router-dom" // Import Link
 import { searchEvents } from "../../../services/user/userEventServices"
-import { useTheme } from "../../../contexts/ThemeContext"
+// import { useTheme } from "../../../contexts/ThemeContext" // REMOVED: Dual theme setup is removed
 
 const SearchResultsPage = () => {
   const [params] = useSearchParams()
@@ -13,46 +15,31 @@ const SearchResultsPage = () => {
   const [hoveredCard, setHoveredCard] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState({})
   const [animationType, setAnimationType] = useState("magnetic") // Toggle between animations
-  const { theme, currentTheme } = useTheme()
+  // const { theme, currentTheme } = useTheme() // REMOVED: Theme context usage
 
-  // Theme-based styles (copied from UserEvents for consistency)
+  // Theme-based styles (Simplified to only use the static light/classic theme values)
   const getThemeStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        cardBg: "#ffffff",
-        cardBorder: "#e5e7eb",
-        textPrimary: "#1f2937",
-        textSecondary: "#6b7280",
-        badgeFreeColor: "#166534",
-        badgeFreeBg: "#dcfce7",
-        badgePaidColor: "#92400e",
-        badgePaidBg: "#fef3c7",
-        shadowColor: "rgba(0, 0, 0, 0.1)",
-        accentColor: "#8b5cf6",
-        secondaryAccent: "#3b82f6",
-        inputBg: "#ffffff", // Added for select inputs
-        inputBorder: "#d1d5db", // Added for select inputs
-      }
-    } else {
-      return {
-        cardBg: theme?.colors?.cardBg || "#374151",
-        cardBorder: "#4b5563",
-        textPrimary: "#ffffff",
-        textSecondary: "#d1d5db",
-        badgeFreeColor: "#ffffff",
-        badgeFreeBg: "linear-gradient(45deg, #10b981, #059669)",
-        badgePaidColor: "#ffffff",
-        badgePaidBg: "linear-gradient(45deg, #f59e0b, #d97706)",
-        shadowColor: "rgba(0, 0, 0, 0.3)",
-        accentColor: theme?.colors?.primaryAccent || "#8b5cf6",
-        secondaryAccent: theme?.colors?.secondaryAccent || "#3b82f6",
-        inputBg: theme?.colors?.inputBg || "#374151", // Added for select inputs
-        inputBorder: theme?.colors?.inputBorder || "#4b5563", // Added for select inputs
-      }
+    // Only return the static 'classic' (light) theme values
+    return {
+      cardBg: "#ffffff",
+      cardBorder: "#e5e7eb",
+      textPrimary: "#1f2937",
+      textSecondary: "#6b7280",
+      badgeFreeColor: "#166534",
+      badgeFreeBg: "#dcfce7",
+      badgePaidColor: "#92400e",
+      badgePaidBg: "#fef3c7",
+      shadowColor: "rgba(0, 0, 0, 0.1)",
+      accentColor: "#8b5cf6", // Primary Accent
+      secondaryAccent: "#3b82f6", // Secondary Accent
+      inputBg: "#ffffff",
+      inputBorder: "#d1d5db",
+      primaryBg: "#ffffff", // Explicit light background
     }
   }
   const styles = getThemeStyles()
 
+  // Effect to fetch search results when the query changes
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true)
@@ -83,7 +70,7 @@ const SearchResultsPage = () => {
     fetchResults()
   }, [query])
 
-  // Image carousel animation on hover (copied from UserEvents)
+  // Image carousel animation on hover
   useEffect(() => {
     let interval
     if (hoveredCard) {
@@ -103,7 +90,7 @@ const SearchResultsPage = () => {
     return () => clearInterval(interval)
   }, [hoveredCard, results]) // Depend on results to ensure correct event data
 
-  // Function to format date (copied from EventDetails for consistency)
+  // Function to format date
   const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
@@ -115,9 +102,10 @@ const SearchResultsPage = () => {
   }
 
   return (
+    // Set background using the static light theme style
     <div
       className="min-h-screen p-6"
-      style={{ background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.primaryBg || "#111827" }}
+      style={{ background: styles.primaryBg }} 
     >
       {/* Animation Toggle Button */}
       <div className="mb-4 flex justify-center">
@@ -156,16 +144,17 @@ const SearchResultsPage = () => {
                 animationDelay: `${index * 0.1}s`,
               }}
             >
+             {/* Link component for navigation */}
              <Link
-    to={`/your-event/${event._id}`} 
-    className={`${animationType}-card ${hoveredCard === event._id ? "activated" : ""}`} 
-    style={{
-        background: styles.cardBg,
-        borderColor: styles.cardBorder,
-        boxShadow: `0 4px 15px ${styles.shadowColor}`,
-    }}
->
-              {/* Animation Effects */}
+                to={`/your-event/${event._id}`} 
+                className={`${animationType}-card ${hoveredCard === event._id ? "activated" : ""}`} 
+                style={{
+                    background: styles.cardBg,
+                    borderColor: styles.cardBorder,
+                    boxShadow: `0 4px 15px ${styles.shadowColor}`,
+                }}
+            >
+              {/* Animation Effects - Styles use static light theme values */}
                 {animationType === "magnetic" ? (
                   <>
                     {/* Magnetic Field Effect */}
@@ -344,7 +333,7 @@ const SearchResultsPage = () => {
         </div>
       )}
 
-      {/* Animation Styles (Copied directly from UserEvents) */}
+      {/* Animation Styles (Styles now use static light theme values) */}
       <style jsx>{`
         .line-clamp-2 {
           display: -webkit-box;
@@ -385,8 +374,8 @@ const SearchResultsPage = () => {
         .magnetic-card.activated {
           transform: translateY(-15px) scale(1.03);
           box-shadow:
-            0 25px 40px rgba(138, 43, 226, 0.2),
-            0 15px 25px rgba(30, 144, 255, 0.15),
+            0 25px 40px rgba(139, 92, 246, 0.2), /* Static accent color */
+            0 15px 25px rgba(59, 130, 246, 0.15), /* Static secondary accent color */
             0 5px 15px rgba(0, 0, 0, 0.1);
         }
         .magnetic-field {
@@ -404,7 +393,7 @@ const SearchResultsPage = () => {
         }
         .field-line {
           position: absolute;
-          border: 1px solid rgba(138, 43, 226, 0.3);
+          border: 1px solid rgba(139, 92, 246, 0.3); /* Static accent color */
           border-radius: 50%;
           animation: magneticPulse 2s ease-in-out infinite;
         }
@@ -576,8 +565,8 @@ const SearchResultsPage = () => {
         .crystal-card.activated {
           transform: rotateY(5deg) rotateX(2deg) scale(1.05);
           box-shadow:
-            0 20px 40px rgba(138, 43, 226, 0.25),
-            0 10px 20px rgba(30, 144, 255, 0.2),
+            0 20px 40px rgba(139, 92, 246, 0.25), /* Static accent color */
+            0 10px 20px rgba(59, 130, 246, 0.2), /* Static secondary accent color */
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         .crystal-facets {
@@ -915,13 +904,15 @@ const SearchResultsPage = () => {
         .hover-text {
           transition: color 0.3s ease;
         }
+        /* Simplified hover color to static accent color */
         .magnetic-card:hover .hover-text,
         .crystal-card:hover .hover-text {
-          color: ${currentTheme === "classic" ? "#8b5cf6" : "#a78bfa"} !important;
+          color: #a78bfa !important; 
         }
+        /* Simplified activated color to static accent color */
         .magnetic-card.activated .hover-text,
         .crystal-card.activated .hover-text {
-          color: ${currentTheme === "classic" ? "#7c3aed" : "#c4b5fd"} !important;
+          color: #c4b5fd !important; 
         }
       `}</style>
     </div>
