@@ -156,16 +156,16 @@ const SearchResultsPage = () => {
                 animationDelay: `${index * 0.1}s`,
               }}
             >
-              <Link
-                to={`/your-event/${event._id}\`} {/* Corrected navigation path */}
-                className={\`${animationType}-card ${hoveredCard === event._id ? "activated" : ""}`}
-                style={{
-                  background: styles.cardBg,
-                  borderColor: styles.cardBorder,
-                  boxShadow: `0 4px 15px ${styles.shadowColor}`, // Apply shadow based on theme
-                }}
-              >
-                {/* Animation Effects */}
+             <Link
+    to={`/your-event/${event._id}`} 
+    className={`${animationType}-card ${hoveredCard === event._id ? "activated" : ""}`} 
+    style={{
+        background: styles.cardBg,
+        borderColor: styles.cardBorder,
+        boxShadow: `0 4px 15px ${styles.shadowColor}`,
+    }}
+>
+              {/* Animation Effects */}
                 {animationType === "magnetic" ? (
                   <>
                     {/* Magnetic Field Effect */}
