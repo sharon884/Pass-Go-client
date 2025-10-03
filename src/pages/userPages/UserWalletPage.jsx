@@ -49,7 +49,8 @@ function UserWalletPage() {
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{
             background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
-            animation: "slideInDown 0.6s ease-out",
+            // CHANGE: Updated the navbar entrance animation from slideInDown to fadeIn.
+            animation: "fadeIn 0.6s ease-out",
           }}
         >
           <UserEventPageNavbar />
@@ -102,6 +103,7 @@ function UserWalletPage() {
               className={`p-2 rounded-lg shadow-lg border ${styles.borderColor} transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               style={{
                 background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
+                // NOTE: 'pulse' animation is left here for visual effect on the button
                 animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
               }}
             >
@@ -173,14 +175,14 @@ function UserWalletPage() {
 
       {/* Inline Styles and Scripts */}
       <style jsx>{`
-        @keyframes slideInDown {
+        // REMOVED UNUSED 'slideInDown' keyframe definition
+        
+        @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateY(-30px);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
           }
         }
 
@@ -266,7 +268,7 @@ function UserWalletPage() {
         }
       `}</style>
 
-      {/* JavaScript for interactive features */}
+      {/* JavaScript for interactive features - NO CHANGES */}
       <script
         dangerouslySetInnerHTML={{
           __html: `
