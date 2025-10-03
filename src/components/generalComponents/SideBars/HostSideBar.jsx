@@ -72,8 +72,8 @@ const HostSidebar = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 20,
+        stiffness: 60, // Further reduced for a softer, more deliberate flow
+        damping: 30,  // Increased for smoother, more controlled stop
       },
     },
   }
@@ -211,16 +211,19 @@ const HostSidebar = () => {
 
   return (
     <motion.div
-      className={`h-screen w-44 lg:w-48 shadow-lg border-r ${styles.borderColor} flex flex-col ${styles.sidebarBg}`}
+      // Alignment fix: flex-shrink-0 and h-screen
+      className={`h-screen w-44 lg:w-48 shadow-lg border-r ${styles.borderColor} flex flex-col ${styles.sidebarBg} flex-shrink-0`}
       style={{
         background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.primaryBg || "#111827",
+        // FIX: Enforce hardware acceleration to prevent animation stutter/jank
+        transform: 'translateZ(0)',
       }}
       variants={sidebarVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Host Profile Section */}
-      <motion.div className={`p-1.5 border-b ${styles.borderColor}`} variants={itemVariants}>
+      {/* Host Profile Section - flex-shrink-0 for stable height */}
+      <motion.div className={`p-1.5 border-b ${styles.borderColor} flex-shrink-0`} variants={itemVariants}>
         {isLoading ? (
           <div className="flex flex-col items-center text-center">
             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 flex items-center justify-center mb-1.5 animate-pulse">
@@ -273,9 +276,9 @@ const HostSidebar = () => {
         )}
       </motion.div>
 
-      {/* Navigation Section - Static without scroll */}
+      {/* Navigation Section - overflow-y-auto to allow scrolling */}
       <motion.div
-        className="flex-1 py-1 overflow-hidden"
+        className="flex-1 py-1 overflow-y-auto"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -311,8 +314,8 @@ const HostSidebar = () => {
         ))}
       </motion.div>
 
-      {/* Footer Section - Fixed at bottom */}
-      <motion.div className={`border-t ${styles.borderColor} mt-auto`} variants={itemVariants}>
+      {/* Footer Section - Fixed at bottom - flex-shrink-0 for stable height */}
+      <motion.div className={`border-t ${styles.borderColor} mt-auto flex-shrink-0`} variants={itemVariants}>
         {/* Logout Button */}
         <div className="px-1.5 py-1">
           <button

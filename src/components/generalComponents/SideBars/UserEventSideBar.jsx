@@ -23,7 +23,7 @@ import {
 const categories = [
   { name: "Music", icon: "🎵" },
   { name: "Art", icon: "🎨" },
-  { name: "Motosports", icon: "🏍️" },
+  { name: "Motosports", icon: "🏎️" },
   { name: "Fashion", icon: "👗" },
 ]
 
@@ -74,6 +74,7 @@ const UserSidebar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  // Framer Motion variants
   const sidebarVariants = {
     hidden: { x: -300, opacity: 0 },
     visible: {
@@ -81,8 +82,8 @@ const UserSidebar = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 20,
+        stiffness: 60,  // Further reduced for a softer, more deliberate flow
+        damping: 30,   // Increased for smoother, more controlled stop
       },
     },
   }
@@ -226,15 +227,19 @@ const UserSidebar = () => {
 
   return (
     <motion.div
-      className={`h-screen w-44 lg:w-48 shadow-lg border-r ${styles.borderColor} flex flex-col ${styles.sidebarBg}`}
+      // Alignment fix: flex-shrink-0 and h-screen
+      className={`h-screen w-44 lg:w-48 shadow-lg border-r ${styles.borderColor} flex flex-col ${styles.sidebarBg} flex-shrink-0`}
       style={{
         background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.primaryBg || "#111827",
+        // FIX: Enforce hardware acceleration to prevent animation stutter/jank
+        transform: 'translateZ(0)',
       }}
       variants={sidebarVariants}
       initial="hidden"
       animate="visible"
     >
-      <motion.div className={`p-2.5 border-b ${styles.borderColor}`} variants={itemVariants}>
+      {/* Profile Section - flex-shrink-0 for stable height */}
+      <motion.div className={`p-2.5 border-b ${styles.borderColor} flex-shrink-0`} variants={itemVariants}>
         {isLoading ? (
           <div className="flex flex-col items-center text-center">
             <div className="w-9 h-9 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mb-1.5 animate-pulse">
@@ -324,7 +329,7 @@ const UserSidebar = () => {
             className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg transition-all duration-200 text-xs ${styles.textSecondary} ${styles.hoverBg} ${styles.hoverText} group`}
           >
             <div className="flex items-center min-w-0">
-              <span className="text-sm mr-2 flex-shrink-0">🎫</span>
+              <span className="text-sm mr-2 flex-shrink-0">🎟️</span>
               <span className="font-medium truncate">Categories</span>
             </div>
             {isCategoriesOpen ? (
@@ -334,7 +339,12 @@ const UserSidebar = () => {
             )}
           </button>
           {/* Categories Dropdown Content */}
-          {isCategoriesOpen && (
+          <motion.div
+            initial={false}
+            animate={{ height: isCategoriesOpen ? "auto" : 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="overflow-hidden"
+          >
             <div className="mt-0.5 ml-1.5 space-y-0.5">
               {categories.map((category) => (
                 <NavLink
@@ -352,7 +362,7 @@ const UserSidebar = () => {
                 </NavLink>
               ))}
             </div>
-          )}
+          </motion.div>
         </motion.div>
 
         {/* Navigation Items */}
@@ -374,7 +384,8 @@ const UserSidebar = () => {
         ))}
       </motion.div>
 
-      <motion.div className={`border-t ${styles.borderColor} mt-auto`} variants={itemVariants}>
+      {/* Footer Section - Fixed at bottom - flex-shrink-0 for stable height */}
+      <motion.div className={`border-t ${styles.borderColor} mt-auto flex-shrink-0`} variants={itemVariants}>
         {/* Logout Button */}
         <div className="px-1.5 py-1.5">
           <button
