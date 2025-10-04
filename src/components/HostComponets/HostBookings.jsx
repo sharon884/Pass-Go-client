@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -9,7 +8,7 @@ import { addOffer, cancelOffer } from "../../services/host/hostEventOfferService
 import AddOfferModal from "./AddOfferModal"; 
 import CancelEventModal from "../../components/HostComponets/Modals/CancelEventModal"; 
 
-// --- CHART IMPORTS AND REGISTRATION (ENSURED) ---
+// --- CHART IMPORTS AND REGISTRATION (FIXED) ---
 import { Pie, Bar } from 'react-chartjs-2';
 import { 
     Chart as ChartJS, 
@@ -21,14 +20,25 @@ import {
     BarElement, 
     Title,
     PointElement, 
-    LineElement 
+    LineElement,
+    // FIX ADDED: LineController is necessary because you use type: 'line' 
+    // in the dataset object for the Revenue line.
+    LineController 
 } from 'chart.js'; 
 import { DollarSign, Ticket, TrendingUp, Calendar, Tag, Gift, SlidersHorizontal } from "lucide-react"; 
 
 ChartJS.register(
-    ArcElement, Tooltip, Legend, 
-    CategoryScale, LinearScale, BarElement, Title,
-    PointElement, LineElement 
+    ArcElement, 
+    Tooltip, 
+    Legend, 
+    CategoryScale, 
+    LinearScale, 
+    BarElement, 
+    Title,
+    PointElement, 
+    LineElement,
+    // FIX ADDED: Register the LineController
+    LineController 
 );
 
 const formatCurrency = (amount) => `₹${(amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 0 })}`;
@@ -269,7 +279,7 @@ const HostEventAnalytics = () => {
           </div>
         </div>
 
-        {/*  Chart Section (Tickets Split and Daily Trend) --- */}
+        {/* Chart Section (Tickets Split and Daily Trend) --- */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             
           {/* LEFT: Ticket Split Pie Chart  */}
@@ -296,7 +306,7 @@ const HostEventAnalytics = () => {
             )}
           </div>
           
-          {/*  Daily Sales Bar Chart ( with Date Picker) */}
+          {/* Daily Sales Bar Chart ( with Date Picker) */}
           <div className={`lg:col-span-2 p-6 rounded-xl shadow-lg ${currentTheme.cardBackground} border ${currentTheme.borderColor} h-[400px] flex flex-col`}>
              <div className="flex justify-between items-center mb-4">
                  <h3 className={`${currentTheme.textPrimary} text-xl font-bold`}>Daily Sales/Bookings Trend</h3>
@@ -350,7 +360,7 @@ const HostEventAnalytics = () => {
           </div>
         </div>
 
-        {/*  Ticket Sales Breakdown Table ( Data is now accurate) --- */}
+        {/* Ticket Sales Breakdown Table ( Data is now accurate) --- */}
         <div className={`p-6 rounded-xl shadow-lg ${currentTheme.cardBackground} border ${currentTheme.borderColor} mb-8`}>
           <h3 className={`${currentTheme.textPrimary} text-xl font-bold mb-4 flex items-center`}>
             <Tag className="w-5 h-5 mr-2 text-blue-500"/> Ticket Category Breakdown
@@ -377,7 +387,7 @@ const HostEventAnalytics = () => {
                       <td className={`px-6 py-4 whitespace-nowrap text-sm ${currentTheme.textPrimary}`}>{stats.total}</td>
                       <td className={`px-6 py-4 whitespace-nowrap text-sm ${currentTheme.textPrimary} font-bold text-blue-500`}>{stats.sold || 0}</td>
                       <td className={`px-6 py-4 whitespace-nowrap text-sm ${currentTheme.textSecondary}`}>{stats.remaining}</td>
-                      {/*  stats.revenue is now accurate from backend */}
+                      {/* stats.revenue is now accurate from backend */}
                       {isPaid && <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold text-green-500`}>{formatCurrency(stats.revenue)}</td>}
                     </tr>
                   );
