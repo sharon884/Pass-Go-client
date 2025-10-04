@@ -1,26 +1,25 @@
 // src/routes/HostRoutes.jsx
 
-import React from "react";
+import React, { lazy } from "react"; // ADDED lazy
 import { Route } from "react-router-dom";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
-// Host components/pages
-import HostHomePage from "../pages/hostPages/HostHomePage";
-import HostAddEventPage from "../pages/hostPages/HostAddEventPage";
-import ChangePasswordHost from "../components/HostComponets/ChangePasswordHost";
-import HostProfilePage from "../pages/hostPages/HostProfilePage";
-import EditHostProfilePage from "../pages/hostPages/EditHostProfilePage";
-import HostEventManagementPage from "../pages/hostPages/HostEventManagementPage";
-import BecomeHostPage from "../pages/hostPages/BecomeHostPage";
-import HostAdvancePaymentPage from "../pages/hostPages/HostAdvancePaymentPage";
-import HostEventAnalytics from "../components/HostComponets/HostBookings";
-import HostWalletPage from "../pages/hostPages/HostWalletPage";
-import HostWallet from "../components/HostComponets/Wallet/HostWallet";
-import NotificationPage from "@/pages/generalPages/NotificationPage";
-import ChangePassword from "@/components/UserComponents/ChangePassword";
-import HostTermsAndConditions from "@/components/generalComponents/Terms&conditions/HostTerms&conditions";
-import HostTermsConditionsPage from "@/pages/hostPages/HostTerms&ConditionsPage";
-import HostEditEventPage from "@/pages/hostPages/HostEditEventPage";
+// LAZY LOADED PAGES
+const HostHomePage = lazy(() => import("../pages/hostPages/HostHomePage"));
+const HostAddEventPage = lazy(() => import("../pages/hostPages/HostAddEventPage"));
+const ChangePassword = lazy(() => import("@/components/UserComponents/ChangePassword"));
+const HostProfilePage = lazy(() => import("../pages/hostPages/HostProfilePage"));
+const EditHostProfilePage = lazy(() => import("../pages/hostPages/EditHostProfilePage"));
+const HostEventManagementPage = lazy(() => import("../pages/hostPages/HostEventManagementPage"));
+const BecomeHostPage = lazy(() => import("../pages/hostPages/BecomeHostPage"));
+const HostAdvancePaymentPage = lazy(() => import("../pages/hostPages/HostAdvancePaymentPage"));
+const HostEventAnalytics = lazy(() => import("../components/HostComponets/HostBookings"));
+const HostWalletPage = lazy(() => import("../pages/hostPages/HostWalletPage"));
+const NotificationPage = lazy(() => import("@/pages/generalPages/NotificationPage"));
+const HostTermsConditionsPage = lazy(() => import("@/pages/hostPages/HostTerms&ConditionsPage"));
+const HostEditEventPage = lazy(() => import("@/pages/hostPages/HostEditEventPage"));
+
+// Cleaned up unused direct imports (ChangePasswordHost, HostWallet, HostTermsAndConditions)
 
 const HostRoutes = [
   <Route

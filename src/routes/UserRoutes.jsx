@@ -1,28 +1,28 @@
-import React from "react";
+import React, { lazy } from "react"; // ADDED lazy
 import { Route } from "react-router-dom";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 
-import UserHomePage from "../pages/userPages/UserHomePage";
-import UserEvents from "../components/UserComponents/UserEvent";
-import UserEventDetailPage from "../pages/userPages/UserEventDetailPage";
-import UserProfilePage from "../pages/userPages/UserProfilePage";
-import EditUserProfilePage from "../pages/userPages/EditUserProfilePage";
-import UserTicketSeatCountSelectionPage from "../pages/userPages/UserTicketSeatCountSelectionPage";
-import UserTicketSeatSelectionPage from "../pages/userPages/UserTicketSeatSelectionPage";
-import Checkout from "../components/UserComponents/Payment/checkout";
-import PaymentSuccess from "../components/UserComponents/Payment/PaymentSuccess";
-import UserBookingsPage from "../pages/userPages/userBookingsPage";
-import UserSearchResult from "../pages/userPages/UserSearchResultPage";
-import TicketInfoPage from "../pages/userPages/TicketInfo";
-import CheckoutWithoutSeatPage from "../pages/userPages/CheckoutWithoutSeatPage";
-import UserPaymentSuccess from "../pages/userPages/UserPaymentSuccess";
-import CategoryBasedEvents from "../pages/userPages/CategoryBasedEvents";
-import BookingDetailsPage from "../components/UserComponents/Bookings/BookingDetailsPage";
-import UserWalletPage from "../pages/userPages/UserWalletPage";
-import UserChangePasswordPage from "../pages/userPages/UserChangePasswordPage";
-import UserBookingDetailsPage from "../pages/userPages/UserBookingDetailsPage";
-import NotificationPage from "@/pages/generalPages/NotificationPage";
-import UserTermsConditionsPage from "@/pages/userPages/UserTerms&ConditionsPage";
+// LAZY LOADED PAGES
+const UserHomePage = lazy(() => import("../pages/userPages/UserHomePage"));
+const UserEvents = lazy(() => import("../components/UserComponents/UserEvent"));
+const UserEventDetailPage = lazy(() => import("../pages/userPages/UserEventDetailPage"));
+const UserProfilePage = lazy(() => import("../pages/userPages/UserProfilePage"));
+const EditUserProfilePage = lazy(() => import("../pages/userPages/EditUserProfilePage"));
+const UserTicketSeatCountSelectionPage = lazy(() => import("../pages/userPages/UserTicketSeatCountSelectionPage"));
+const UserTicketSeatSelectionPage = lazy(() => import("../pages/userPages/UserTicketSeatSelectionPage"));
+const Checkout = lazy(() => import("../components/UserComponents/Payment/checkout"));
+const PaymentSuccess = lazy(() => import("../components/UserComponents/Payment/PaymentSuccess"));
+const UserBookingsPage = lazy(() => import("../pages/userPages/userBookingsPage"));
+const UserSearchResult = lazy(() => import("../pages/userPages/UserSearchResultPage"));
+const TicketInfoPage = lazy(() => import("../pages/userPages/TicketInfo"));
+const CheckoutWithoutSeatPage = lazy(() => import("../pages/userPages/CheckoutWithoutSeatPage"));
+const UserPaymentSuccess = lazy(() => import("../pages/userPages/UserPaymentSuccess"));
+const CategoryBasedEvents = lazy(() => import("../pages/userPages/CategoryBasedEvents"));
+const UserBookingDetailsPage = lazy(() => import("../pages/userPages/UserBookingDetailsPage"));
+const UserWalletPage = lazy(() => import("../pages/userPages/UserWalletPage"));
+const UserChangePasswordPage = lazy(() => import("../pages/userPages/UserChangePasswordPage"));
+const NotificationPage = lazy(() => import("@/pages/generalPages/NotificationPage"));
+const UserTermsConditionsPage = lazy(() => import("@/pages/userPages/UserTerms&ConditionsPage"));
 
 const allowedRoles = ["user", "host"];
 
