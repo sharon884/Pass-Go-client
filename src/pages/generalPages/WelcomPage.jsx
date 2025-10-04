@@ -15,6 +15,8 @@ function WelcomPage() {
     <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors duration-300">
       <Welcome/>
       
+      <Cta/>
+      
       {/* Centered, wider container for Search and Description */}
       <div className="p-4 md:p-8 max-w-5xl mx-auto -mt-10 mb-10 z-10 relative">
         
@@ -32,9 +34,7 @@ function WelcomPage() {
         <SearchBar/>
 </div>
       </div>
-      
       <Quote/>
-      <Cta/>
       <UserStories/>
       <Stats/>
       <Footer/>
