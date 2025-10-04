@@ -108,14 +108,14 @@ const SearchResultsPage = () => {
       style={{ background: styles.primaryBg }} 
     >
       {/* Animation Toggle Button */}
-      <div className="mb-4 flex justify-center">
+      {/* <div className="mb-4 flex justify-center">
         <button
           onClick={() => setAnimationType(animationType === "magnetic" ? "crystal" : "magnetic")}
           className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
         >
           Switch to {animationType === "magnetic" ? "Crystal Prism" : "Magnetic Levitation"} Animation
         </button>
-      </div>
+      </div> */}
 
       <h2 className={`text-2xl md:text-3xl font-bold mb-6 ${styles.textPrimary} text-center`}>
         Search Results for "{query}"

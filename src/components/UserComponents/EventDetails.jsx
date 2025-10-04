@@ -187,8 +187,9 @@ const EventDetails = () => {
       {/* Event Title */}
       <h1 className={`text-3xl md:text-4xl font-bold ${styles.textPrimary} mb-4`}>{event.title}</h1>
       {/* Event Details */}
+      {/* This grid is responsive: stacks on mobile (col-span-1) and splits 2/3 and 1/3 on medium screens (md:grid-cols-3) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="col-span-2">
+        <div className="col-span-1 md:col-span-2">
           <div
             className={`${styles.cardBg} rounded-xl p-6 ${styles.shadowColor} border ${styles.cardBorder}`}
             style={{
@@ -216,16 +217,19 @@ const EventDetails = () => {
             </h2>
             <p className={`${styles.textSecondary} mb-6 leading-relaxed`}>{event.description}</p>
             <div className="space-y-3">
+              {/* Date Detail Row - FIXED: Adjusted w-24 to be w-20 on mobile, w-24 on sm+ */}
               <div className="flex items-start">
-                <div className={`w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Date:</div>
+                <div className={`w-20 sm:w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Date:</div>
                 <div className={styles.textPrimary}>{formatDate(event.date)}</div>
               </div>
+              {/* Time Detail Row - FIXED: Adjusted w-24 to be w-20 on mobile, w-24 on sm+ */}
               <div className="flex items-start">
-                <div className={`w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Time:</div>
+                <div className={`w-20 sm:w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Time:</div>
                 <div className={styles.textPrimary}>{event.time}</div>
               </div>
+              {/* Location Detail Row - FIXED: Adjusted w-24 to be w-20 on mobile, w-24 on sm+ */}
               <div className="flex items-start">
-                <div className={`w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Location:</div>
+                <div className={`w-20 sm:w-24 flex-shrink-0 ${styles.textMuted} font-medium`}>Location:</div>
                 {/* UPDATED: Display locationName instead of coordinates */}
                 <div className={styles.textPrimary}>{event.locationName ?? "N/A"}</div>
               </div>
@@ -233,7 +237,7 @@ const EventDetails = () => {
           </div>
         </div>
         {/* Tickets Section */}
-        <div>
+        <div className="col-span-1">
           <div
             className={`${styles.cardBg} rounded-xl p-6 ${styles.shadowColor} border ${styles.cardBorder}`}
             style={{
@@ -335,6 +339,7 @@ const EventDetails = () => {
         </div>
       </div>
       {/* Business Info Section */}
+      {/* This grid is responsive: stacks on mobile and splits into two columns on medium screens (md:grid-cols-2) */}
       <div
         className={`${styles.cardBg} rounded-xl p-6 ${styles.shadowColor} border ${styles.cardBorder} mb-8`}
         style={{

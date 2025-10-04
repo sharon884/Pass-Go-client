@@ -115,14 +115,14 @@ const CategoryEvents = () => {
       }}
     >
       {/* Animation Toggle Button */}
-      <div className="mb-6 flex justify-center">
+      {/* <div className="mb-6 flex justify-center">
         <button
           onClick={() => setAnimationType(animationType === "magnetic" ? "crystal" : "magnetic")}
           className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
         >
           Switch to {animationType === "magnetic" ? "Crystal Prism" : "Magnetic Levitation"} Animation
         </button>
-      </div>
+      </div> */}
 
       {/* Category Title */}
       <div className="max-w-8xl mx-auto mb-8">
