@@ -5,6 +5,9 @@ import { Navigate } from "react-router-dom"
 import { useTheme } from "../../contexts/ThemeContext"
 import Footer from "../../components/generalComponents/Footer"
 
+//added a console.log for checking 
+
+
 function BecomeHostPage() {
   const { role } = useSelector((state) => state.auth)
   const { currentTheme, theme } = useTheme()
