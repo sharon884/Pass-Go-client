@@ -1,218 +1,128 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useTheme } from "../../../contexts/ThemeContext"
 
 function Welcome() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [textVisible, setTextVisible] = useState(false)
+  // Use separate states to control the staggered flow
+  const [isVisible, setIsVisible] = useState(false) // Title and Underline
+  const [textVisible, setTextVisible] = useState(false) // Subtitle
+  const [buttonsVisible, setButtonsVisible] = useState(false) // Buttons
   const [particlesVisible, setParticlesVisible] = useState(false)
-  const { theme, currentTheme } = useTheme()
   const navigate = useNavigate()
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setIsVisible(true), 300)
-    const timer2 = setTimeout(() => setTextVisible(true), 1500)
-    const timer3 = setTimeout(() => setParticlesVisible(true), 2500)
+    // Staggered delays for the smooth flow (Ozhukku style)
+    const TITLE_DELAY = 300
+    const SUBTITLE_DELAY = 700 
+    const BUTTONS_DELAY = 1000 
+    const PARTICLE_DELAY = 1500
+    
+    const timer1 = setTimeout(() => setIsVisible(true), TITLE_DELAY) 
+    const timer2 = setTimeout(() => setTextVisible(true), SUBTITLE_DELAY) 
+    const timer3 = setTimeout(() => setButtonsVisible(true), BUTTONS_DELAY) 
+    const timer4 = setTimeout(() => setParticlesVisible(true), PARTICLE_DELAY) 
+    
     return () => {
       clearTimeout(timer1)
       clearTimeout(timer2)
       clearTimeout(timer3)
+      clearTimeout(timer4)
     }
   }, [])
 
-  // FORCE CONTAINER STYLES
+  // FORCE CONTAINER STYLES - Hardcoded to classic white theme
   const containerStyle = {
-    background: currentTheme === "classic" ? "#ffffff" : theme.colors.primaryBg,
-    backgroundColor: currentTheme === "classic" ? "#ffffff" : theme.colors.primaryBg,
-    minHeight: "100vh",
+    background: "#ffffff",
+    backgroundColor: "#ffffff",
+    // Retained fix to show other components below
+    minHeight: "85vh", 
     position: "relative",
     overflow: "hidden",
   }
 
-  // Get theme-aware text colors matching CTA component
   const getTextColors = () => {
-    if (currentTheme === "classic") {
-      return {
-        title: "text-gray-800",
-        subtitle: "text-gray-600",
-        titleGradient: "bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent",
-      }
-    } else {
-      return {
-        title: theme.colors.primaryText,
-        subtitle: theme.colors.secondaryText,
-        titleGradient: null,
-      }
+    return {
+      title: "text-gray-800",
+      subtitle: "text-gray-600",
+      titleGradient: "bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent",
     }
   }
 
-  // Get theme-aware button styles matching CTA component
   const getButtonStyles = () => {
-    if (currentTheme === "classic") {
-      return {
-        primary: {
-          className:
-            "group relative px-10 py-4 rounded-full font-semibold text-lg shadow-2xl transform transition-all duration-500 hover:scale-105 hover:-translate-y-1 overflow-hidden bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white",
-          style: {},
-        },
-        secondary: {
-          className:
-            "group relative px-10 py-4 backdrop-blur-sm rounded-full font-semibold text-lg shadow-2xl transform transition-all duration-500 hover:scale-105 hover:-translate-y-1 border overflow-hidden bg-white/60 text-gray-800 border-purple-100/50 hover:bg-white/80",
-          style: {},
-        },
-      }
-    } else {
-      return {
-        primary: {
-          className:
-            "group relative px-10 py-4 rounded-full font-semibold text-lg shadow-2xl transform transition-all duration-500 hover:scale-105 hover:-translate-y-1 overflow-hidden",
-          style: {
-            background: theme.colors.primaryAccent,
-            color: theme.colors.primaryText,
-            boxShadow: `0 10px 30px ${theme.colors.glowColor}`,
-          },
-        },
-        secondary: {
-          className:
-            "group relative px-10 py-4 backdrop-blur-sm rounded-full font-semibold text-lg shadow-2xl transform transition-all duration-500 hover:scale-105 hover:-translate-y-1 border overflow-hidden",
-          style: {
-            backgroundColor: theme.colors.cardBg,
-            color: theme.colors.primaryText,
-            borderColor: theme.colors.borderColor,
-            boxShadow: `0 10px 30px ${theme.colors.glowColor}`,
-          },
-        },
-      }
+    const baseClassName = "group relative px-8 py-3 rounded-full font-semibold text-base shadow-xl transform transition-all duration-500 hover:scale-[1.02] hover:-translate-y-0.5 overflow-hidden"
+
+    return {
+      primary: {
+        className:
+          `${baseClassName} bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white`,
+        style: {},
+      },
+      secondary: {
+        className:
+          `${baseClassName} backdrop-blur-sm border bg-white/60 text-gray-800 border-purple-100/50 hover:bg-white/80`,
+        style: {},
+      },
     }
   }
 
   const textColors = getTextColors()
   const buttonStyles = getButtonStyles()
 
+  // 🛑 CHANGE: Updated transition variables for the "Melting Text" effect.
+  const MELTING_TRANSITION = "transition-all duration-[1500ms] ease-[cubic-bezier(0.25,1,0.5,1)] transform"
+  // Stronger initial vertical offset and added strong blur
+  const INITIAL_STATE = "translate-y-10 opacity-0 blur-lg" 
+  // Resolves to no vertical offset and no blur
+  const FINAL_STATE = "translate-y-0 opacity-100 blur-0" 
+
+
   return (
     <>
     
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={containerStyle}>
-        {/* Conditional geometric patterns based on theme */}
-        {currentTheme === "electric" && (
-          <div className="absolute inset-0 overflow-hidden">
-            <div
-              className="absolute top-0 left-0 w-96 h-96 opacity-20 animate-pulse"
-              style={{
-                background: theme.colors.shape1,
-                clipPath: "polygon(0% 0%, 100% 0%, 80% 100%, 0% 80%)",
-                transform: "rotate(15deg)",
-              }}
-            ></div>
-            <div
-              className="absolute bottom-0 right-0 w-80 h-80 opacity-15 animate-pulse delay-1000"
-              style={{
-                background: theme.colors.shape2,
-                clipPath: "polygon(20% 0%, 100% 20%, 100% 100%, 0% 100%)",
-                transform: "rotate(-20deg)",
-              }}
-            ></div>
-            <div
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-10"
-              style={{
-                background: theme.colors.shape3,
-                clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
-                animation: "spin 30s linear infinite",
-              }}
-            ></div>
-          </div>
-        )}
+      <div 
+        className="flex items-center justify-center relative overflow-hidden" 
+        style={containerStyle}
+      >
+        {/* Clean white background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-white"></div>
+        </div>
 
-        {/* Clean white theme gets pure white background */}
-        {currentTheme === "classic" && (
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute inset-0 bg-white"></div>
-          </div>
-        )}
+        {/* Main content wrapper */}
+        <div className="text-center z-10 relative px-4 max-w-full"> 
+          
+          {/* Title - Uses 'isVisible' state */}
+          {/* Applying the Melting Transition */}
+          <div className={`mb-8 md:mb-10 ${MELTING_TRANSITION} ${isVisible ? FINAL_STATE : INITIAL_STATE}`}>
+            <h1 className={`text-5xl md:text-7xl font-bold drop-shadow-lg ${textColors.titleGradient}`}>
+              Welcome To PassGo
+            </h1>
 
-        {/* Floating orbs - different for each theme */}
-        {currentTheme === "electric" && (
-          <>
+            {/* Animated underline - Synchronized with the title */}
             <div
-              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse opacity-40"
-              style={{ backgroundColor: `${theme.colors.particle1}33` }}
-            ></div>
-            <div
-              className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-40"
-              style={{ backgroundColor: `${theme.colors.particle2}33` }}
-            ></div>
-          </>
-        )}
-
-        {currentTheme === "classic" && (
-          <>
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse opacity-0"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl animate-pulse delay-1000 opacity-0"></div>
-          </>
-        )}
-
-        {/* Main content */}
-        <div
-          className={`text-center z-10 relative transition-all duration-[4000ms] ease-out transform ${
-            isVisible ? "translate-y-0 opacity-100 scale-100 blur-0" : "translate-y-20 opacity-0 scale-95 blur-sm"
-          }`}
-        >
-          {/* Title */}
-          <div className="mb-12">
-            {currentTheme === "classic" ? (
-              <h1 className={`text-6xl md:text-8xl font-bold drop-shadow-2xl ${textColors.titleGradient}`}>
-                Welcome To PassGo
-              </h1>
-            ) : (
-              <h1
-                className="text-6xl md:text-8xl font-bold bg-clip-text text-transparent drop-shadow-2xl"
-                style={{
-                  backgroundImage: theme.colors.primaryAccent,
-                  textShadow: `0 0 30px ${theme.colors.glowColor}`,
-                  color: theme.colors.primaryText,
-                }}
-              >
-                Welcome To PassGo
-              </h1>
-            )}
-
-            {/* Animated underline */}
-            <div
-              className={`h-1 mx-auto mt-8 rounded-full transition-all duration-[3000ms] delay-1000 ${
-                isVisible ? "w-48 opacity-100" : "w-0 opacity-0"
+              className={`h-[3px] mx-auto mt-6 rounded-full transition-all duration-1000 ease-out ${
+                isVisible ? "w-32 md:w-48 opacity-100" : "w-0 opacity-0"
               }`}
               style={{
-                background:
-                  currentTheme === "classic"
-                    ? "linear-gradient(to right, #7c3aed, #2563eb)"
-                    : theme.colors.primaryAccent,
-                boxShadow:
-                  currentTheme === "classic"
-                    ? "0 0 20px rgba(124, 58, 237, 0.3)"
-                    : `0 0 20px ${theme.colors.glowColor}`,
+                background: "linear-gradient(to right, #7c3aed, #2563eb)",
+                boxShadow: "0 0 15px rgba(124, 58, 237, 0.3)",
               }}
             ></div>
           </div>
 
-          {/* Subtitle */}
-          <div className="mb-16 overflow-hidden">
+          {/* Subtitle - Uses 'textVisible' state for flow */}
+          {/* Applying the Melting Transition */}
+          <div className={`mb-12 overflow-hidden ${MELTING_TRANSITION} ${textVisible ? FINAL_STATE : INITIAL_STATE}`}>
             <p
-              className={`text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed transition-all duration-[2500ms] delay-1500 ${
-                textVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-              } ${currentTheme === "classic" ? textColors.subtitle : ""}`}
-              style={currentTheme === "classic" ? {} : { color: theme.colors.secondaryText }}
+              className={`text-lg md:text-xl max-w-xl mx-auto leading-relaxed ${textColors.subtitle}`}
             >
               Find your experience - buy ticket or become a host
             </p>
           </div>
 
-          {/* Buttons */}
-          <div
-            className={`flex flex-col sm:flex-row gap-6 justify-center transition-all duration-[2000ms] delay-2000 ${
-              textVisible ? "translate-y-0 opacity-100 scale-100" : "translate-y-12 opacity-0 scale-95"
-            }`}
-          >
+          {/* Buttons - Uses 'buttonsVisible' state for final flow step */}
+          {/* Applying the Melting Transition */}
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center ${MELTING_TRANSITION} ${buttonsVisible ? FINAL_STATE : INITIAL_STATE}`}>
             <button
               className={buttonStyles.primary.className}
               style={buttonStyles.primary.style}
@@ -227,54 +137,39 @@ function Welcome() {
           </div>
         </div>
 
-        {/* Floating particles */}
+        {/* Floating particles - Uses a separate state/transition */}
         <div
-          className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-[3000ms] delay-2500 ${
+          className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-2000 ${
             particlesVisible ? "opacity-100" : "opacity-0"
           }`}
         >
+          {/* Particles code remains the same... */}
           <div
-            className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full animate-float-slow opacity-80"
-            style={{
-              backgroundColor: currentTheme === "classic" ? "#7c3aed" : theme.colors.particle1,
-              boxShadow: currentTheme === "classic" ? "0 0 10px #7c3aed" : `0 0 10px ${theme.colors.particle1}`,
-            }}
+            className="absolute top-[10%] left-[10%] w-2 h-2 rounded-full animate-float-slow opacity-80"
+            style={{ backgroundColor: "#7c3aed", boxShadow: "0 0 8px #7c3aed", }}
           ></div>
           <div
-            className="absolute top-1/3 right-1/3 w-1 h-1 rounded-full animate-float-slow delay-1000 opacity-80"
-            style={{
-              backgroundColor: currentTheme === "classic" ? "#8b5cf6" : theme.colors.particle2,
-              boxShadow: currentTheme === "classic" ? "0 0 8px #8b5cf6" : `0 0 8px ${theme.colors.particle2}`,
-            }}
+            className="absolute top-[30%] right-[20%] w-1 h-1 rounded-full animate-float-slow delay-1500 opacity-80"
+            style={{ backgroundColor: "#8b5cf6", boxShadow: "0 0 6px #8b5cf6", }}
           ></div>
           <div
-            className="absolute bottom-1/4 left-1/3 w-1 h-1 rounded-full animate-float-slow delay-2000 opacity-80"
-            style={{
-              backgroundColor: currentTheme === "classic" ? "#a855f7" : theme.colors.particle3,
-              boxShadow: currentTheme === "classic" ? "0 0 8px #a855f7" : `0 0 8px ${theme.colors.particle3}`,
-            }}
+            className="absolute bottom-[20%] left-[40%] w-1 h-1 rounded-full animate-float-slow delay-3000 opacity-80"
+            style={{ backgroundColor: "#a855f7", boxShadow: "0 0 6px #a855f7", }}
           ></div>
           <div
-            className="absolute top-2/3 right-1/4 w-2 h-2 rounded-full animate-float-slow delay-3000 opacity-80"
-            style={{
-              backgroundColor: currentTheme === "classic" ? "#9333ea" : theme.colors.particle4,
-              boxShadow: currentTheme === "classic" ? "0 0 10px #9333ea" : `0 0 10px ${theme.colors.particle4}`,
-            }}
+            className="absolute top-[70%] right-[5%] w-2 h-2 rounded-full animate-float-slow delay-[4500ms] opacity-80"
+            style={{ backgroundColor: "#9333ea", boxShadow: "0 0 8px #9333ea", }}
           ></div>
         </div>
 
         <style jsx>{`
           @keyframes float-slow {
-            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.8; }
-            25% { transform: translateY(-20px) translateX(10px); opacity: 1; }
-            50% { transform: translateY(-10px) translateX(-5px); opacity: 0.9; }
-            75% { transform: translateY(-30px) translateX(15px); opacity: 1; }
+            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.7; }
+            25% { transform: translateY(-15px) translateX(10px); opacity: 0.9; }
+            50% { transform: translateY(-5px) translateX(-5px); opacity: 0.8; }
+            75% { transform: translateY(-20px) translateX(15px); opacity: 0.95; }
           }
-          @keyframes spin {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-          }
-          .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+          .animate-float-slow { animation: float-slow 10s ease-in-out infinite; }
         `}</style>
       </div>
     </>

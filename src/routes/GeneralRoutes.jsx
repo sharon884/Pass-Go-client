@@ -1,13 +1,16 @@
-import React from "react";
+import React, { lazy } from "react"; // ADDED lazy import
 import { Route } from "react-router-dom";
-import LandingPage from "../pages/generalPages/LandingPage";
-import Signup from "../pages/generalPages/Signup";
-import Login from "../pages/generalPages/Login";
-import OtpPage from "../pages/generalPages/OTP";
-import ForgetPassword from "../pages/generalPages/ForgetPassword";
-import WelcomPage from "../pages/generalPages/WelcomPage";
+// All direct component imports are replaced by lazy imports below
 import PublicRoute from "../components/auth/PublicRoute"; 
-import NotFound from "@/components/generalComponents/NotFound";
+
+// LAZY LOADED PAGES
+const LandingPage = lazy(() => import("../pages/generalPages/LandingPage"));
+const Signup = lazy(() => import("../pages/generalPages/Signup"));
+const Login = lazy(() => import("../pages/generalPages/Login"));
+const OtpPage = lazy(() => import("../pages/generalPages/OTP"));
+const ForgetPassword = lazy(() => import("../pages/generalPages/ForgetPassword"));
+const WelcomPage = lazy(() => import("../pages/generalPages/WelcomPage"));
+const NotFound = lazy(() => import("@/components/generalComponents/NotFound"));
 
 const GeneralRoutes = [
   <Route key="/" path="/" element={<LandingPage />} />,

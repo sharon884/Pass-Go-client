@@ -46,7 +46,8 @@ function UserBookingsPage() {
           className={`${styles.headerShadow} border-b ${styles.borderColor} sticky top-0`}
           style={{
             background: currentTheme === "classic" ? "#ffffff" : theme?.colors?.secondaryBg || "#1f2937",
-            animation: "slideInDown 0.6s ease-out",
+            // CHANGE: Updated the navbar entrance animation from slideInDown to fadeIn, matching UserWalletPage.
+            animation: "fadeIn 0.6s ease-out",
           }}
         >
           <UserEventPageNavbar />
@@ -169,17 +170,17 @@ function UserBookingsPage() {
 
       {/* Inline Styles and Scripts */}
       <style jsx>{`
-        @keyframes slideInDown {
+        @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateY(-30px);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
           }
         }
-
+        
+        // REMOVED UNUSED 'slideInDown' keyframe definition
+        
         @keyframes slideInLeft {
           from {
             opacity: 0;
