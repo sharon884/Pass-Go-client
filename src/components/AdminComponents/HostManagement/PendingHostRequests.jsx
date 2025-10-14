@@ -187,7 +187,7 @@ const FetchPendingHostRequests = () => {
                     )}
                   </div>
 
-                  {host.panImage && (
+                  {/* {host.panImage && (
                     <div>
                       <strong className={styles.textPrimary}>PAN Card:</strong>
                       <div className="mt-2">
@@ -199,7 +199,7 @@ const FetchPendingHostRequests = () => {
                         />
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {host.documents && host.documents.length > 0 && (
                     <div>
