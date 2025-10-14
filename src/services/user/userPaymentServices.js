@@ -34,3 +34,24 @@ export const createOrderWithoutSeats = async (payload) => {
     throw new Error("Failed to create non-seat order");
   }
 };
+
+
+export const handlePaymentFailure = async (payload) => {
+  try {
+    const { data } = await api.post('/user/payment/failure', payload);
+    return data;
+  } catch (error) {
+    console.log("Error handling payment failure", error.response?.data?.message || error );
+    throw error.response?.data || new Error("Failed to register payment failure");
+  }
+};
+
+export const initiatePaymentRetry = async (payload) => {
+  try {
+    const { data } = await api.post('/user/payment/retry', payload);
+    return data;
+  } catch (error) {
+    console.log("Error initiating payment retry", error.response?.data?.message || error );
+    throw error.response?.data || new Error("Could not initiate payment retry");
+  }
+};

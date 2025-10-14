@@ -2,7 +2,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { createOrder } from "../../../services/user/userPaymentServices"
+import { createOrder, handlePaymentFailure } from "../../../services/user/userPaymentServices" 
 import { getCheckoutDetails } from "../../../services/user/userTickerServices"
 
 const Checkout = () => {
@@ -13,8 +13,8 @@ const Checkout = () => {
   const [totalAmount, setTotalAmount] = useState(0)
   const [gst, setGst] = useState(0)
   const [subtotal, setSubtotal] = useState(0)
-  const [discount, setDiscount] = useState(0) // Added state for discount
-  const [offerApplied, setOfferApplied] = useState(false) // Added state for offerApplied
+  const [discount, setDiscount] = useState(0) 
+  const [offerApplied, setOfferApplied] = useState(false) 
   const [timeLeft, setTimeLeft] = useState(0)
 
   useEffect(() => {
@@ -22,13 +22,12 @@ const Checkout = () => {
       try {
         if (!selectedSeats || !selectedSeats.length) return
         const seatIds = selectedSeats.map((seat) => seat._id)
-        // Destructure discount and offerApplied from the response
         const res = await getCheckoutDetails(eventId, seatIds)
         setSubtotal(res.subtotal)
         setGst(res.gst)
         setTotalAmount(res.totalAmount)
-        setDiscount(res.discount) // Set discount
-        setOfferApplied(res.offerApplied) // Set offerApplied
+        setDiscount(res.discount) 
+        setOfferApplied(res.offerApplied)
       } catch (error) {
         console.error("Failed to fetch checkout details", error)
         toast.error("Failed to calculate final amount")
@@ -36,7 +35,7 @@ const Checkout = () => {
       }
     }
     getCheckoutAmount()
-  }, [selectedSeats, eventId, navigate]) // Added eventId and navigate to dependencies
+  }, [selectedSeats, eventId, navigate]) 
 
   // Timer countdown
   useEffect(() => {
@@ -49,11 +48,12 @@ const Checkout = () => {
         setTimeLeft(Math.floor(difference / 1000))
       } else {
         setTimeLeft(0)
-        navigate(-1)
+        // If lock expires, redirect back to selection
+        navigate(`/Event/${eventId}/Select-Seat-Counts`, { replace: true })
       }
     }, 1000)
     return () => clearInterval(timer)
-  }, [lockExpiresAt, navigate])
+  }, [lockExpiresAt, navigate, eventId])
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
@@ -69,26 +69,58 @@ const Checkout = () => {
         paymentMethod: "upi",
       }
       const response = await createOrder(payload)
-      const { razorpayOrderId, amount, currency, key, orderId } = response
-      console.log("razorpay order id", currency)
+      const { razorpayOrderId, amount, key, orderId } = response
+      
       const options = {
         key,
         amount,
-        currency: "INR",
+        currency: "INR", // Ensure this is set to INR
         name: "PassGo Events",
         description: "Event Ticket",
         image: "https://passgo.in/logo.png",
         order_id: razorpayOrderId,
+        
+        // --- SUCCESS HANDLER (Original) ---
         handler: (response) => {
           navigate(`/user/event/${eventId}/payment-success`, {
             state: {
-              orderId,
+              orderId, // PaidTicket ID
               razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId,
+              razorpayOrderId: response.razorpay_order_id,
               razorpaySignature: response.razorpay_signature,
             },
           })
         },
+
+        // --- NEW RAZORPAY FAILURE HANDLER ---
+        "payment.failed": async function (response) {
+            toast.error("Payment failed. Checking seat reservation status...");
+            
+            try {
+                // 1. Call the new backend function to record failure and check retries
+                await handlePaymentFailure({
+                    orderId, // PaidTicket ID from initial order creation
+                    razorpayOrderId: response.error.metadata.order_id,
+                    errorReason: response.error.description || "User payment failure",
+                });
+                
+                // 2. Redirect to the payment success screen (which is now the status checker)
+                // Pass ONLY the PaidTicket ID (orderId) to signal a failure path
+                navigate(`/user/event/${eventId}/payment-success`, {
+                    state: {
+                        orderId,
+                    },
+                });
+                
+            } catch (error) {
+                console.error("Initial failure handling error:", error);
+                // The error from handlePaymentFailure will contain the reason (e.g., permanent failure)
+                toast.error(error.message || "An unrecoverable error occurred. Please select seats again.");
+                navigate(`/Event/${eventId}/Select-Seat-Counts`, { replace: true }); 
+            }
+        },
+        // --- END NEW FAILURE HANDLER ---
+
         prefill: {
           name: "PassGo Events",
           email: "passgoevents@gmail.com",
@@ -102,14 +134,14 @@ const Checkout = () => {
         },
       }
       const razor = new window.Razorpay(options)
-      console.log("razorpay object", razor)
       razor.open()
     } catch (error) {
-      toast.error("Payment initialization failed")
+      toast.error(error.message || "Payment initialization failed")
       console.log(error)
     }
   }
 
+  // ... (rest of the component JSX remains the same as your file)
   if (!selectedSeats || selectedSeats.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -173,7 +205,7 @@ const Checkout = () => {
                     strokeWidth="2"
                     d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
                   />
-                </svg>
+                </svg>{" "}
                 Selected Seats
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -208,77 +240,88 @@ const Checkout = () => {
                     strokeWidth="2"
                     d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                   />
-                </svg>
+                </svg>{" "}
                 Payment Method
               </h2>
-              <div className="space-y-3">
-                <div className="flex items-center p-4 border-2 border-indigo-600 bg-indigo-50 rounded-lg">
-                  <input
-                    type="radio"
-                    id="upi"
-                    name="payment"
-                    defaultChecked
-                    className="w-4 h-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
-                  />
-                  <label htmlFor="upi" className="ml-3 flex items-center cursor-pointer">
-                    <div className="w-8 h-8 bg-indigo-600 text-white rounded flex items-center justify-center mr-3">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">UPI / Cards / Wallets</p>
-                      <p className="text-sm text-gray-600">Pay securely with Razorpay</p>
-                    </div>
-                  </label>
+              <div className="space-y-4">
+                {/* UPI / Razorpay Default */}
+                <div className="flex items-start p-4 border border-indigo-600 bg-indigo-50 rounded-lg shadow-sm">
+                  <div className="w-6 h-6 text-indigo-600 mr-3">
+                    <svg
+                      className="w-full h-full"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2-3-.895-3-2 1.343-2 3-2zM4 14v6a2 2 0 002 2h12a2 2 0 002-2v-6M4 14a8 8 0 0116 0"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Razorpay / UPI (Default)</p>
+                    <p className="text-sm text-gray-600">
+                      You will be redirected to Razorpay to complete the transaction via UPI, Net Banking, or Card.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          {/* Right Column - Order Summary */}
+
+          {/* Right Column - Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-gray-600">
-                  <span>
-                    Subtotal ({selectedSeats.length} {selectedSeats.length === 1 ? "seat" : "seats"})
-                  </span>
-                  <span>₹{subtotal}</span>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 sticky top-8">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-3">Order Summary</h2>
+
+              <div className="space-y-3 text-gray-700">
+                <div className="flex justify-between">
+                  <span>Subtotal ({selectedSeats.length} Seats)</span>
+                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
 
-                {/* Display Discount if applied */}
-                {offerApplied && discount > 0 && (
+                {discount > 0 && (
                   <div className="flex justify-between text-green-600 font-medium">
-                    <span>Offer Discount</span>
-                    <span>- ₹{discount}</span>
+                    <span>Discount {offerApplied ? "(Offer Applied)" : ""}</span>
+                    <span>- ₹{discount.toFixed(2)}</span>
                   </div>
                 )}
 
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between border-t pt-3">
                   <span>GST (18%)</span>
-                  <span>₹{gst}</span>
+                  <span className="font-medium">₹{gst.toFixed(2)}</span>
                 </div>
-                <div className="border-t border-gray-200 pt-4">
-                  <div className="flex justify-between text-lg font-semibold text-gray-900">
-                    <span>Total Amount</span>
-                    <span>₹{totalAmount}</span>
-                  </div>
+
+                <div className="flex justify-between text-2xl font-bold text-indigo-700 border-t border-gray-300 pt-4 mt-4">
+                  <span>Total Payable</span>
+                  <span>₹{totalAmount.toFixed(2)}</span>
                 </div>
               </div>
-              {/* Security Info */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <div className="flex items-center">
-                  <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+
+              {/* Security Message */}
+              <div className="mt-6 mb-6">
+                <div className="flex items-center p-3 bg-green-50 rounded-lg">
+                  <svg
+                    className="w-5 h-5 text-green-600 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       fillRule="evenodd"
-                      d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      d="M10 2a8 8 0 00-8 8c0 2.904 1.792 5.567 4.5 6.708l.942-1.319A6 6 0 014 10a6 6 0 0112 0 6 6 0 01-3.442 5.389l.942 1.319C18.208 15.567 20 12.904 20 10a8 8 0 00-8-8zm-1 8a1 1 0 102 0V6a1 1 0 10-2 0v4z"
                       clipRule="evenodd"
                     />
                   </svg>
                   <div>
                     <p className="text-sm font-medium text-green-800">Secure Payment</p>
-                    <p className="text-xs text-green-600">Your payment is protected by 256-bit SSL encryption</p>
+                    <p className="text-xs text-green-600">
+                      Your payment is protected by 256-bit SSL encryption
+                    </p>
                   </div>
                 </div>
               </div>
@@ -287,7 +330,7 @@ const Checkout = () => {
                 onClick={handlePayment}
                 className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-indigo-500/25"
               >
-                Pay ₹{totalAmount}
+                Pay ₹{totalAmount.toFixed(2)}
               </button>
               {/* Terms */}
               <p className="text-xs text-gray-500 mt-4 text-center">
@@ -307,4 +350,5 @@ const Checkout = () => {
     </div>
   )
 }
+
 export default Checkout
